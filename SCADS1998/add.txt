@@ -1,0 +1,575 @@
+;;; All of the contents herein are Copyright (1997) by Jeff Shrager
+;;; and may not be duplicated or passed on in any form to anyone else 
+;;; without the explicit permission of Robert Siegler or Jeff Shrager
+
+Overview
+
+The SCADS model is written in Lisp,consisting of about 3000 lines of
+code in about 200 Lisp functions.  This document describes only the
+cognitive model portion of the simulation system, not including those
+parts that run the model through a sequence of addition problems,
+record the model's performance, and produce summary statistics.  I
+assume that the model is being presented with addition problems, and
+give no heed to how an external observer would analyze the model's
+performance.  I will use the terms "model" and "simulation"
+interchangably.
+
+The model is composed of a number subsystems.  The two most important
+ones are called the TOP system, representing strategies explicitly,
+wherein strategies are executed under attention control, and the
+BOTTOM system, which represents strategies implicitly, and wherein
+strategies are executed without attentional control.  The top,
+explicit representation, of a strategy consists of a chain of
+operations called OPS.  Each strategy has an explicit ops
+representation, which the form in which is initially represented and
+run.  The bottom representation of a strategy is implicitly contained
+in a table called the TRANSITION TABLE, which represents the
+probability of a transition between a particular op, and the ops which
+are likely to, statistically speaking, follow it.  The probabilities
+represented in the transition table are strengthened each time a
+particular path is taken between two ops, usually as a result of
+executing acts in sequence when a strategy is run explicitly by the
+top system.  Eventually, enough statistical experience has been
+represented in the transition table probabilities to permit the bottom
+system to take over control of the procedure from the top system. That
+is, the strategy begins to be executed implicitly, in the bottom
+system, rather than explicitly, in the top system.  When this is the
+case, attentional cycles are released to the METACOGNITIVE system,
+which can use these freed cycles to execute meta-goals, including
+discovery and retrieval.  As a result of this process of freeing up
+cognitive cycles through practice, newly discovered strategies, and
+retrieval, begin to displace older strategies as these older
+strategies become automatized.
+
+(It is important to emphasize that the same mechanism which implements
+the distributions of associations mechanism, that underlies retrieval,
+also implements the bottom transition mechanism.  This is an important
+unification of mechanism)
+
+Strategy representation.
+
+A strategy is represented by:
+
+  The chain of ops that are the explicit steps in the strategy,
+  Confidence values for this strategy in each type of problem that 
+     has been encountered,
+  A default confidence for this strategy in for problem types that 
+     have not been encountered.
+  A general-strength value for this strategy.
+
+SCADS maintains an explicit representation of the child's hands and
+fingers upon which counting operations take place.  This is called the
+PERIPHERAL system. The Peripheral System represents ten "fingers," a
+focus of attention (FOA), and an echoic buffer (EB) into which the
+names of numbers are said and temporarily remembered.  Operations on
+these constitute the basic operations of the model (the "ops",
+mentioned above).
+
+The "fingers" external memory represents five "fingers" on each of two
+"hands", Each "finger" my be up or down.  The "finger" in FOA can be
+raised (<put-up>) or lowered (<put-down>). (The reason for scare
+quotes is that of course there are no real fingers or hands.  rather,
+there are slots in a representational schema. I won't use scare quotes
+from this point onward.)
+
+The focus of attention (FOA) may point at a particular finger, or may
+be unset.  Most of the ops operate on what's in FOA.  The
+<increment-focus> operation moves to the next finger, and crosses to
+the other hand, if it goes beyond the fifth finger.  This seemingly
+trivial fact turns out to be important in the discovery of some
+strategies.
+
+(Throughout this presentation, global parameters are surrounded by
+asterisks, as: *PERR*.  operators are surrounded by platy brackets,
+as: <PUT-DOWN>, andspecial terms are capitalized the first time they
+are encountered.)
+
+Although we assume perfect knowledge of the number sequence, errors
+take place as a result of a probability (*PERR*) that <say-next> will
+report the wrong number; this always takes place by simply failing to
+count.  (Note that there are really a number of ways that one can get
+errors in addition, but the basic effect of correlating errors with
+the number of step in the procedure is accomplished by this method.)
+
+We can <SAY> a number, or <SAY-NEXT> number (the next number after the
+last one said).  <Say> installs the number into the echoic buffer
+(EB), and say next increments the number in the echoic buffer, the
+idea being that the child remembers in the echoic loop the previous
+number, and uses that compute the next number.  We clear the EB each
+time we're about to start a count.  If you don't do this, the last
+number counted will be left in the echoic buffer and you'll count on
+from it, which is actually right, of course, for shortcut-sum. This
+fact will be important in the discovery of that strategy.
+
+The <RAISE> op is the heart of the process. It says the next number,
+increments the FOA to the next finger, puts it up, and repeats until
+the right number of counts have been carried out.  
+
+An important and difficult question is how to determine the point at
+which raise should stop.  That is, when putting up fingers, how does
+the child know when he's got the right number up?  He could use the
+echoic buffer trace, but that can't be right for shortcut sum because
+the echoic buffer contains the SUM, not just the single hand's count,
+so the right hand won't work.  That is, when one is executing
+COUNT-FROM-ONE-ONCE (across two hands), on, say 2+3, beginning, for
+example, with 2, the child says: "1 2" while putting up one and then
+another finger on the firsts hand, then says "3 4 5" while putting up
+a third fourth and fifth finger on the other hand.  It is subtle and
+important to notice that in order to decide to stop at 5, the child is
+IMPLICITLY counting to 3 -- the second addend.  Somehow the child can
+overtly count (SAY) one thing while covertly, or implicitly, counting
+another (the addend).  This demands a dissociation of the echoic
+number sequence from the counting sequence, the latter of which can be
+done covertly.  Therefore, instead of relying upon the echoic trace
+for the count, We uses a new buffer (CB -- the Counting Buffer) to
+maintain the count of fingers up on a particular hand.  The idea is
+that when an addend is chosen, it is remembered in the counting
+buffer.  as counting proceeds, the contents of counting buffer are
+compared with the contents of the echoic buffer one each increment.
+
+<Count-fingers> counts the fingers that are up on one hand by calling
+<say-next> once for each finger that it up on that hand.
+
+The remaining operations include:
+
+<Choose-hand> randomly chooses a hand to start on.
+
+<Swap-hands> swaps FOA to the other hand.
+
+We assume that the problem is written on an external board, and that
+there is a sort of second set of eyes that can look at one or the
+other addend, and swap them, just like with the hands. 
+
+<Choose-addend> randomly chooses an addend. 
+
+<Swap-addends> goes to the other addend.
+
+>Choose-larger-addend> is the operation that chooses the larger
+addend, it is used to form the Count from Larger strategy.
+
+As described above, the chain representation of a strategy is just a
+list of the ops that form the explicit representation of that
+strategy.
+
+Here's are some actual strategies.  
+
+-----
+Strategy COUNT-FROM-ONE-TWICE is:
+
+  ;; First addend on first hand.
+		      
+  clear-hands choose-hand choose-addend say-addend 
+  clear-eb raise
+
+  ;; Second addend on the other hand.
+
+  swap-hands swap-addends
+  say-addend clear-eb 
+  raise
+
+  ;; Final count out.
+
+  choose-hand clear-eb
+  count-fingers
+  swap-hands
+  count-fingers
+
+  end!
+-----
+
+It's easy to turn COUNT-FROM-ONE-TWICE into SHORTCUT-SUM by just
+dropping a couple of steps.  (In Lisp, comments are preceded by
+semi-colons. Therefore, to remove a line all we need to do is to
+precede it with a semi-colon.  In the following, several operations
+have been commented out by preceding them with semi-colons.)
+
+-----
+Strategy COUNT-FROM-ONE-ONCE is:
+
+  ;; First addend on first hand.
+
+  clear-hands choose-hand choose-addend say-addend 
+  clear-eb raise
+
+  ;; Second addend on the other hand.
+
+  swap-hands swap-addends
+; say-addend clear-eb 
+  raise
+
+  ;; Final count out.
+
+; choose-hand clear-eb 
+; count-fingers 
+; swap-hands
+; count-fingers 
+
+  end!
+-----
+
+Following is COUNT-FROM-EITHER, which is just MIN without
+<choose-larger-addend>.
+
+-----
+Strategy *count-from-either* is:
+
+  ;; First addend on first hand.
+
+  clear-hands choose-hand choose-addend say-addend
+; clear-eb raise
+
+  ;; Second addend on the other hand.
+
+  swap-hands swap-addends
+; say-addend clear-eb 
+  raise
+
+  ;; Final count out.
+
+; choose-hand clear-eb 
+; count-fingers 
+; swap-hands
+; count-fingers 
+
+  end!
+-----
+
+
+It is important to recognize that program is only given the COUNT FROM
+ONE TWICE strategy initially, and discovers all the other strategies
+through metacognitive modification. (Except for retrieval, which is
+always available but little used, until the association's strengths
+increase.)  I have shown the strategies above, only to make it clear
+how the explicit op representation works, and how simple it is to
+create new strategies by shortcutting parts of previous strategies.
+It is just as easy through this mechanism, to create nonsense
+strategies, and selecting only correct strategies is the combined job
+of the discovery heuristics, and strategy filter based upon the
+skeletal plan.
+
+-----
+
+The strategy database.is initialized with the COUNT-FROM-ONE-TWICE
+strategy, with default confidence and general strength values.
+
+Given a single addition problem, the model carries out these steps:
+
+0. Initial retrieval: Choose a confidence criterion (*CC*) for retrieval 
+   and if there is an answer that comes above *CC* in memory report that
+   answer, and stop.
+1. Select a strategy to use and set the bottom-transition threshold.
+2. Execute the strategy, in top or bottom, in accord with the 
+   selected bottom-transition threshold (*BXT*), and conduct meta-goals as 
+   attention permits.
+3. Report the answer.
+4. Get feedback (was the answer correct?)
+5. Update problem-answer association tables, strategy utility 
+   stats, strategy op (bottom) transition probabilities, and LTM.
+
+0. Initial retrieval.
+
+Retrieval can happen in three ways: Initial retrieval (at this point),
+selection of retrieval as a strategy (which is based upon problem
+features, whereas the initial retrieval is not!), and during meta-goal
+execution.  This initial analysis of the vaibility of retrieval gives
+retrieval priority if the associative strength of any result comes
+above the confidence criterion.  If retrieval will give us a valid
+guess, then we're done; go ahead and report the answer.
+
+1. Select a strategy to use.
+
+Strategy selection is based upon the confidence that the system has
+for different sorts of problems of each strategy type, combined with
+the general strength values for each strategy.  We characterize
+the problem, then choose the strategy with the highest combined
+general and specific strength and confidence for this problem type.
+The problem features include: equal-addends, first-larger,
+second-larger, bignums (> 3), no-bignums.  A problem can be described
+by several of these features.  
+
+The bottom transition threhsold (*BXT*) is set to 1 minus the
+strategies' confidence on the type of problem encountered. Thus, as a
+problem (type) is encountered more and more often by a current
+strategy (so to speak), the likelihood that the child will use bottom,
+as opposed to top operations to carry out the strategy on this type of
+problem increases.
+
+2. Execute the strategy, and meta-goals as attention permits.
+
+As described above, "automatized" of procedures is reflected in the
+bottom transition table, which probabalistically associates ops with
+those that can follow.  A bottom transition is selected when one is
+above the confidence criterion (*BXT*). Otherwise, if no bottom
+transition reaches confidence critereon, then the appropriate top op
+-- the next in sequence in the explicit representation of the strategy
+-- is taken.  Each time a trasntition is taken, weather in the top
+with the bottom system, the transition probability is incremented by a
+small amount.  In other words, when no bottom transition comes above
+threshold, the strategy's explicit procedure is used to select the
+next operation. Also, each time an op is executed, a record of it is
+made in STM, and each time a problem is completed, STM is pushed onto
+LTM.
+
+The top, system gets the problem, computes its features, probes ASCM
+for a strategy, gets the goals for the selected strategy from the
+memory, sets the peripheral system off on the first of these and then
+monitors performance as the process takes place.  When the answer
+appears (in an echoic buffer at the end of the run) the cognitive
+system reports this to the experimenter, gets the right or wrong
+feedback, and then, if the answer was correct, pats ASCM on the head.
+The cognitive system also permanently knows the general structure of a
+good addition strategy.  This is coded into the cognitive system and
+never changes.
+
+Whenever a strategy is used, whether or not it succeeds, its strength
+is increased both in general and for this particular type of problem.
+When a strategy gets the right answer, its general strengths is
+increased again.  Furthermore when a new strategy is entered, it is
+given a relatively high strength (relative to the other known
+strategies strength -- see below re:*new-strat-general-strength-bump*), 
+ostensibly because there's a lot of memory interaction involved in 
+entering it into the memory.  The goal of setting the initial strenght 
+of a new strategy relatively high is to ensure that it is tried out
+when it is discovered.
+
+-----
+
+Discovery and Retrieval in the Metacognitive System.
+
+The metacognitive system handles discovery, and one form of retrieval.
+Metacognitive processes are implemented by meta goals.  Each time a
+bottom transition is taken, one cognitive cycle is saved, and one meta
+goal can be run per saved cycle.  Thus, meta-goals are given attention
+when the steps in strategy execution have been well-enough learned to
+be executed without explicit attention.  Each such automatized step
+gives up one cognitive cycle, which can be used for discovery or to
+try to retrieve the answer to the problem.  As a result of this
+constriant, discovery (as well as extensive use of retrieval) is put
+off until the known strategies are well-learned.  (More precisely,
+until common subsequences, represented in the "bottom ransition table"
+are well-learned. this is important and subtle point. It's not
+strategies that are learned by the bottom system, but transitions
+between operations. Thus, if two or more strategies share common
+sequences of operations, the transitions among those operations are
+exercised whenever EITHER of the strategies is executed. There are
+likely to be psychological predictions that arise from this fact.)
+
+Executing metacognitive processes may involve setting the sequence
+meta goals, each of which requires a metacognitive cycle to execute.
+Therefore, undertaking a complete discovery, filtering the strategy,
+and installing it may require a number of meta cycles.  Whenever the
+system gets free cycles, through bottom level automatization, we scan
+for applicable meta goals and push one onto the meta goal stack to be
+executed when additional cycles are available. As in SOAR, choosing
+what to do counts as, and uses up, a meta-cycle!  Also, like SOAR and
+other production systems, meta goals match to apply. If more than one
+meta-goal appies, one is chosen at random (unlike SOAR, which sets a
+subgoal to decide between competing goals).
+
+In the next two sections would consider how the discovery, and
+retrieval meta processes work. importantly, meta goal based retrieval
+is only one way that retrieval may be used.  Retrieval may also be
+used at the outset of the problem if the associative strength of the
+solution comes above confidence criterion immediately, as in the
+distributions of association model.
+
+DISCOVERY  
+
+When a strategy is run, a short-term memory (STM) trace is maintained
+of all the operators applied and each peripheral action (such as
+saying a number aloud).  After each problem is completed, the STM
+trace of that problem's execution is pushed onto an LTM stack, along
+with a description of the problem.  LTM has limited capacity, and
+older traces are eventually dropped.
+
+Discovery processes LTM, and works through two heuristics:
+
+1. Shortcutting: Remove externally redundant sequences of EXTERNAL
+operations (actions).  That is, when there are operations that produce EXTERNAL
+redundencies, such as counting the same hand or value twice, the
+INTERNAL operations which produced either the first or the second of
+these is proposed for deletion.  This heuristic does most of the work
+of discovery, turning Counting Fingers into SCSum+Recount and this
+into SCSUm, as depicted above.  This is a messy heuristic, chopping
+out large pieces of procedures willy-nilly, so its efficacy relies
+heavily on strategy filtering.
+
+Take, for example, the shortcut changes that might be proposed as a
+result of executing COUNT-FROM-ONE-TWICE, depicted above.  Execution
+of that strategy on the problem: 2+3, might produce the following
+sequence of actions:
+
+  First addend count: Say "1 2"
+  Second addend count: Say "1 2 3"
+  Final count: Say "1 2 3 4 5"
+
+(I am exluding attentional actions such as hand choice in this example.)
+
+There are several redundancies even just in the verbal trace: "1 2" is
+stated twice and "1 2 3" is counted thrice.  There are several
+deletions that could be made to the COUNT-FROM-ONE-TWICE, as depicted
+above, that would reduce or remove this repetition. Some of these
+produce desirable strategies, some produce degenerate strategies that
+do not even make sense (see below), and some produce non-degenerate
+but incorrect stratgies.  The role of filtering, described below, is
+to distinguish these.
+
+2. Replace <CHOOSE-ADDEND> with <CHOOSE-LARGER-ADDEND> whenever the
+statistics on a strategy suggest that it does better when the larger
+addend is chosen first.  Unlike previous heuristic, this one is very
+precise, making onlya single kind of change.
+
+Filtering: Once a strategy has been created by strategy generation,
+but before it is actually installed , or excepted,it must pass through
+the strategy filter, which applies three tests.  These tests
+approximate the skeletal plant filter of Sigler and Jenkins.
+
+There tests are:
+
+1. Ensure that the strategy conforms to the skeletal plan:
+'(CHOOSE-HAND SAY-ADDEND SWAP-HANDS SWAP-ADDENDS RAISE). Each of these
+operations must appear in this order in the strategy, although there
+may be other operations as well.  (This was composed from the MIN
+strategy.)
+
+2. Enforce the principle that after the last <CLEAR-EB> (clear the
+echoic buffer) you have to have some way of getting to both hands
+and/or addends.  (This only applies to strategies that have <CLEAR-EB>
+operations; Min has none!)
+
+3. Ensures that there are no more <COUNT-FINGERS> than <RAISE>
+operations. The interpretation of this is that counting a hand with
+nothing represented makes no sense, but this is hard to check from
+just the program structure, so this is a proxy for that test.
+
+There are really two phases of filtering, one that is effectively
+internal to the shortcutting heuristic just described, and then the
+filtering tests, described below.  As noted above, the shortcutting
+mechanism is quite a blunt-edged sword, often chopping out so much of
+the strategy that it isn't even coherent anylonger as a strategy.  For
+example, you might end up with a strategy that, following the above
+representation, looked like this:
+
+-----
+Strategy senseless-strategy is:
+
+  say-addend
+  clear-eb
+  count-fingers 
+  end!
+-----
+
+In this case, the strategy says an addend without having chosen one,
+and counts fingers w/o having chosen a hand.  This strategy (and many
+other possible strategies created by the shortcutting heuristic) are
+"degenerate"; semantically meaningless; one couldn't run them if one
+wanted to.  Degenerate strategies are not even proposed by the
+shortcutting mechanism.  One can think of their supression as part of
+the heuristic itself.  Therefore, such strategies don't have to be
+filtered as described below.  One couldn't filter them if one wanted to,
+because they can't even be executed.
+
+Once a strategy passes the filter tests, is installed, and default
+parameters are set for it. The general strength of a new strat is the
+mean of the general strengths of all the other strats, plus a little
+bump.  (given by the parameter: *new-strat-general-strength-bump*).
+The confidence for a new strat is *new-default-confidence* + the
+confidence bump to ensure that for this sort of problem (problem
+characterization), this strat is used more than the one it was created
+from.  There are other possible methods that might work better.
+
+RETRIEVAL
+
+As mentioned a number of times the relationship between problems and
+solutions is stored in an associative array, just like the
+distribution of associations model.  These associations are up at
+problem conclusion time.  The association matrix is consultant when
+the problems is first encountered, and then only when the cognitive
+system has some time with nothing to do -- that is, when cycles are
+given up to meta goals. Notice that retrieval is also explicit
+strategy which maybe chosen based on its strengths, regardless of the
+values in the distribution of associations table. So retrieval appears
+in three ways: When the problem is presented, as an explicit strategy
+(selected), or as a meta-goal, able to be run when a cycle is saved by
+bottom op transition.  All three of these methods depend upon values
+in the distribution of associations table.  Notice that this makes an
+important protection that eventually retrieval will be the predominant
+strategy regardless of the child's experience with particular
+problems.  Therefore, we might expect that the child will eventually
+find himself making errors in retrieval because he or she chose to use
+retrieval based on its strength, but then found insufficient
+experience with this problem to come up with the right answer. This is
+certainly the case for adults -- or at least for me --who have not
+used certain arithmetic facts for long time but tend to rely on
+retrieval, and fall back on other strategies only when retrieval fails
+to produce a strong answer.
+
+Retrieval chooses at random from among the results that come above the
+cc, or returns no solution if nothing comes over the cc. (I've checked
+this in the code and it really does choose at random.  I think that
+the assumptions behind this are that (a) one doesn't have enough
+sensitivity to fine differences in differential activtion to be able
+to choose from among several above-threshold options, and (b) most of
+the time the right answer has an activation well above all the others
+anyhow (re: peakedness results from S&S84), and so usually you only get
+one result anyhow.
+
+---------------------------------
+
+MODEL PARAMETERS
+
+These are the principal parameters of model, used for most of the
+simulations in the SCADS paper. Some of these are described above.
+
+This is added to the mean general strength when a new strategy is added:
+
+     *new-strat-general-strength-bump* = 1.0
+
+If the discovery meta goal is called upon it always succeeds,
+although, of course, no new strategy may be proposed, or the proposed
+new strategymay be rejected by the strategy filter process.  In order
+to slow the discovery process somewhat we introduce the *pdisc* global
+representing the probably that discovery will actually take place when
+it is called as a meta-goal.
+
+     *pdisc* = 0.01 (that is 1%)
+
+The probability of making counting errors:
+
+     *perr* = 0.04 (that is, 4%)
+
+These determine the strength and confidence given to newly discovered strategies:
+
+     *default-confidence* = 0.2 ; Initial confidence
+     *new-strat-confidence-bump* = 0.99 ; Confidence of new strat OVER competitors
+     *novelty-confidence-incr* = 0.99 ; kick given to newly discovered strategies
+     *default-general-strength* = 1.0
+     *new-default-confidence* = 0.99 ; for a new problem's characteristic
+
+     *conf-incf-on-correct* = 0.02 ; add this when the strategy works.
+     *conf-incf-on-wrong* = 0.01 ; and add this when it doesn't.
+
+These parameters control the initial and incremental settings for the
+bottom operations transition table:
+
+     *xinit* = 0.02 ; Initial value
+     *xincr* = 0.2 ; Use increment
+
+The analogous parameters for the distribution of associations table:
+
+     *memtbl-incr-wrong* = 0.03 ; add this when you get a problem wrong
+     *memtbl-incr-right* = 0.06 ; add this when you get one right
+
+Other parameters:
+
+     *LTM-stack-limit* = 200 ; ...and how far back it retains traces
+     *CC* range = 0.1 to 0.9
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,49 @@
+Each strategy is a sequence of operators.  The two strategies that the
+model is given at the beginning of each simulatior run are retrieval
+and the sum strategy.  Retrieval has only one operator: {Try
+retrieval}, whereas the sum strategy is composed of the following long
+sequence of operators: {Put down all my fingers, Select one hand (at
+random), Select one addend (at random), Say the selected addend, Clear
+echoic memory, Count up from one while raising fingers on the selected
+hand, Switch to the other hand, Switch to the other addend, Say this
+addend, Clear echoic memory, Count up from one while raising fingers
+on this hand, Choose a hand, Clear echoic memory, Count all raised
+fingers on the selected hand from one, Switch to the other hand, Count
+all raised fingers on this hand from where the last count left off,
+Report the answer as the last stated value}.
+
+For convenience, this long sequence is represented by the abbreviated
+list:
+
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND       
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+In these terms, the Min strategy is represented as follows:
+
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-LARGER-ADDEND SAY-ADDEND SWAP-HANDS
+       SWAP-ADDENDS RAISE END!)
+
+Notice that with the exception of the replacement of CHOOSE-ADDEND by
+CHOOSE-LARGER-ADDEND, Min is composed of the same operators as Sum in
+the same order, but many have been deleted by SCADS' discovery
+operators.
+
+Along the way between Sum and Min, numerous valid and invalid
+strategies are proposed ((this is described in the existing text)).
+An example of an invalid strategy is this one:
+
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB        CHOOSE-HAND       
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+in which the second "RAISE" operator has been deleted.  This strategy
+may be proposed by SCADS' discovery heuristics because in some cases
+(specifically, problems with equal addends, such as 4+4) there is an
+apparent redundancy of counting.  However, if this strategy were to be
+executed, the second addend would be left out of the sum.  This
+violates the goal sketch filter principle that both addends must be
+represented in the result, and so it is rejected before it is even
+tried.
+
+

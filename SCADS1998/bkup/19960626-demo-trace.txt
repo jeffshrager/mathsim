@@ -1,0 +1,1721 @@
+
+neurocog:~/development/add>gcl
+GCL (GNU Common Lisp)  Version(2.2) Tue Apr 30 10:29:34 EDT 1996
+Licensed under GNU Public Library License
+Contains Enhancements by W. Schelter
+Loading init.lsp
+
+"Loading Jeff Shrager's init.lsp" 
+Finished loading init.lsp
+
+>(load "add")
+Loading add.lsp
+Loading /users/shrager/lib/utils.lsp
+Warning: YES-OR-NO-P is being redefined.
+Warning: CLEAR-INPUT is being redefined.
+Finished loading /users/shrager/lib/utils.lsp
+Finished loading add.lsp
+T
+
+>(test
+)
+
+Strategies initialized: (SUM)
+.------------------- Problem is 4+1.
+Selected to use SUM.
+Transition threshold is 0.90000000000000002
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 1.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+udddd|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 4.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+udddd|uDddd
+ <2> 
+
+udddd|uuDdd
+ <3> 
+
+udddd|uuuDd
+ <4> 
+
+udddd|uuuuD
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Udddd|uuuud
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (COUNT-FINGERS)
+ <1> 
+
+uDddd|uuuud
+
+udDdd|uuuud
+
+uddDd|uuuud
+
+udddD|uuuud
+
+udddd|Uuuud
+At COUNT-FINGERS, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+udddd|Uuuud
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <2> 
+
+udddd|uUuud
+ <3> 
+
+udddd|uuUud
+ <4> 
+
+udddd|uuuUd
+ <5> 
+
+udddd|uuuuD
+
+udddd|uuuuD
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 4 + 1 = 5 ** 
+Yaaa....Got it right! (new confidence = 0.13)
+Number of saved MS cycles = 0.
+Continue?  (Y or N) y
+------------------- Problem is 2+4.
+Selected to use SUM.
+Transition threshold is 0.90000000000000002
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.01 -> END!
+   - 0.01 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.01 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.01 -> COUNT-FINGERS
+   - 0.01 -> SWAP-ADDENDS
+RAISE:
+   - 0.01 -> CHOOSE-HAND
+   - 0.01 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.01 -> COUNT-FINGERS
+   - 0.11 -> RAISE
+SAY-ADDEND:
+   - 0.11 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.01 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.01 -> CLEAR-EB
+   - 0.01 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.01 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 4.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+ <2> 
+
+uuDdd|ddddd
+ <3> 
+
+uuuDd|ddddd
+ <4> 
+
+uuuuD|ddddd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuud|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 2.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <2> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uuuud|uDddd
+ <2> 
+
+uuuud|uuDdd
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Uuuud|uuddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (COUNT-FINGERS)
+ <1> 
+
+uUuud|uuddd
+ <2> 
+
+uuUud|uuddd
+ <3> 
+
+uuuUd|uuddd
+ <4> 
+
+uuuuD|uuddd
+
+uuuud|Uuddd
+At COUNT-FINGERS, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuud|Uuddd
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <5> 
+
+uuuud|uUddd
+ <6> 
+
+uuuud|uuDdd
+
+uuuud|uudDd
+
+uuuud|uuddD
+
+uuuud|uuddD
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 2 + 4 = 6 ** 
+Yaaa....Got it right! (new confidence = 0.13)
+Number of saved MS cycles = 0.
+Continue?  (Y or N) y
+------------------- Problem is 5+4.
+Selected to use SUM.
+Transition threshold is 0.87
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.11 -> END!
+   - 0.11 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.11 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.11 -> COUNT-FINGERS
+   - 0.11 -> SWAP-ADDENDS
+RAISE:
+   - 0.11 -> CHOOSE-HAND
+   - 0.11 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.11 -> COUNT-FINGERS
+   - 0.31 -> RAISE
+SAY-ADDEND:
+   - 0.31 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.11 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.11 -> CLEAR-EB
+   - 0.11 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.11 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 5.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+ <2> 
+
+uuDdd|ddddd
+ <3> 
+
+uuuDd|ddddd
+ <4> 
+
+uuuuD|ddddd
+ <5> 
+
+uuuuu|Ddddd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuuu|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 4.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uuuuu|uDddd
+ <2> 
+
+uuuuu|uuDdd
+ <3> 
+
+uuuuu|uuuDd
+ <4> 
+
+uuuuu|uuuuD
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+uuuuu|Uuuud
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (COUNT-FINGERS)
+ <1> 
+
+uuuuu|uUuud
+ <2> 
+
+uuuuu|uuUud
+ <3> 
+
+uuuuu|uuuUd
+ <4> 
+
+uuuuu|uuuuD
+
+uuuuu|uuuuD
+At COUNT-FINGERS, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuuuu|uuuud
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <5> 
+
+uUuuu|uuuud
+ <6> 
+
+uuUuu|uuuud
+ <7> 
+
+uuuUu|uuuud
+ <8> 
+
+uuuuU|uuuud
+ <9> 
+
+uuuuu|Uuuud
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 5 + 4 = 9 ** 
+Yaaa....Got it right! (new confidence = 0.16)
+Number of saved MS cycles = 0.
+Continue?  (Y or N) y
+------------------- Problem is 3+2.
+Selected to use SUM.
+Transition threshold is 0.90000000000000002
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.21 -> END!
+   - 0.21 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.21 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.21 -> COUNT-FINGERS
+   - 0.21 -> SWAP-ADDENDS
+RAISE:
+   - 0.21 -> CHOOSE-HAND
+   - 0.21 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.21 -> COUNT-FINGERS
+   - 0.51 -> RAISE
+SAY-ADDEND:
+   - 0.51 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.21 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.21 -> CLEAR-EB
+   - 0.21 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.21 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+ddddd|Ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 2.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <2> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+ddddd|uDddd
+ <2> 
+
+ddddd|uuDdd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Ddddd|uuddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 3.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uDddd|uuddd
+ <2> 
+
+uuDdd|uuddd
+ <3> 
+
+uuuDd|uuddd
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+uuudd|Uuddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (COUNT-FINGERS)
+ <1> 
+
+uuudd|uUddd
+ <2> 
+
+uuudd|uuDdd
+
+uuudd|uudDd
+
+uuudd|uuddD
+
+uuudd|uuddD
+At COUNT-FINGERS, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuudd|uuddd
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <3> 
+
+uUudd|uuddd
+ <4> 
+
+uuUdd|uuddd
+ <5> 
+
+uuuDd|uuddd
+
+uuudD|uuddd
+
+uuudd|Uuddd
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 3 + 2 = 5 ** 
+Yaaa....Got it right! (new confidence = 0.13)
+Number of saved MS cycles = 0.
+Continue?  (Y or N) y
+------------------- Problem is 1+2.
+Selected to use SUM.
+Transition threshold is 0.90000000000000002
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.31 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.31 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.31 -> COUNT-FINGERS
+   - 0.31 -> SWAP-ADDENDS
+RAISE:
+   - 0.31 -> CHOOSE-HAND
+   - 0.31 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 0.71 -> RAISE
+SAY-ADDEND:
+   - 0.71 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.31 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.31 -> CLEAR-EB
+   - 0.31 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.31 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 2.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <2> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+ <2> 
+
+uuDdd|ddddd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuddd|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 1.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, no transition selected.
+Doing: (RAISE)
+ <1> 
+
+uuddd|uDddd
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Uuddd|udddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (0.90999999999999992)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uUddd|udddd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuddd|Udddd
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <2> 
+
+uuddd|uDddd
+
+uuddd|udDdd
+
+uuddd|uddDd
+
+uuddd|udddD
+
+uuddd|udddD
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 1 + 2 = 2 ** 
+Oops....Got it wrong! (new confidence = 0.090000000000000011)
+Number of saved MS cycles = 1.
+Continue?  (Y or N) y
+------------------- Problem is 4+4.
+Selected to use SUM.
+Transition threshold is 0.90000000000000002
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.41 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.41 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.41 -> COUNT-FINGERS
+   - 0.41 -> SWAP-ADDENDS
+RAISE:
+   - 0.41 -> CHOOSE-HAND
+   - 0.51 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 1.01 -> RAISE
+SAY-ADDEND:
+   - 0.91 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.41 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.41 -> CLEAR-EB
+   - 0.41 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.41 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+ddddd|Ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 4.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, Selected -> CLEAR-EB (0.90999999999999992)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.01)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+ddddd|uDddd
+ <2> 
+
+ddddd|uuDdd
+ <3> 
+
+ddddd|uuuDd
+ <4> 
+
+ddddd|uuuuD
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Ddddd|uuuud
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 4.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.01)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.1100000000000001)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|uuuud
+ <2> 
+
+uuDdd|uuuud
+ <3> 
+
+uuuDd|uuuud
+ <4> 
+
+uuuuD|uuuud
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+uuuud|Uuuud
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.2100000000000002)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuuud|uUuud
+ <2> 
+
+uuuud|uuUud
+ <3> 
+
+uuuud|uuuUd
+ <4> 
+
+uuuud|uuuuD
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuuud|uuuud
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <5> 
+
+uUuud|uuuud
+ <6> 
+
+uuUud|uuuud
+ <7> 
+
+uuuUd|uuuud
+ <8> 
+
+uuuuD|uuuud
+
+uuuud|Uuuud
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 4 + 4 = 8 ** 
+Yaaa....Got it right! (new confidence = 0.13)
+Number of saved MS cycles = 5.
+Continue?  (Y or N) y
+------------------- Problem is 5+3.
+Selected to use SUM.
+Transition threshold is 0.83999999999999997
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.51 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.51 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.51 -> COUNT-FINGERS
+   - 0.51 -> SWAP-ADDENDS
+RAISE:
+   - 0.51 -> CHOOSE-HAND
+   - 0.71 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 1.31 -> RAISE
+SAY-ADDEND:
+   - 1.11 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.51 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.51 -> CLEAR-EB
+   - 0.51 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.51 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+ddddd|Ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 3.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.1100000000000001)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.3100000000000003)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.31 and got NIL.
+Doing: (RAISE)
+ <1> 
+
+ddddd|uDddd
+ <2> 
+
+ddddd|uuDdd
+ <3> 
+
+ddddd|uuuDd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Ddddd|uuudd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 5.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.2100000000000002)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.4100000000000004)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|uuudd
+ <2> 
+
+uuDdd|uuudd
+ <3> 
+
+uuuDd|uuudd
+ <4> 
+
+uuuuD|uuudd
+ <5> 
+
+uuuuu|Uuudd
+At RAISE, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Uuuuu|uuudd
+At CHOOSE-HAND, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.5100000000000005)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uUuuu|uuudd
+ <2> 
+
+uuUuu|uuudd
+ <3> 
+
+uuuUu|uuudd
+ <4> 
+
+uuuuU|uuudd
+ <5> 
+
+uuuuu|Uuudd
+At RAISE, no transition selected.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuuu|Uuudd
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <6> 
+
+uuuuu|uUudd
+ <7> 
+
+uuuuu|uuUdd
+ <8> 
+
+uuuuu|uuuDd
+
+uuuuu|uuudD
+
+uuuuu|uuudD
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 5 + 3 = 8 ** 
+Yaaa....Got it right! (new confidence = 0.19)
+Number of saved MS cycles = 5.
+Continue?  (Y or N) y
+------------------- Problem is 3+1.
+Selected to use SUM.
+Transition threshold is 0.87
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.61 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.61 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.61 -> COUNT-FINGERS
+   - 0.61 -> SWAP-ADDENDS
+RAISE:
+   - 0.61 -> CHOOSE-HAND
+   - 0.91 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 1.61 -> RAISE
+SAY-ADDEND:
+   - 1.31 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.61 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.61 -> CLEAR-EB
+   - 0.61 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.61 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 3.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.3100000000000003)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.6100000000000005)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+ <2> 
+
+uuDdd|ddddd
+ <3> 
+
+uuuDd|ddddd
+At RAISE, Selected -> SWAP-HANDS (0.90999999999999992)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuudd|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 1.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.4100000000000004)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.37 and got NIL.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.7100000000000006)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuudd|uDddd
+At RAISE, Selected -> SWAP-HANDS (1.01)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.75 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuudd|udddd
+At SWAP-HANDS, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.8100000000000007)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uUudd|udddd
+At RAISE, Selected -> SWAP-HANDS (1.1100000000000001)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.73999999999999999 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuudd|Udddd
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <2> 
+
+uuudd|uDddd
+
+uuudd|udDdd
+
+uuudd|uddDd
+
+uuudd|udddD
+
+uuudd|udddD
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 3 + 1 = 2 ** 
+Oops....Got it wrong! (new confidence = 0.12000000000000001)
+Number of saved MS cycles = 8.
+Continue?  (Y or N) y
+------------------- Problem is 5+5.
+Selected to use SUM.
+Transition threshold is 0.87
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.71 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.71 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.01 -> CLEAR-EB
+   - 0.71 -> COUNT-FINGERS
+   - 0.71 -> SWAP-ADDENDS
+RAISE:
+   - 0.61 -> CHOOSE-HAND
+   - 1.21 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 1.91 -> RAISE
+SAY-ADDEND:
+   - 1.51 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.71 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.61 -> CLEAR-EB
+   - 0.71 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.71 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+ddddd|Ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 5.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.5100000000000005)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (1.9100000000000008)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.78000000000000003 and got NIL.
+Doing: (RAISE)
+ <1> 
+
+ddddd|uDddd
+ <2> 
+
+ddddd|uuDdd
+ <3> 
+
+ddddd|uuuDd
+ <4> 
+
+ddddd|uuuuD
+ <5> 
+
+ddddd|uuuuU
+At RAISE, Selected -> SWAP-HANDS (1.2100000000000002)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Ddddd|uuuuu
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 5.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.6100000000000005)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.93000000000000005 and got NIL.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.0100000000000007)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|uuuuu
+ <2> 
+
+uuDdd|uuuuu
+ <3> 
+
+uuuDd|uuuuu
+ <4> 
+
+uuuuD|uuuuu
+ <5> 
+
+uuuuu|Uuuuu
+At RAISE, Selected -> SWAP-HANDS (1.3100000000000003)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuuu|Uuuuu
+At SWAP-HANDS, no transition selected.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.1100000000000008)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuuuu|uUuuu
+ <2> 
+
+uuuuu|uuUuu
+ <3> 
+
+uuuuu|uuuUu
+ <4> 
+
+uuuuu|uuuuU
+ <5> 
+
+uuuuu|uuuuU
+At RAISE, Selected -> SWAP-HANDS (1.4100000000000004)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.54000000000000004 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuuuu|uuuuu
+At SWAP-HANDS, no transition selected.
+Doing: (COUNT-FINGERS)
+ <6> 
+
+uUuuu|uuuuu
+ <7> 
+
+uuUuu|uuuuu
+ <8> 
+
+uuuUu|uuuuu
+ <9> 
+
+uuuuU|uuuuu
+ <10> 
+
+uuuuu|Uuuuu
+At COUNT-FINGERS, no transition selected.
+Doing: (END!)
+At END!, no transition selected.
+** 5 + 5 = 10 ** 
+Yaaa....Got it right! (new confidence = 0.16)
+Number of saved MS cycles = 8.
+Continue?  (Y or N) y
+------------------- Problem is 5+4.
+Selected to use SUM.
+Transition threshold is 0.81000000000000005
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.81 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 0.81 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.11 -> CLEAR-EB
+   - 0.81 -> COUNT-FINGERS
+   - 0.81 -> SWAP-ADDENDS
+RAISE:
+   - 0.61 -> CHOOSE-HAND
+   - 1.51 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 2.21 -> RAISE
+SAY-ADDEND:
+   - 1.71 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.81 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.61 -> CLEAR-EB
+   - 0.81 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.81 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, no transition selected.
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, no transition selected.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 5.
+At CHOOSE-ADDEND, no transition selected.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.7100000000000006)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.2100000000000009)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.26000000000000001 and got NIL.
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+ <2> 
+
+uuDdd|ddddd
+ <3> 
+
+uuuDd|ddddd
+ <4> 
+
+uuuuD|ddddd
+ <5> 
+
+uuuuu|Ddddd
+At RAISE, Selected -> SWAP-HANDS (1.5100000000000005)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuuuu|Ddddd
+At SWAP-HANDS, no transition selected.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 4.
+At SWAP-ADDENDS, no transition selected.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.8100000000000007)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.3100000000000009)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuuuu|uDddd
+ <2> 
+
+uuuuu|uuDdd
+ <3> 
+
+uuuuu|uuuDd
+ <4> 
+
+uuuuu|uuuuD
+At RAISE, Selected -> SWAP-HANDS (1.6100000000000005)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.73999999999999999 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuuuu|uuuud
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (0.90999999999999992)
+### Running a metacycle!
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 5.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (0.90999999999999992)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.81999999999999995 and got NIL.
+Doing: (SAY-ADDEND)
+ <5> 
+At SAY-ADDEND, Selected -> CLEAR-EB (1.9100000000000008)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.410000000000001)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.0 and got 9.
+** 5 + 4 = 9 ** 
+Yaaa....Got it right! (new confidence = 0.22)
+Number of saved MS cycles = 10.
+Continue?  (Y or N) y
+------------------- Problem is 4+1.
+Selected to use SUM.
+Transition threshold is 0.78000000000000003
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.81 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 1.01 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.11 -> CLEAR-EB
+   - 0.81 -> COUNT-FINGERS
+   - 1.01 -> SWAP-ADDENDS
+RAISE:
+   - 0.61 -> CHOOSE-HAND
+   - 1.71 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 2.51 -> RAISE
+SAY-ADDEND:
+   - 2.01 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 0.91 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.61 -> CLEAR-EB
+   - 0.91 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 0.91 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, Selected -> CHOOSE-HAND (0.90999999999999992)
+### Running a metacycle!
+Doing: (CHOOSE-HAND)
+
+Looking to the left hand.
+Ddddd|ddddd
+At CHOOSE-HAND, Selected -> CHOOSE-ADDEND (0.90999999999999992)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.69999999999999996 and got NIL.
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 1.
+At CHOOSE-ADDEND, Selected -> SAY-ADDEND (0.90999999999999992)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.0100000000000007)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.5100000000000011)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|ddddd
+At RAISE, Selected -> SWAP-HANDS (1.7100000000000006)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.76000000000000001 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+udddd|Ddddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.01)
+### Running a metacycle!
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 4.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.01)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.76000000000000001 and got NIL.
+Doing: (SAY-ADDEND)
+ <4> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.1100000000000008)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.6100000000000012)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+udddd|uDddd
+ <2> 
+
+udddd|uuDdd
+ <3> 
+
+udddd|uuuDd
+ <4> 
+
+udddd|uuuuD
+At RAISE, Selected -> SWAP-HANDS (1.8100000000000007)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Udddd|uuuud
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.1100000000000001)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.01 and got NIL.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 1.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.1100000000000001)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.2100000000000009)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.93000000000000005 and got NIL.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.7100000000000013)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|uuuud
+At RAISE, Selected -> SWAP-HANDS (1.9100000000000008)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.92000000000000004 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+udddd|Uuuud
+At SWAP-HANDS, Selected -> COUNT-FINGERS (0.80999999999999994)
+### Running a metacycle!
+Doing: (COUNT-FINGERS)
+ <2> 
+
+udddd|uUuud
+ <3> 
+
+udddd|uuUud
+ <4> 
+
+udddd|uuuUd
+ <5> 
+
+udddd|uuuuD
+
+udddd|uuuuD
+At COUNT-FINGERS, Selected -> END! (0.80999999999999994)
+### Running a metacycle!
+Doing: (END!)
+At END!, no transition selected.
+** 4 + 1 = 5 ** 
+Yaaa....Got it right! (new confidence = 0.25)
+Number of saved MS cycles = 18.
+Continue?  (Y or N) y
+------------------- Problem is 1+3.
+Selected to use SUM.
+Transition threshold is 0.91000000000000003
+.
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) 
+END!:
+COUNT-FINGERS:
+   - 0.91 -> END!
+   - 0.31 -> SWAP-HANDS
+SWAP-ADDENDS:
+   - 1.21 -> SAY-ADDEND
+SWAP-HANDS:
+   - 0.11 -> CLEAR-EB
+   - 0.91 -> COUNT-FINGERS
+   - 1.21 -> SWAP-ADDENDS
+RAISE:
+   - 0.61 -> CHOOSE-HAND
+   - 2.01 -> SWAP-HANDS
+CLEAR-EB:
+   - 0.31 -> COUNT-FINGERS
+   - 2.81 -> RAISE
+SAY-ADDEND:
+   - 2.31 -> CLEAR-EB
+CHOOSE-ADDEND:
+   - 1.01 -> SAY-ADDEND
+CHOOSE-HAND:
+   - 0.61 -> CLEAR-EB
+   - 1.01 -> CHOOSE-ADDEND
+CLEAR-HANDS:
+   - 1.01 -> CHOOSE-HAND
+
+Doing: (CLEAR-HANDS)
+At CLEAR-HANDS, Selected -> CHOOSE-HAND (1.01)
+### Running a metacycle!
+Doing: (CHOOSE-HAND)
+
+Looking to the right hand.
+ddddd|Ddddd
+At CHOOSE-HAND, Selected -> CHOOSE-ADDEND (1.01)
+### Running a metacycle!
+Doing: (CHOOSE-ADDEND)
+
+Choose addend 1.
+At CHOOSE-ADDEND, Selected -> SAY-ADDEND (1.01)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.3100000000000009)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.8100000000000014)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+ddddd|uDddd
+At RAISE, Selected -> SWAP-HANDS (2.0100000000000007)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.66000000000000003 and got NIL.
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Ddddd|udddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.2100000000000002)
+### Running a metacycle!
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 3.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.2100000000000002)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.410000000000001)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (2.9100000000000015)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uDddd|udddd
+ <2> 
+
+uuDdd|udddd
+ <3> 
+
+uuuDd|udddd
+At RAISE, Selected -> SWAP-HANDS (2.1100000000000008)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuudd|Udddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.3100000000000003)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.68000000000000005 and got NIL.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 1.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.3100000000000003)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.5100000000000011)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.81999999999999995 and got NIL.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (3.0100000000000016)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuudd|uDddd
+At RAISE, Selected -> SWAP-HANDS (2.2100000000000009)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuudd|udddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.4100000000000004)
+### Running a metacycle!
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 3.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.4100000000000004)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.38 and got NIL.
+Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.6100000000000012)
+### Running a metacycle!
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (3.1100000000000017)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.64000000000000001 and got NIL.
+Doing: (RAISE)
+ <1> 
+
+uUudd|udddd
+ <2> 
+
+uuUdd|udddd
+ <3> 
+
+uuuDd|udddd
+At RAISE, Selected -> SWAP-HANDS (2.3100000000000009)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the right hand.
+uuudd|Udddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.5100000000000005)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.25 and got NIL.
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 1.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.5100000000000005)
+### Running a metacycle!
+Doing: (SAY-ADDEND)
+ <1> 
+At SAY-ADDEND, Selected -> CLEAR-EB (2.7100000000000013)
+### Running a metacycle!
+*************** Trying retrieval w cc=0.29999999999999999 and got NIL.
+Doing: (CLEAR-EB)
+At CLEAR-EB, Selected -> RAISE (3.2100000000000017)
+### Running a metacycle!
+Doing: (RAISE)
+ <1> 
+
+uuudd|uDddd
+At RAISE, Selected -> SWAP-HANDS (2.410000000000001)
+### Running a metacycle!
+Doing: (SWAP-HANDS)
+
+Looking to the left hand.
+Uuudd|udddd
+At SWAP-HANDS, Selected -> SWAP-ADDENDS (1.6100000000000005)
+### Running a metacycle!
+Doing: (SWAP-ADDENDS)
+
+Looking to the other addend: 3.
+At SWAP-ADDENDS, Selected -> SAY-ADDEND (1.6100000000000005)
+### Running a metacycle!
+!!!!!!!!!!!! Ya! We're in a loop!  Bail out now!!!!!!!
+
+(END! CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+      SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+      CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!) Doing: (SAY-ADDEND)
+ <3> 
+At SAY-ADDEND, no transition selected.
+** 1 + 3 = 3 ** 
+Oops....Got it wrong! (new confidence = 0.080000000000000016)
+Number of saved MS cycles = 28.
+Continue?  (Y or N) n
+Write records to file?  (Y or N) y
+Filename: test
+DONE
+
+>
+((PROBLEM (4 1)) (STRAT SUM) (XTHRESH 0.90000000000000002) (RESULT 5)
+ (SAVED-MS-CYCLES 0)) 
+((PROBLEM (2 4)) (STRAT SUM) (XTHRESH 0.90000000000000002) (RESULT 6)
+ (SAVED-MS-CYCLES 0)) 
+((PROBLEM (5 4)) (STRAT SUM) (XTHRESH 0.87) (RESULT 9)
+ (SAVED-MS-CYCLES 0)) 
+((PROBLEM (3 2)) (STRAT SUM) (XTHRESH 0.90000000000000002) (RESULT 5)
+ (SAVED-MS-CYCLES 0)) 
+((PROBLEM (1 2)) (STRAT SUM) (XTHRESH 0.90000000000000002) (RESULT 2)
+ (SAVED-MS-CYCLES 1)) 
+((PROBLEM (4 4)) (STRAT SUM) (XTHRESH 0.90000000000000002) (RESULT 8)
+ (SAVED-MS-CYCLES 5)) 
+((PROBLEM (5 3)) (STRAT SUM) (XTHRESH 0.83999999999999997) (RESULT 8)
+ (SAVED-MS-CYCLES 5)) 
+((PROBLEM (3 1)) (STRAT SUM) (XTHRESH 0.87) (RESULT 2)
+ (SAVED-MS-CYCLES 8)) 
+((PROBLEM (5 5)) (STRAT SUM) (XTHRESH 0.87) (RESULT 10)
+ (SAVED-MS-CYCLES 8)) 
+((PROBLEM (5 4)) (STRAT SUM) (XTHRESH 0.81000000000000005) (RESULT 9)
+ (SAVED-MS-CYCLES 10)) 
+((PROBLEM (4 1)) (STRAT SUM) (XTHRESH 0.78000000000000003) (RESULT 5)
+ (SAVED-MS-CYCLES 18)) 
+((PROBLEM (1 3)) (STRAT SUM) (XTHRESH 0.91000000000000003) (RESULT 3)
+ (SAVED-MS-CYCLES 28)) 

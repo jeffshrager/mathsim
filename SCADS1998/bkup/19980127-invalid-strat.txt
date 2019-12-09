@@ -1,0 +1,47 @@
+On an invalid strategy:
+
+Here's an example of a strategy rejected because it fails to represent
+both addends:
+
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CHOOSE-HAND CLEAR-EB
+    COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+This was obtain through a shortcut on Sum:
+
+(CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+    SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+    CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+Th invalid strategy (top) fails to RAISE the second addend.  Note the
+missing "CLEAR-EB RAISE" after the 9th operator.
+
+-----
+
+On recount:
+
+It really should probably be better called "Shortcut Sum + Recount"
+instead of "Sum + Recount".  Bascially it's just shortcut sum but
+after getting the sum you then start over and count your fingers.
+(Actually, I call it "count from one twice + recount", or "CF
+(counting fingers) + recount", which are *also* misnomers; it should
+be, in this naming scheme, "count from one once + recount" (Boy! I'm
+learning a lot of organic chemistry these days, and I'm shocked that I
+used to think that *we* had naming problems!)
+
+Anyhow, here's the representations of both.  You can see that the
+recount adds onto shortcut sum starting over and recounting your
+fingers.  But we don't want to call it Short Cut Sum + Recount because
+that implies that it came from shortcut sum, but it doesn't!!  In
+fact, it *CAN'T* because it's longer than shortcut sum.  It can be a
+precursor so shortcut sum, though.
+
+S68 (Count_From_One_Once[Shortcut_Sum]):
+ (CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+     SWAP-HANDS SWAP-ADDENDS RAISE END!)
+
+S36 (Count_From_One_Twice+Recount[CF+Recount]):
+ (CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+     SWAP-HANDS SWAP-ADDENDS RAISE CHOOSE-HAND CLEAR-EB COUNT-FINGERS
+     SWAP-HANDS COUNT-FINGERS END!)
+

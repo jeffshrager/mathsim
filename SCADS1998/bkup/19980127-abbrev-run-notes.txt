@@ -1,0 +1,29 @@
+The simulation begins with the SUM and RETRIEVAL strategies, but only
+the SUM strategy's confidence is high enough to be selected, so for
+the first 81 problems, this is all that is used.  During this period
+the model attains 80% correct performance and the strength of
+connections between parts of the sum strategy increases so that we
+begin to get back meta-cognitive cycles during which the model starts
+to consider new strategies.  Three new strategies are proposed, but
+they are not valid according to the goal sketch filters, and so are
+rejected.  At the 82nd problem, a valid but inefficient strategy that
+we call SUM+Recount is discovered, passes through the filters, and is
+added to the set.  Almost immediately (problem 87) the
+choose-larger-addend version of Sum+Recount is proposed and accepted.
+At problem 101 accuracy is down to 70% (because retrieval has started
+to be used, although the model's knowledge of retrieved answers is not
+very good yet) and Shortcut Sum is discovered. Between problem 101 and
+334 accuracy hovers around 70%, five more invalid strategies (some the
+same as those previously rejected), and eight valid but already known
+strategy are discovered.  All of these are rejected.  At problem 334
+the Min strategy is discovered. From this point onward, efficient
+strategies are being used to a great degree, leading to fewer errors,
+so that q retrieval becomes more accurate and common.  Accuracy begins
+to increase rapidly, reaching 84% by about problem 400, 90% by about
+500.  By the end of the run, at problem 1000, accuracy has reached 96%
+and retrieval is used almost exclusively.  Throughout the run, as more
+efficient strategies come into use, the number of saved meta-cognitive
+cycles also declines (to just one-per-problem on average, which is the
+case for pure retrieval) and discoveries (whether valid or not)
+become much more less common, being reduced to just two in the last
+500 problems.

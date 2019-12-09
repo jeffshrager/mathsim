@@ -1,0 +1,67 @@
+Here's is an example trace of how the in is discovered.  Note that
+there are a small number of alternative paths, but this is a good
+example of the most common pathway:
+
+1. Begin with Retrieval and Count_from_One_Twice:
+
+  RETRIEVAL (Retrieval):
+   (TRY-RETRIEVAL-OP)
+
+  CF (Count_From_One_Twice[CF][Sum]):
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-ADDEND SAY-ADDEND CLEAR-EB RAISE
+       SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE CHOOSE-HAND
+       CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+2. Produce the Choose-larger-addend version of Count_From_One_Twice:
+
+  S18 (Count_From_One_Twice[CF][Sum]/CLA):
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-LARGER-ADDEND SAY-ADDEND CLEAR-EB
+       RAISE SWAP-HANDS SWAP-ADDENDS SAY-ADDEND CLEAR-EB RAISE
+       CHOOSE-HAND CLEAR-EB COUNT-FINGERS SWAP-HANDS COUNT-FINGERS END!)
+
+3. Reduce redundancy to produce Count_From_One_Once
+   (this is the Choose_larger_addend version, since that was our source):
+
+  S68 (Count_From_One_Once[Shortcut_Sum]/CLA):
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-LARGER-ADDEND SAY-ADDEND CLEAR-EB
+       RAISE SWAP-HANDS SWAP-ADDENDS RAISE END!)
+  
+4. Reduce again to Min (Count_From_Either/Choose_Larger_Addend):
+
+  S79 (Min[Count_From_Either/CLA]):
+   (CLEAR-HANDS CHOOSE-HAND CHOOSE-LARGER-ADDEND SAY-ADDEND SWAP-HANDS
+       SWAP-ADDENDS RAISE END!)
+
+The differences in pathway mainly involve when the
+choose-larger-addend versions are produced, and what other legal but
+non-optimal strategies are produced along the way (e.g., Count_From_
+One_Twice with Recount). I've elided these from the above sequence
+description.
+
+Here's the chonology for the above sequence, as a historgram, out of
+25, I think (each digit is the number of times the strategy was
+used out of 25 trials, and + means more than 10).
+
+-----
+S79 (Min[Count_From_Either/CLA]) was selected 41 times (8.20%); right 38 (92.68%), wrong 3 (7.32%)
+Times Used: 000000000000010341313321111212121100110100100101000
+
+S68 (Count_From_One_Once[Shortcut_Sum]/CLA) was selected 5 times (1.00%); right 5 (100.00%), wrong 0 (0.00%)
+Times Used: 000000000111110000000000000000000000000000000000000
+
+S52 (Count_From_One_Twice+Recount[CF+Recount]/CLA) was selected 17 times (3.40%); right 15 (88.24%), wrong 2 (11.76%)
+Times Used: 000114333200000000000000000000000000000000000000000
+
+S36 (Count_From_One_Twice+Recount[CF+Recount]) was selected 4 times (0.80%); right 4 (100.00%), wrong 0 (0.00%)
+Times Used: 002200000000000000000000000000000000000000000000000
+
+S18 (Count_From_One_Twice[CF][Sum]/CLA) was selected 67 times (13.40%); right 49 (73.13%), wrong 18 (26.87%)
+Times Used: 000153122432501113102120230220201011141003020100100
+
+RETRIEVAL (Retrieval) was selected 224 times (44.80%); right 166 (74.11%), wrong 58 (25.89%)
+Times Used: 0000110121310482342432574465776746666378957797868+2
+
+CF (Count_From_One_Twice[CF][Sum]) was selected 142 times (28.40%); right 111 (78.17%), wrong 31 (21.83%)
+Times Used: 8+8632643236441422452412323101114333222112211123100
+
+

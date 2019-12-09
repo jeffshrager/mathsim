@@ -1,0 +1,55 @@
+addNet add_var -i 6 -t 3 CONTINUOUS
+addGroup number1 11 INPUT
+addGroup number2 11 INPUT
+addGroup strategy1 1 INPUT
+addGroup strategy2 1 INPUT
+addGroup strategy3 1 INPUT
+addGroup prefront 20 -BIASED
+addGroup hippohid 20 -BIASED
+addGroup direct 20 -BIASED
+addGroup infpariet 20 -BIASED
+addGroup answer 18 OUTPUT SUM_SQUARED -BIASED
+
+connectGroups {number1 number2} {prefront hippohid direct} infpariet answer
+connectGroups strategy1 prefront -m 0 -r 0
+connectGroups strategy1 hippohid -m -10 -r 0
+connectGroups strategy1 direct -m -10 -r 0
+connectGroups strategy2 hippohid -m 1 -r 0
+connectGroups strategy2 prefront -m -10 -r 0
+connectGroups strategy2 direct -m -10 -r 0
+connectGroups strategy3 direct -m 2 -r 0
+connectGroups strategy3 prefront -m -10 -r 0
+connectGroups strategy3 hippohid -m -10 -r 0
+
+connectGroups hippohid hippohid
+connectGroups direct direct
+connectGroups prefront prefront
+connectGroups infpariet infpariet
+
+connectGroups answer answer -m -1 -r 0
+connectGroups bias {prefront hippohid direct infpariet} -m -5 -r 0
+freezeWeights -g {prefront hippohid direct infpariet} -t bias
+freezeWeights -g answer -t answer
+freezeWeights -g prefront -t strategy1
+freezeWeights -g prefront -t strategy2
+freezeWeights -g prefront -t strategy3
+freezeWeights -g hippohid -t strategy1
+freezeWeights -g hippohid -t strategy2
+freezeWeights -g hippohid -t strategy3
+freezeWeights -g direct -t strategy1
+freezeWeights -g direct -t strategy2
+freezeWeights -g direct -t strategy3
+
+autoPlot 18
+setObj prefront.initOutput 0
+setObj hippohid.initOutput 0
+setObj direct.initOutput 0
+setObj infpariet.initOutput 0
+setObj answer.initOutput 0
+
+loadExamples training_patterns.ex
+loadExamples training_patterns_f.ex
+loadExamples training_patterns_r1.ex
+loadExamples training_patterns_r2.ex
+
+setObj learningRate 0.05
