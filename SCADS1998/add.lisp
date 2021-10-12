@@ -2,6 +2,48 @@
 ;;; and may not be duplicated or passed on in any form to anyone else 
 ;;; without the explicit permission of Robert Siegler or Jeff Shrager
 
+(eval-when
+ (compile load eval)
+ (load "utils.fasl")
+ (load "stats.fasl")
+ )
+
+;;; 
+
+(defstruct (strat)
+  name
+  mgoals
+  chain
+  confidences
+  default-confidence
+  general-strength
+  )
+
+(defvar *USE-INTERNAL-RETRIEVAL?* nil)
+(defvar *RET* nil)
+(defvar *POSOPS* nil)
+(defvar *CFR* nil)
+(defvar *COUNT-FROM-EITHER* nil)
+(defvar *COUNT-FROM-ONE-ONCE* nil)
+
+;;; Returns a string that is rounded to the appropriate number of
+;;; digits, but the only thing you can do with it is print it.  It's
+;;; just a convenience hack for rounding recursive lists.
+
+(defun pround (n v)
+  (if (listp v)
+      (mapcar #'(lambda (v) (pround n v)) v)
+    (if (numberp v)
+	(format nil (format nil "~~,~af" n) v)
+      v)))
+
+;;; And some conveniences:
+
+(defun p2 (v) (pround 2 v))
+(defun p1 (v) (pround 2 v))
+(defun p3 (v) (pround 3 v))
+(defun p2* (l) (mapcar #'p2 l))
+
 (defvar *dat* '((proposed . 0)
 		(retrievals . 0)
 		(sincelast . 0)
@@ -34,10 +76,6 @@
 	  (p2 (/ (getdat 'saved) (getdat 'problems)))
 	  )
   (when reset (resdat)))
-
-(require "/users/shrager/lib/gcl")
-(require "/users/shrager/lib/utils")
-(require "/users/shrager/lib/stats")
 
 ;;; Notes:
 ;;;
@@ -586,7 +624,7 @@ other info on the strategy.)
 	(t (parse-out-longcut target (cdr list) (push (car list) collect)))
 	))
 
-(defun propose-shortcut (lcs seq &aux newseq)
+(defun propose-shortcut (lcs seq)
   (let* ((seq-to-rem (type-chain lcs))
 	 (seq-chain (type-chain seq))
 	 (newstrat (remove-subseq seq-to-rem seq-chain (random 2)))
@@ -628,6 +666,16 @@ other info on the strategy.)
   (+ *new-strat-general-strength-bump*
      (mean (mapcar #'strat-general-strength *stb*)))) 
 
+;;; A confidence tells us what confidence criteria to apply to a
+;;; strategy depending upon features of the problem.  The problem
+;;; features are given by characterize-problem and go into the
+;;; features slot as a list of atoms. 
+
+(defstruct (confidence)
+  features ; a list of atoms returned by characterize-problem
+  value ; an integer
+  )
+
 ;;; The confidence for a new strat uses the confidence bump to ensure
 ;;; that for this sort of problem, this strat is used more than the
 ;;; one it was created from.  There are other possible methods that
@@ -649,7 +697,7 @@ other info on the strategy.)
 (defun find-all-mem-entries (key list)
   (loop for item in list if (eq key (car item)) collect item))
 
-(setq mg.look-for-shortcuts
+(defvar mg.look-for-shortcuts
   (make-mgoal :name 'look-for-shortcuts
               :pattern #'(lambda () (< (random 100) *pdisc*)) ; always possible
               :procedures (list #'look-for-shortcuts)))
@@ -658,7 +706,7 @@ other info on the strategy.)
 
 ;;; Global mgoal to try retrieval.
 
-(setq mg.try-retrieval
+(defvar mg.try-retrieval
   (make-mgoal :name 'try-retrieval
               :pattern #'(lambda () *use-internal-retrieval?*) 
               :procedures (list #'try-retrieval)))
@@ -666,17 +714,6 @@ other info on the strategy.)
 ;;; Set up the gobal mgoals, which have been defined above, we hope!
 
 (push mg.try-retrieval *global-mgoals*)
-
-;;; 
-
-(defstruct (strat)
-  name
-  mgoals
-  chain
-  confidences
-  default-confidence
-  general-strength
-  )
 
 ;;; Initialize the strategy database.
 
@@ -774,16 +811,6 @@ other info on the strategy.)
 	 )
     (* confidence (strat-general-strength strat))
     ))
-
-;;; A confidence tells us what confidence criteria to apply to a
-;;; strategy depending upon features of the problem.  The problem
-;;; features are given by characterize-problem and go into the
-;;; features slot as a list of atoms. 
-
-(defstruct (confidence)
-  features ; a list of atoms returned by characterize-problem
-  value ; an integer
-  )
 
 ;;; Characterize-problem returns a list of atoms that can be used
 ;;; to determine what kind of problem this is.
@@ -1684,7 +1711,7 @@ procedures.  Since there are only a few relevant procedures here
 
   (if reset-summary-stats
       (progn
-	(setq *probtable* (make-array '(6 6)))
+	(setq *probtable* (make-array '(6 6) :initial-element nil))
 	(init-min-stats)
 	))
 
@@ -1847,7 +1874,7 @@ procedures.  Since there are only a few relevant procedures here
 
 (defun analyze-problem-table (&optional (complete-report nil)
 			      &aux overtab)
-  (setq overtab (make-array '(6 6)))
+  (setq overtab (make-array '(6 6) :initial-element nil))
   (dotimes (a1o 5)
     (dotimes (a2o 5)
       (let* ((a1 (1+ a1o))
@@ -1937,6 +1964,26 @@ procedures.  Since there are only a few relevant procedures here
     )
   (format t "----------~%")
   )
+
+(defun correlate (x y)
+  (if (not (= (length x) (length y)))
+      (break "Can only correlate equal-sized sets."))
+  (let* ((mx (mean x))
+         (my (mean y))
+	 (n (length x))
+         (devx (mapcar #'(lambda (v) (- v mx)) x))
+         (devy (mapcar #'(lambda (v) (- v my)) y))
+	 (sumdevxy (sum (mapcar #'* devx devy)))
+	 (sumsqdevx (sum (sqr devx)))
+	 (sumsqdevy (sum (sqr devy)))
+	 (r (/ sumdevxy (sqrt (* sumsqdevx sumsqdevy))))
+	 )
+    (list :r r :r2 (sqr r) :n n :p (2-tailed-correlation-significance n (abs r)))
+    ))
+
+(defun sqr (a)
+  (if (numberp a) (expt a 2)
+      (mapcar #'* a a)))
 
 ;;; Gives us back a vector of a chosen getf'able entry in every
 ;;; element of the problem table.  Note that there made be nil
@@ -2415,7 +2462,7 @@ procedures.  Since there are only a few relevant procedures here
 
 (defun test (&key (nruns 1000) (ntimeseach 1) (report nil))
   (resdat)
-  (if system::*dribble-stream* (dribble))
+  (if SB-IMPL::*dribble-stream* (dribble))
   (dribble (format nil "results/dribble.~a.~a" (date-as-int) (time-as-int)))
   (setq *runsum* nil *overall-correct* ())
   (let ((mpt (compute-model-params-table *model-params*)))
@@ -2500,13 +2547,13 @@ procedures.  Since there are only a few relevant procedures here
 			   correport
 			   (postloadfn #'xlcla)
 			   )
-  (if system::*dribble-stream* (dribble))
+  (if SB-IMPL::*dribble-stream* (dribble))
   (dribble (format nil "results/~a.sum.~a.~a" prefix (date-as-int) (time-as-int)))
   (format t "Analyses for ~a by ~a [~a-~a]~%"
 	  pattern combine-trials
 	  (or start-at 'start)
 	  (or stop-at 'end))
-  (setq *probtable* (make-array '(6 6)))
+  (setq *probtable* (make-array '(6 6) :initial-element nil))
   (init-min-stats)
   (maprecords pattern combine-trials start-at stop-at fullreport postloadfn)
   (statify-mrec (format nil "~a.~a" prefix combine-trials) combine-trials)
@@ -2567,8 +2614,8 @@ procedures.  Since there are only a few relevant procedures here
 
 ;;; Converts a value to a percentage of the sum.
 
-(defmacro pconv (v sum)
-  `(* 100.0 (/ (float ,v) ,sum)))
+(defun pconv (v sum)
+  (* 100.0 (/ (float v) sum)))
 
 ;;; Very messy fns to create plot data files and gnuplot drivers.
 ;;; Comverts each value to a percentage based on the number of trials
@@ -2592,7 +2639,7 @@ procedures.  Since there are only a few relevant procedures here
    (dolist (s *runsum*)
      (let ((name (substitute #\- #\space 
 		   (or (name-that-strat (sumrec-code s))
-		       'new))))
+		       "new"))))
        (push name names-for-gnuplot) ; these will be reversed!
        ;; Usually we don't want these because they screw up plotting packages
        ;; but I include them anyhow and make the user hand-delete them because
@@ -2670,8 +2717,8 @@ procedures.  Since there are only a few relevant procedures here
     ;; add it in.
     (dolist (s *stb*)
       (if (member s *cs*
-		  :test #'(lambda (ns stbentry)
-			                                   ;;; ??? Bug ??? ns instead of s???
+		  :test #'(lambda (ns stbentry) ;; ??? Bug ??? ns instead of s???
+			    (declare (ignore ns)) ;; ????????????????????????????????????????
 			    (equal (type-chain (strat-chain s))
 				   (type-chain (strat-chain stbentry)))))
 	  (format t "~a is already there.~%" (strat-name s))
@@ -2860,7 +2907,7 @@ procedures.  Since there are only a few relevant procedures here
 
 ;;; 
 
-(defun cortest (&key (pattern "records.*") (length 1000) (window 100))
+(defun cortest (&key (pattern "records.*.*") (length 1000) (window 100))
  (loop for i from 1 to (+ 10 (- length window)) by window
    do (dosum pattern :start-at i :stop-at (+ i window))
    ))
@@ -2908,7 +2955,7 @@ procedures.  Since there are only a few relevant procedures here
 			      (name-that-strat 
 			       (find-strat-by-name (cadr (assoc 'strat r))))))
 		 (chl? (challenge-record? r)))
-
+	     (declare (ignore chl?)) ;; ????????????????????????????????????????
              (incf (aref minsum phase)) ; count all problems
 
 	     ;; When min is used, count it, and incremement to phase 1 if not
@@ -2938,17 +2985,22 @@ procedures.  Since there are only a few relevant procedures here
 
 (defun report-min-stats ()
   (let ((minlocs (remove nil *min-found-at* :count 1000)))
-    (format t "Mean min discovery location: ~a, stderr: ~a, range ~a - ~a~%~%"
-	    (p2 (mean minlocs))
-	    (p2 (standard-error minlocs))
-	    (min minlocs)
-	    (max minlocs)))
-  (format t "Overall Per-CAM-Phase Min Usage Stats:~%")
-  (summary-min-stats "Pre-Min phase" 0)
-  (summary-min-stats "Pre-Chal phase" 1)
-  (summary-min-stats "Chal phase" 2)
-  (summary-min-stats "Post-Chal phase" 3)
-  )
+    (progn 
+    (if minlocs
+	(progn 
+	  (format t "Mean min discovery location: ~a, stderr: ~a, range ~a - ~a~%~%"
+		  (p2 (mean minlocs))
+		  (p2 (standard-error minlocs))
+		  (apply #'min minlocs)
+		  (apply #'max minlocs))
+	  (format t "Overall Per-CAM-Phase Min Usage Stats:~%")
+	  (summary-min-stats "Pre-Min phase" 0)
+	  (summary-min-stats "Pre-Chal phase" 1)
+	  (summary-min-stats "Chal phase" 2)
+	  (summary-min-stats "Post-Chal phase" 3)
+	  )
+      (format t "*** MIN not discovered!!!~%~%")))
+    ))
 
 ;;; Skip any where min was NEVER discovered!
 
@@ -3035,3 +3087,7 @@ procedures.  Since there are only a few relevant procedures here
 			       (equal n (name-that-strat s))))))
     (if strat (strat-name strat))))
 
+;;; (test :nruns 3000 :ntimeseach 10)
+;;; (dosum "records.*.*" :start-at 200 :stop-at 2000)
+(cortest)
+(collect-strats "records.*.*") 
