@@ -14,18 +14,18 @@
 ;;; 
 
 (defparameter *rules*
-  '((:tfup (a over b) (b over a)) ;; turn-fraction-upside-down
-    (:xfracts ((a over b) * (c over d)) ((a * c) over (b * d)))
-    (:foil++ ((a + b) * (c + d)) ((a * c) + (b * c) + (a * d) + (b * d)))
-    (:dbmoif ((a over b) / (c over d)) ((a over b) * (d over c))) ;; divide-by-multiplication-of-inverse-fraction
-    (:fad (a / b) (a over b)) ;; Fractionalize a division
-    (:daf (a over b) (a / b)) ;; Divisionalize a fraction
+  '((:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
+    (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
+    (:foil++ ((=1 + =2) * (=3 + =4)) ((=1 * =3) + (=2 * =3) + (=1 * =4) + (=2 * =4)))
+    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
+    (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
+    (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
     ;; Here's where the contentious knowledge enters into the picture
-    (:dfbiam ((a over b) / (c over d))) ;; divide fractions by inverting and multiplying *** This is the key piece of knowledge !!!
-    (:over1 (:integer a) (a over 1)) ;; any integer n can be represented as n/1 (WWW Matcher must understsand (:integer a)!)
+    (:dfbiam ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide fractions by inverting and multiplying
+    ;;(:over1 (:integer =1) (=1 over 1)) ;; any integer n can be represented as n/1 (WWW Matcher must understsand (:integer a)!)
     ))
 
-;;; Here be a theorem prover!
+;;; Here there be a theorem prover!
 
 (defparameter *depth-limit* 4)
 
@@ -69,20 +69,42 @@
 
 (defun apply-rule@loc (expr rule loc)
   (print `(:applying ,rule @ ,loc to ,expr))
-  (replace@ loc expr (rebuild (bind (second rule) (extract@ loc expr))) (third rule))
+  (let ((inexpr (extract@ loc expr)))
+  (replace@ loc expr (rebuild (bind (second rule) inexpr) inexpr) (third rule))
   )
 
 (defun extract@ (loc expr)
   (cond ((null loc) expr)
 	(t (extract@ (cdr loc) (nth (car loc) expr)))))
 
-(defun replace@ (loc expr newsubexpr)
-  (cond ((null loc) expr)
-	(t ...(extract@ (cdr loc) (nth (car loc) expr)))))
+(defun first-n (n l)
+  (loop for e in l as i below n collect e))
 
-  (:foil++
-   ((a + b) * (c + d))
-   ((a * c) + (b * c) + (a * d) + (b * d))
+(defun replace@ (loc expr newsubexpr)
+  (cond ((null loc) newsubexpr)
+	(t (append (first-n (car loc) expr)
+		   (list (replace@ (cdr loc) (nth (car loc) expr) newsubexpr))
+		   (nthcdr (1+ (car loc)) expr)))))
+
+(defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
+
+(defun bind (pat expr)
+  (bind2 pat expr)
+  *vars*)
+
+(defun bind2 (pat expr)
+  (cond ((null pat) *vars*)
+	((atom pat)
+	 (let ((var (assoc pat *vars*)))
+	   (when var (setf (cdr var) expr))))
+	(t (loop for pelt in pat
+		 as xelt in expr
+		 do (bind2 pelt xelt)))))
+
+(defun rebuild (bindings newexpr)
+  (cond ((null newexpr) nil)
+	((atom newexpr) (or (cdr (assoc newexpr bindings)) newexpr))
+	(t (cons (rebuild bindings (car newexpr)) (rebuild bindings (cdr newexpr))))))
 
 ;;; Automatic simplifier does all obvious arithmetic and reduces all
 ;;; numerical fractions. This is take as having been learned at this
@@ -126,4 +148,4 @@
 
 ;;;
 
-(print (prove '((4 over 2) * (6 over 2)) 6))
+(print (prove '((4 over 2) / (2 over 6)) 6))
