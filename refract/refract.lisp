@@ -32,10 +32,8 @@
   (cond ((equal expr goal) `(:success ,path))
 	((= depth *depth-limit*) `(:too-deep ,path))
 	(t (loop for rule@loc in (find-rules@locations expr)
-		 collect  (prove (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
-				 goal
-				 (cons rule@loc path)
-				 (1+ depth))))))
+		 as newexpr = (simplify (apply-rule@loc expr (car rule@loc) (cdr rule@loc)))
+		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth))))))
 
 ;;; The matcher find all rules that could apply in any location. The
 ;;; rule applicator does the actual work. We do this in two stages so
@@ -153,5 +151,5 @@
 (untrace)
 ;;;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@)
 
-;;;(print (prove '((4 over 2) / (2 over 6)) 6))
-(print (prove '(4 over 2) 2))
+(print (prove '((4 over 2) / (2 over 6)) 6))
+;;;(print (prove '(4 over 2) 2))
