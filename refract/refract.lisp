@@ -11,8 +11,6 @@
 ;; once. 2. Any time you have simple numbers in a simple expression,
 ;; evaluate them.
 
-;;; 
-
 (defparameter *rules*
   '((:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
@@ -61,11 +59,13 @@
 		do (find-rules@locations2 subexpr (cons eltno path))))))
 
 (defun matches? (pat expr) ;; !!! Not right -- too simple -- needs to recurse !!!
-  (if (listp pat)
-      (if (listp expr)
-	  (eq (second pat) (second expr))
-	nil)
-    (equal pat expr)))
+  (cond ((null pat) (null expr))
+	((assoc pat *vars*) expr)
+	((atom pat) (eq pat expr))
+	((and (listp pat) (listp expr)
+	      (matches? (car pat) (car expr))
+	      (matches? (cdr pat) (cdr expr))
+	      ))))
 
 (defun apply-rule@loc (expr rule loc)
   (print `(:applying ,rule @ ,loc to ,expr))
