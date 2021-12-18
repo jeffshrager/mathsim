@@ -60,7 +60,7 @@
 		as eltno from 0 by 1
 		do (find-rules@locations2 subexpr (cons eltno path))))))
 
-(defun matches? (pat expr)
+(defun matches? (pat expr) ;; !!! Not right -- too simple -- needs to recurse !!!
   (if (listp pat)
       (if (listp expr)
 	  (eq (second pat) (second expr))
@@ -69,9 +69,7 @@
 
 (defun apply-rule@loc (expr rule loc)
   (print `(:applying ,rule @ ,loc to ,expr))
-  (let ((inexpr (extract@ loc expr)))
-  (replace@ loc expr (rebuild (bind (second rule) inexpr) inexpr) (third rule))
-  )
+  (replace@ loc expr (rebuild (bind (second rule) (extract@ loc expr)) (third rule))))
 
 (defun extract@ (loc expr)
   (cond ((null loc) expr)
@@ -147,5 +145,8 @@
       (progn (print `(:simplified ,oldexpr ,newexpr)) newexpr))))
 
 ;;;
+
+(untrace)
+(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@)
 
 (print (prove '((4 over 2) / (2 over 6)) 6))
