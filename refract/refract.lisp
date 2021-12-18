@@ -130,8 +130,10 @@
 	))
 
 (defun reduce-if-possible (a b)
-  (let ((gcd (gcd a b)))
-    `(,(/ a gcd) over ,(/ b gcd))))
+  (if (and (integerp a) (integerp b))
+      (let ((gcd (gcd a b)))
+	`(,(/ a gcd) over ,(/ b gcd)))
+    `(,a over ,b)))
 
 (defun simplify (oldexpr)
   ;;(print `(:simplifying ,oldexpr))
