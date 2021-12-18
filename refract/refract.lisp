@@ -1,4 +1,4 @@
-;;; (load "refract.lisp")
+;;; (load (compile-file "refract.lisp"))
 
 ;;; REFRACT = REasoner about FRACTions.
 
@@ -25,17 +25,59 @@
     (:over1 (:integer a) (a over 1)) ;; any integer n can be represented as n/1 (WWW Matcher must understsand (:integer a)!)
     ))
 
-(defparameter *pathlimit* 10)
+;;; Here be a theorem prover!
 
-(defun run (expr goal &aux path)
-  (loop until (or (treequal expr goal)
-		  ;; Temporarily just use a numerical limit for testing FFF DDD 
-		  (>= (length path) *pathlimit*)) 
-	as expr = (try-rules expr)
-	do
-	(setf expr (compress-simple-math expr))
-	(push expr path)
-	))
+(defparameter *depth-limit* 4)
+
+(defun prove (expr goal &optional path (depth 1))
+  (print `(:proving ,expr ,path ,depth))
+  (cond ((equal expr goal) `(:success ,path))
+	((= depth *depth-limit*) `(:too-deep ,path))
+	(t (loop for rule@loc in (find-rules@locations expr)
+		 do (prove (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
+			   goal (cons rule@loc path) (1+ depth))))))
+
+;;; The matcher find all rules that could apply in any location. The
+;;; rule applicator does the actual work. We do this in two stages so
+;;; that the proof driver can keep track of the path, depth, etc.
+
+(defvar *rule-matches@locs* nil)
+
+(defun find-rules@locations (expr)
+  (print `(:findrulesfor ,expr))
+  (setq *rule-matches@locs* nil)
+  (find-rules@locations2 expr ())
+  (print `(:found ,*rule-matches@locs* for ,expr))
+  *rule-matches@locs*)
+
+(defun find-rules@locations2 (expr path)
+  (when expr
+    (loop for rule in *rules*
+	  as (name pat rebuild) = rule
+	  if (matches? pat expr)
+	  do (push (cons path rule) *rule-matches@locs*)
+	  (loop for subexpr in expr
+		as eltno from 0 by 1
+		do (find-rules@locations2 subexpr (cons eltno path))))))
+
+(defun matches? (pat expr) (eq (second pat) (second expr)))
+
+(defun apply-rule@loc (expr rule loc)
+  (print `(:applying ,rule @ ,loc to expr))
+  expr)
+
+;;; Automatic simplifier does all obvious arithmetic and reduces all
+;;; numerical fractions. This is take as having been learned at this
+;;; point (it's a little bit arguable as to whether reduction is
+;;; learned, but basic arithmetic is). There's also the problem of
+;;; whether we really should always simplify because it cuts off some
+;;; potential solution paths, although, again, I think at this point,
+;;; it's what kids do. (NNN We should be teaching fractions like
+;;; algebra. In fact, we should be teaching arithmetic like algebra,
+;;; and derivations like proofs! ... There's a revelation in here
+;;; someplace that math is really the same thing all the way
+;;; down...that's sort of Wu's insight, and mine, although I only
+;;; thought it through as far as actual algrbra!)
 
 (defun simplify1 (expr)
   (cond ((null expr) nil)
@@ -54,6 +96,7 @@
     `(,(/ a gcd) over ,(/ b gcd))))
 
 (defun simplify (oldexpr)
+  (print `(:simplifying ,oldexpr))
   (let ((newexpr
 	 (loop with expr = oldexpr
 	       as nexpr = (simplify1 expr)
@@ -63,3 +106,6 @@
     (if (equal newexpr oldexpr) oldexpr
       (progn (print `(:simplified ,oldexpr ,newexpr)) newexpr))))
 
+;;;
+
+(print (prove '(1 + 2) 3))
