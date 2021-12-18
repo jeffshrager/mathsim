@@ -16,7 +16,7 @@
 (defparameter *rules*
   '((:tfup (a over b) (b over a)) ;; turn-fraction-upside-down
     (:xfracts ((a over b) * (c over d)) ((a * c) over (b * d)))
-    (:foil++ ((a + b) * (c + d)) (((a * c) + (b * c) + (a * d) + (b * d))))
+    (:foil++ ((a + b) * (c + d)) ((a * c) + (b * c) + (a * d) + (b * d)))
     (:dbmoif ((a over b) / (c over d)) ((a over b) * (d over c))) ;; divide-by-multiplication-of-inverse-fraction
     (:fad (a / b) (a over b)) ;; Fractionalize a division
     (:daf (a over b) (a / b)) ;; Divisionalize a fraction
@@ -55,16 +55,34 @@
     (loop for rule in *rules*
 	  as (name pat rebuild) = rule
 	  if (matches? pat expr)
-	  do (push (cons path rule) *rule-matches@locs*)
+	  do (push (cons rule path) *rule-matches@locs*)
 	  (loop for subexpr in expr
 		as eltno from 0 by 1
 		do (find-rules@locations2 subexpr (cons eltno path))))))
 
-(defun matches? (pat expr) (eq (second pat) (second expr)))
+(defun matches? (pat expr)
+  (if (listp pat)
+      (if (listp expr)
+	  (eq (second pat) (second expr))
+	nil)
+    (equal pat expr)))
 
 (defun apply-rule@loc (expr rule loc)
-  (print `(:applying ,rule @ ,loc to expr))
-  expr)
+  (print `(:applying ,rule @ ,loc to ,expr))
+  (replace@ loc expr (rebuild (bind (second rule) (extract@ loc expr))) (third rule))
+  )
+
+(defun extract@ (loc expr)
+  (cond ((null loc) expr)
+	(t (extract@ (cdr loc) (nth (car loc) expr)))))
+
+(defun replace@ (loc expr newsubexpr)
+  (cond ((null loc) expr)
+	(t ...(extract@ (cdr loc) (nth (car loc) expr)))))
+
+  (:foil++
+   ((a + b) * (c + d))
+   ((a * c) + (b * c) + (a * d) + (b * d))
 
 ;;; Automatic simplifier does all obvious arithmetic and reduces all
 ;;; numerical fractions. This is take as having been learned at this
@@ -108,4 +126,4 @@
 
 ;;;
 
-(print (prove '(1 + 2) 3))
+(print (prove '((4 over 2) * (6 over 2)) 6))
