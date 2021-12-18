@@ -25,15 +25,17 @@
 
 ;;; Here there be a theorem prover!
 
-(defparameter *depth-limit* 4)
+(defparameter *depth-limit* 6)
 
 (defun prove (expr goal &optional path (depth 1))
-  (print `(:proving ,expr ,path ,depth))
+  ;;(print `(:proving ,expr ,path ,depth))
   (cond ((equal expr goal) `(:success ,path))
 	((= depth *depth-limit*) `(:too-deep ,path))
 	(t (loop for rule@loc in (find-rules@locations expr)
-		 do (prove (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
-			   goal (cons rule@loc path) (1+ depth))))))
+		 collect  (prove (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
+				 goal
+				 (cons rule@loc path)
+				 (1+ depth))))))
 
 ;;; The matcher find all rules that could apply in any location. The
 ;;; rule applicator does the actual work. We do this in two stages so
@@ -42,10 +44,10 @@
 (defvar *rule-matches@locs* nil)
 
 (defun find-rules@locations (expr)
-  (print `(:findrulesfor ,expr))
+  ;;(print `(:findrulesfor ,expr))
   (setq *rule-matches@locs* nil)
   (find-rules@locations2 expr ())
-  (print `(:found ,*rule-matches@locs* for ,expr))
+  ;;(print `(:found ,*rule-matches@locs* for ,expr))
   *rule-matches@locs*)
 
 (defun find-rules@locations2 (expr path)
@@ -58,6 +60,8 @@
 		as eltno from 0 by 1
 		do (find-rules@locations2 subexpr (cons eltno path))))))
 
+(defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
+
 (defun matches? (pat expr) ;; !!! Not right -- too simple -- needs to recurse !!!
   (cond ((null pat) (null expr))
 	((assoc pat *vars*) expr)
@@ -68,7 +72,7 @@
 	      ))))
 
 (defun apply-rule@loc (expr rule loc)
-  (print `(:applying ,rule @ ,loc to ,expr))
+  ;;(print `(:applying ,rule @ ,loc to ,expr))
   (replace@ loc expr (rebuild (bind (second rule) (extract@ loc expr)) (third rule))))
 
 (defun extract@ (loc expr)
@@ -83,8 +87,6 @@
 	(t (append (first-n (car loc) expr)
 		   (list (replace@ (cdr loc) (nth (car loc) expr) newsubexpr))
 		   (nthcdr (1+ (car loc)) expr)))))
-
-(defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
 
 (defun bind (pat expr)
   (bind2 pat expr)
@@ -134,7 +136,7 @@
     `(,(/ a gcd) over ,(/ b gcd))))
 
 (defun simplify (oldexpr)
-  (print `(:simplifying ,oldexpr))
+  ;;(print `(:simplifying ,oldexpr))
   (let ((newexpr
 	 (loop with expr = oldexpr
 	       as nexpr = (simplify1 expr)
@@ -142,11 +144,14 @@
 	       finally (return nexpr)
 	       do (setf expr nexpr))))
     (if (equal newexpr oldexpr) oldexpr
-      (progn (print `(:simplified ,oldexpr ,newexpr)) newexpr))))
+      (progn
+	;;(print `(:simplified ,oldexpr ,newexpr))
+	newexpr))))
 
 ;;;
 
 (untrace)
-(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@)
+;;;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@)
 
-(print (prove '((4 over 2) / (2 over 6)) 6))
+;;;(print (prove '((4 over 2) / (2 over 6)) 6))
+(print (prove '(4 over 2) 2))
