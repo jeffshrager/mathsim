@@ -13,19 +13,20 @@
 
 (defparameter *rules*
   '(
+    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:foil++ ((=1 + =2) * (=3 + =4)) ((=1 * =3) + (=2 * =3) + (=1 * =4) + (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
-    ;; Here's where the contentious knowledge enters into the picture
-    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
-    (:over1 (=1) (=1 over 1)) ;; This should be more specific to a number. FFF WWW
-    ))
+    ;; !!! These two rules don't work !!! Bug with top-level matching
+    (:to_over1 =1 (=1 over 1)) ;; This should be more specific to a number. FFF WWW
+    (:from_over1 (=1 over 1) =1) ;; This should be more specific to a number. FFF WWW
+   ))
 
 ;;; Here there be a theorem prover!
 
-(defparameter *depth-limit* 4)
+(defparameter *depth-limit* 6)
 
 (defstruct success ccount path)
 
@@ -101,7 +102,7 @@
 
 (defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
 
-(defun matches? (pat expr) ;; !!! Not right -- too simple -- needs to recurse !!!
+(defun matches? (pat expr)
   (cond ((null pat) (null expr))
 	((assoc pat *vars*) expr)
 	((atom pat) (eq pat expr))
@@ -195,7 +196,7 @@
 ;;;
 
 (untrace)
-;;;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious?)
+(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 (pprint (run '((4 over 2) / (2 over 6)) 6))
 ;;;(print (prove '(4 over 2) 2))
