@@ -41,23 +41,31 @@
 (defvar *conclusion-count* nil)
 
 (defun run (expr goal &key (depth-limit *depth-limit*) (rule-priorities nil))
+  (format t "~%~%======================================~%")
+  (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" expr goal depth-limit rule-priorities)
   (init)
+  (pprint *rules*)
   (prove expr goal nil 1 depth-limit rule-priorities)
-  (pprint 
-   `((:success! ,(length *successes*) ,(float (/ (length *successes*) *conclusion-count*)))
-     (:success-ccount,(mapcar #'success-ccount *successes*)
-		     :mean ,(float (/ (apply #'+ (mapcar #'success-ccount *successes*)) (length *successes*))))
-     (:fail!taking-too-long! ,*too-long-fails* ,(float (/ *too-long-fails* *conclusion-count*)))
-     (:fail!going-in-circles! ,*circular-fails* ,(float (/ *circular-fails* *conclusion-count*)))
-     (:total ,*conclusion-count*)))
+  (format t "~%----------------------------------------~%")
+  (let ((nsuccesses (length *successes*))
+	(success-locs (reverse (mapcar #'success-ccount *successes*)))
+	)
+    (format t "Number of successes: ~a (of ~a total conclusions) = ~a%, first @ ~a, mean @ ~a~%"
+	    nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
+	    (car success-locs) (float (/ (apply #'+ success-locs) nsuccesses)))
+    (format t "~a length fails (~a%), ~a loop fails (~a%)~%"
+	    *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
+	    *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
+    )
+  (format t "~%----------------------------------------")
   (pprint *rule-counts*)
+  (format t "~%----------------------------------------")
   (pprint *successes*)
   )
 
 (defvar *rule-counts* nil)
 
 (defun init ()
-  (pprint *rules*)
   (setf *successes* nil *too-long-fails* 0 *circular-fails* 0 *conclusion-count* 0)
   (setf *rule-counts*
 	(loop for (rname) in *rules*
@@ -90,7 +98,7 @@
   (setq *rule-matches@locs* nil)
   (find-rules@locations2 expr ())
   (setf *rule-matches@locs* (remdups *rule-matches@locs* :test #'equal))
-  (when rule-priorities (pprint *rule-matches@locs*) (setf *rule-matches@locs* (sort-rules-by-priority rule-priorities)))
+  (when rule-priorities (setf *rule-matches@locs* (sort-rules-by-priority rule-priorities)))
   ;;(print `(:found ,*rule-matches@locs* for ,expr))
   *rule-matches@locs*)
 
@@ -100,8 +108,20 @@
 	collect (car l+)))
 
 (defun sort-rules-by-priority (rule-priorities)
-  (pprint *rule-matches@locs*)
-  (break))
+  (setq *rule-matches@locs*
+	(append
+	 ;; Run through the priorities first, bringing them to the front in order:
+	 (loop for rule-name in rule-priorities
+	       as named-rules = (loop for rule in *rule-matches@locs*
+				      when (eq (caar rule) rule-name)
+				      collect rule)
+	       append named-rules)
+	 ;; Now gather everything not named
+	 (loop for rule in *rule-matches@locs*
+	       when (not (member (caar rule) rule-priorities))
+	       collect rule)))
+  )
+
 
 (defun find-rules@locations2 (expr path)
   (when expr
@@ -212,6 +232,6 @@
 (untrace)
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
-(pprint (run '((4 over 2) / (2 over 6)) 6))
-;;; (pprint (run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif)))
+;;; (pprint (run '((4 over 2) / (2 over 6)) 6))
+(pprint (run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif :xfracts)))
 ;;; (print (prove '(4 over 2) 2))
