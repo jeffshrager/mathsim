@@ -277,3 +277,4 @@
 
 (test '((4 over 2) / (2 over 6)) 6)
 (test '((2) / (2 over 6)) 6)
+(test '((3 over 1) / (6 over 2)) 1) ;; This it can do even w/o DBMOIF
