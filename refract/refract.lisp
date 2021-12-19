@@ -1,10 +1,22 @@
 ;;; (load (compile-file "refract.lisp"))
 ;;; REFRACT = REasoner about FRACTions.
-(setf *print-length* 99999 *print-pretty* nil)
+
 ;;; Todo: Without DBMOIF it can't find any derivations at all...why not?
 ;;;       Why does (:to_over1 =1 (=1 over 1)) crashe the prover?
 ;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
 ;;;          (hacked by re-creting the *vars* on every match UUUUUUUUUUUUUUUUUUUUUUUUUU)
+
+#|
+Something's wrong here. It seems to be missing one DAF application????
+------ At 16 (length 4):
+  ((3 OVER 1) / (6 OVER 2)) || Given
+  (3 / (3 OVER 1)) || Change a fraction into a division.   [DAF: (=1 OVER =2) -> (=1 / =2)]
+  (3 OVER (3 OVER 1)) || Change a division into a fraction.   [FAD: (=1 / =2) -> (=1 OVER =2)]
+  (1 OVER 1) || Something over 1 is just the thing.   [FROM_OVER1: (=1 OVER 1) -> =1]
+  1 || Something over 1 is just the thing.   [FROM_OVER1: (=1 OVER 1) -> =1]
+|#
+
+(setf *print-length* 99999 *print-pretty* nil)
 
 ;; We need, first off, to represent the problem itself. For that we have
 ;; the normal forms of (a + b) (a / b) (a - b) and (a * b). We also
@@ -288,9 +300,12 @@
   )
 
 (defun run-all-tests ()
+  (test '((4 over 2) over (2 over 6)) 6)
+  ;; Note that the OVER instead of / interacts with the prioritization
+  ;; of DBMOIF to make it much harder to find the solution
   (test '((4 over 2) / (2 over 6)) 6)
   (test '((2) / (2 over 6)) 6)
-  (test '((3 over 1) / (6 over 2)) 1) ;; This it can do even w/o DBMOIF
+  (test '((3 over 1) over (6 over 2)) 1) ;; This it can do even w/o DBMOIF
   )
 
 (defun reset-rules ()
