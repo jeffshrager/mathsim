@@ -12,42 +12,53 @@
 ;; evaluate them.
 
 (defparameter *rules*
-  '((:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
+  '(
+    (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:foil++ ((=1 + =2) * (=3 + =4)) ((=1 * =3) + (=2 * =3) + (=1 * =4) + (=2 * =4)))
-    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
     ;; Here's where the contentious knowledge enters into the picture
-;    (:dfbiam ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide fractions by inverting and multiplying
-;    (:over1 (=1) (=1 over 1)) ;; This should be more specific to a number. FFF WWW
+    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
+    (:over1 (=1) (=1 over 1)) ;; This should be more specific to a number. FFF WWW
     ))
 
 ;;; Here there be a theorem prover!
 
-(defparameter *depth-limit* 6)
+(defparameter *depth-limit* 4)
 
-(defvar *s* nil)
-(defvar *ft* nil)
-(defvar *fc* nil)
+(defstruct success ccount path)
+
+(defvar *successes* nil)
+(defvar *too-long-fails* nil)
+(defvar *circular-fails* nil)
+
+;;; You'd think that we could just count the paths for the conclusion
+;;; count, but we can't bcs of the recursive embeddedness of the paths
+;;; in the search tree. I guess we could just push onto a path
+;;; list...that might make some sense.
+
+(defvar *conclusion-count* nil)
 
 (defun run (expr goal)
   (init)
   (prove expr goal)
-  (let* ((sum (+ *s* *fc* *ft*)))
-    (pprint 
-     `((:success! ,*s* ,(float (/ *s* sum)))
-       (:fail!taking-too-long! ,*ft* ,(float (/ *ft* sum)))
-       (:fail!going-in-circles! ,*fc* ,(float (/ *fc* sum)))
-       (:total ,sum)))
-    (pprint *rule-counts*)
-    ))
+  (pprint 
+   `((:success! ,(float (/ (length *successes*) *conclusion-count*)))
+     (:success-ccount,(mapcar #'success-ccount *successes*)
+		     :mean ,(float (/ (apply #'+ (mapcar #'success-ccount *successes*)) (length *successes*))))
+     (:fail!taking-too-long! ,*too-long-fails* ,(float (/ *too-long-fails* *conclusion-count*)))
+     (:fail!going-in-circles! ,*circular-fails* ,(float (/ *circular-fails* *conclusion-count*)))
+     (:total ,*conclusion-count*)))
+  (pprint *rule-counts*)
+  (pprint *successes*)
+  )
 
 (defvar *rule-counts* nil)
 
 (defun init ()
   (pprint *rules*)
-  (setf *s* 0 *ft* 0 *fc* 0)
+  (setf *successes* nil *too-long-fails* 0 *circular-fails* 0 *conclusion-count* 0)
   (setf *rule-counts*
 	(loop for (rname) in *rules*
 	      collect (cons rname 0)))
@@ -55,9 +66,9 @@
 
 (defun prove (expr goal &optional path (depth 1))
   ;;(print `(:proving ,expr ,path ,depth))
-  (cond ((equal expr goal) (incf *s*) `(:success! ,path))
-	((= depth *depth-limit*) (incf *ft*) `(:fail!taking-too-long! ,path))
-	((repetitious? path) (incf *fc*) `(:fail!going-in-circles! ,path))
+  (cond ((equal expr goal) (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
+	((= depth *depth-limit*) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
+	((repetitious? path) (incf *circular-fails*) (incf *conclusion-count*) `(:fail!going-in-circles! ,path))
 	(t (loop for rule@loc in (find-rules@locations expr)
 		 as newexpr = (simplify (apply-rule@loc expr (car rule@loc) (cdr rule@loc)))
 		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth))))))
