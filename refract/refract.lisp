@@ -1,6 +1,6 @@
 ;;; (load (compile-file "refract.lisp"))
 ;;; REFRACT = REasoner about FRACTions.
-
+(setf *print-length* 99999 *print-pretty* nil)
 ;;; Todo: Without DBMOIF it can't find any derivations at all...why not?
 ;;;       Why does (:to_over1 =1 (=1 over 1)) crashe the prover?
 ;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
@@ -16,7 +16,22 @@
 ;; evaluate them.
 
 (defvar *rules* nil)
-(defparameter *rules-master* ;; Gets copy-treed into *rules* in init because of a bug in the binder.
+
+(defparameter *all-possible-rules* 
+  '(
+    (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
+    (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
+    (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
+    (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
+    (:from_over1 (=1 over 1) =1) 
+    (:to_over1 (=1) (=1 over 1)) ;; Hack for the crash problem in the next rule
+    ;; Invalid operations that kids sometimes do anyways!
+    ;; (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
+
+    ;; (:to_over1 =1 (=1 over 1)) ;; !!! crashes the prover !!!
+   ))
+
+(defvar *rules-master* ;; Gets copy-treed into *rules* in init because of a bug in the binder.
   '(
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
@@ -250,12 +265,9 @@
 	newexpr))))
 
 (defun ppsuccess (success given)
-  (format t "~%------ At ~a (length ~a):~%  Given: ~a~%" (success-ccount success) (length (success-path success)) given)
+  (format t "~%------ At ~a (length ~a):~%  ~a || Given~%" (success-ccount success) (length (success-path success)) given)
   (loop for (result (name pat reb)) in (reverse (success-path success))
-	do (format t "  ~a -> ~a (~a)~%    [~a -> ~a]~%"
-		   name result
-		   (cdr (assoc name *rule-descriptions*))
-		   pat reb))
+	do (format t "  ~a || ~a   [~a: ~a -> ~a]~%" result (cdr (assoc name *rule-descriptions*)) name pat reb))
   (format t "~%------~%~%"))
 
 ;;;
@@ -275,6 +287,24 @@
   (run given goal :rule-priorities '() :depth-limit 10)
   )
 
-(test '((4 over 2) / (2 over 6)) 6)
-(test '((2) / (2 over 6)) 6)
-(test '((3 over 1) / (6 over 2)) 1) ;; This it can do even w/o DBMOIF
+(defun run-all-tests ()
+  (test '((4 over 2) / (2 over 6)) 6)
+  (test '((2) / (2 over 6)) 6)
+  (test '((3 over 1) / (6 over 2)) 1) ;; This it can do even w/o DBMOIF
+  )
+
+(defun reset-rules ()
+  (setf *rules-master* (copy-tree *all-possible-rules*)))
+
+(defun drop-rule (name-of-rule-to-drop)
+  (format t "~%~%******** Dropping rule: ~a ***********~%~%" name-of-rule-to-drop)
+  (setf *rules-master*
+	(loop for rule in *rules-master*
+	      unless (eq (car rule) name-of-rule-to-drop)
+	      collect rule)))
+
+(reset-rules)
+(run-all-tests)
+(drop-rule :dbmoif)
+(run-all-tests)
+
