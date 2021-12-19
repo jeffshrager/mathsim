@@ -19,21 +19,51 @@
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
     ;; Here's where the contentious knowledge enters into the picture
-    (:dfbiam ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide fractions by inverting and multiplying
-    ;;(:over1 (:integer =1) (=1 over 1)) ;; any integer n can be represented as n/1 (WWW Matcher must understsand (:integer a)!)
+;    (:dfbiam ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide fractions by inverting and multiplying
+;    (:over1 (=1) (=1 over 1)) ;; This should be more specific to a number. FFF WWW
     ))
 
 ;;; Here there be a theorem prover!
 
 (defparameter *depth-limit* 6)
 
+(defvar *s* nil)
+(defvar *ft* nil)
+(defvar *fc* nil)
+
+(defun run (expr goal)
+  (init)
+  (prove expr goal)
+  (let* ((sum (+ *s* *fc* *ft*)))
+    (pprint 
+     `((:success! ,*s* ,(float (/ *s* sum)))
+       (:fail!taking-too-long! ,*ft* ,(float (/ *ft* sum)))
+       (:fail!going-in-circles! ,*fc* ,(float (/ *fc* sum)))
+       (:total ,sum)))
+    (pprint *rule-counts*)
+    ))
+
+(defvar *rule-counts* nil)
+
+(defun init ()
+  (pprint *rules*)
+  (setf *s* 0 *ft* 0 *fc* 0)
+  (setf *rule-counts*
+	(loop for (rname) in *rules*
+	      collect (cons rname 0)))
+  )
+
 (defun prove (expr goal &optional path (depth 1))
   ;;(print `(:proving ,expr ,path ,depth))
-  (cond ((equal expr goal) `(:success ,path))
-	((= depth *depth-limit*) `(:too-deep ,path))
+  (cond ((equal expr goal) (incf *s*) `(:success! ,path))
+	((= depth *depth-limit*) (incf *ft*) `(:fail!taking-too-long! ,path))
+	((repetitious? path) (incf *fc*) `(:fail!going-in-circles! ,path))
 	(t (loop for rule@loc in (find-rules@locations expr)
 		 as newexpr = (simplify (apply-rule@loc expr (car rule@loc) (cdr rule@loc)))
 		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth))))))
+
+(defun repetitious? (path)
+  (< 1 (count (caar path) path :test #'(lambda (target elt) (equal target (car elt))))))
 
 ;;; The matcher find all rules that could apply in any location. The
 ;;; rule applicator does the actual work. We do this in two stages so
@@ -71,6 +101,7 @@
 
 (defun apply-rule@loc (expr rule loc)
   ;;(print `(:applying ,rule @ ,loc to ,expr))
+  (incf (cdr (assoc (car rule) *rule-counts*)))
   (replace@ loc expr (rebuild (bind (second rule) (extract@ loc expr)) (third rule))))
 
 (defun extract@ (loc expr)
@@ -122,7 +153,9 @@
 	((or (numberp expr) (atom expr)) expr)
 	((and (numberp (first expr)) (numberp (third expr))
 	      (member (second expr) '(+ - * /)))
-	 (eval `(,(second expr) ,(first expr) ,(third expr))))
+	 ;; Only do the operation if the result will be an integer. (Only matters to /)
+	 (let ((result (eval `(,(second expr) ,(first expr) ,(third expr)))))
+	   (if (integerp result) result expr)))
 	((and (numberp (first expr)) (numberp (third expr))
 	      (eq (second expr) 'over))
 	 (reduce-if-possible (first expr) (third expr)))
@@ -151,7 +184,7 @@
 ;;;
 
 (untrace)
-;;;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@)
+;;;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious?)
 
-(print (prove '((4 over 2) / (2 over 6)) 6))
+(pprint (run '((4 over 2) / (2 over 6)) 6))
 ;;;(print (prove '(4 over 2) 2))
