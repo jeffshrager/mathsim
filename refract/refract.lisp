@@ -1,6 +1,10 @@
 ;;; (load (compile-file "refract.lisp"))
-
 ;;; REFRACT = REasoner about FRACTions.
+
+;;; Todo: Without DBMOIF it can't find any derivations at all...why not?
+;;;       Why does (:to_over1 =1 (=1 over 1)) crashe the prover?
+;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
+;;;          (hacked by re-creting the *vars* on every match UUUUUUUUUUUUUUUUUUUUUUUUUU)
 
 ;; We need, first off, to represent the problem itself. For that we have
 ;; the normal forms of (a + b) (a / b) (a - b) and (a * b). We also
@@ -11,17 +15,30 @@
 ;; once. 2. Any time you have simple numbers in a simple expression,
 ;; evaluate them.
 
-(defparameter *rules*
+(defvar *rules* nil)
+(defparameter *rules-master* ;; Gets copy-treed into *rules* in init because of a bug in the binder.
   '(
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
-    (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
-    (:foil++ ((=1 + =2) * (=3 + =4)) ((=1 * =3) + (=2 * =3) + (=1 * =4) + (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
     (:from_over1 (=1 over 1) =1) 
+    (:to_over1 (=1) (=1 over 1)) ;; Hack for the crash problem in the next rule
+    ;; Invalid operations that kids sometimes do anyways!
+    ;; (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
+
     ;; (:to_over1 =1 (=1 over 1)) ;; !!! crashes the prover !!!
    ))
+
+(defparameter *rule-descriptions*
+  '((:dbmoif . "Divide a fraction by multiplying by its inverse.")
+    (:tfup . "Turn a fraction upside down.")
+    (:xfracts . "Fraction multiplication.")
+    (:foil++ . "(positive) FOIL")
+    (:fad . "Change a division into a fraction.")
+    (:daf . "Change a fraction into a division.")
+    (:from_over1 . "Something over 1 is just the thing.")
+    ))
 
 ;;; Here there be a theorem prover!
 
@@ -40,19 +57,21 @@
 
 (defvar *conclusion-count* nil)
 
-(defun run (expr goal &key (depth-limit *depth-limit*) (rule-priorities nil))
+(defun run (given goal &key (depth-limit *depth-limit*) (rule-priorities nil))
   (format t "~%~%======================================~%")
-  (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" expr goal depth-limit rule-priorities)
+  (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" given goal depth-limit rule-priorities)
   (init)
   (pprint *rules*)
-  (prove expr goal nil 1 depth-limit rule-priorities)
+  (prove given goal nil 1 depth-limit rule-priorities)
   (format t "~%----------------------------------------~%")
   (let ((nsuccesses (length *successes*))
 	(success-locs (reverse (mapcar #'success-ccount *successes*)))
 	)
-    (format t "Number of successes: ~a (of ~a total conclusions) = ~a%, first @ ~a, mean @ ~a~%"
-	    nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
-	    (car success-locs) (float (/ (apply #'+ success-locs) nsuccesses)))
+    (if (not (zerop nsuccesses))
+	(format t "Number of successes: ~a (of ~a total conclusions) = ~a%, first @ ~a, mean @ ~a~%"
+		nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
+		(car success-locs) (float (/ (apply #'+ success-locs) nsuccesses)))
+      	(format t "There were no successes!~%"))
     (format t "~a length fails (~a%), ~a loop fails (~a%)~%"
 	    *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
 	    *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
@@ -61,12 +80,13 @@
   (format t "~%----------------------------------------")
   (pprint *rule-counts*)
   (format t "~%----------------------------------------")
-  (pprint *successes*)
+  (mapcar #'(lambda (s) (ppsuccess s given)) (reverse *successes*))
   )
 
 (defvar *rule-counts* nil)
 
 (defun init ()
+  (setf *rules* (copy-tree *rules-master*)) ;; Avoids a binder bug....or not???!!!
   (setf *successes* nil *too-long-fails* 0 *circular-fails* 0 *conclusion-count* 0)
   (setf *rule-counts*
 	(loop for (rname) in *rules*
@@ -123,19 +143,20 @@
 	       collect rule)))
   )
 
-
 (defun find-rules@locations2 (expr path)
   (when expr
     (loop for rule in *rules*
 	  as (name pat rebuild) = rule
-	  if (matches? pat expr)
+	  if (progn (init-vars) (matches? pat expr))
 	  do (push (cons rule path) *rule-matches@locs*)
 	  (unless (atom expr)
 	    (loop for subexpr in expr
 		  as eltno from 0 by 1
 		  do (find-rules@locations2 subexpr (cons eltno path)))))))
   
-(defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
+(defparameter *vars* nil)
+(defun init-vars () ;; UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+  (setf *vars* (list (list '=1)(list '=2) (list '=3) (list '=4))))
 
 (defun matches? (pat expr)
   (cond ((null pat) (null expr))
@@ -200,9 +221,9 @@
 	((or (numberp expr) (atom expr)) expr)
 	((and (numberp (first expr)) (numberp (third expr))
 	      (member (second expr) '(+ - * /)))
-	 ;; Only do the operation if the result will be an integer. (Only matters to /)
-	 (let ((result (eval `(,(second expr) ,(first expr) ,(third expr)))))
-	   (if (integerp result) result expr)))
+	 ;; Only do the operation if the result will be an integer, and isn't /0. (Only matters to /)
+	 (let ((result (ignore-errors (eval `(,(second expr) ,(first expr) ,(third expr))))))
+	   (if (and result (integerp result)) result expr)))
 	((and (numberp (first expr)) (numberp (third expr))
 	      (eq (second expr) 'over))
 	 (reduce-if-possible (first expr) (third expr)))
@@ -228,15 +249,31 @@
 	;;(print `(:simplified ,oldexpr ,newexpr))
 	newexpr))))
 
+(defun ppsuccess (success given)
+  (format t "~%------ At ~a (length ~a):~%  Given: ~a~%" (success-ccount success) (length (success-path success)) given)
+  (loop for (result (name pat reb)) in (reverse (success-path success))
+	do (format t "  ~a -> ~a (~a)~%    [~a -> ~a]~%"
+		   name result
+		   (cdr (assoc name *rule-descriptions*))
+		   pat reb))
+  (format t "~%------~%~%"))
+
 ;;;
 
 (untrace)
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
-;;; (pprint (run '((4 over 2) / (2 over 6)) 6))
-(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif :xfracts))
-(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:xfracts :dbmoif))
-(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:xfracts))
-(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif))
-(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '())
-;;; (print (prove '(4 over 2) 2))
+(defun test (given goal)
+  (format t "~%~%*******************~%")
+  (format t "   ~a -> ~a~%" given goal)
+  (format t "*******************~%~%")
+  (run given goal :rule-priorities '(:dbmoif :xfracts))
+  (run given goal :rule-priorities '(:xfracts :dbmoif))
+  (run given goal :rule-priorities '(:xfracts))
+  (run given goal :rule-priorities '(:dbmoif))
+  (run given goal :rule-priorities '())
+  (run given goal :rule-priorities '() :depth-limit 10)
+  )
+
+(test '((4 over 2) / (2 over 6)) 6)
+(test '((2) / (2 over 6)) 6)
