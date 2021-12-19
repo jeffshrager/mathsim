@@ -19,9 +19,8 @@
     (:foil++ ((=1 + =2) * (=3 + =4)) ((=1 * =3) + (=2 * =3) + (=1 * =4) + (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
-    ;; !!! These two rules don't work !!! Bug with top-level matching
-;    (:to_over1 =1 (=1 over 1)) ;; This should be more specific to a number. FFF WWW
-    (:from_over1 (=1 over 1) =1) ;; This should be more specific to a number. FFF WWW
+    (:from_over1 (=1 over 1) =1) 
+    ;; (:to_over1 =1 (=1 over 1)) ;; !!! crashes the prover !!!
    ))
 
 ;;; Here there be a theorem prover!
@@ -41,11 +40,11 @@
 
 (defvar *conclusion-count* nil)
 
-(defun run (expr goal)
+(defun run (expr goal &key (depth-limit *depth-limit*) (rule-priorities nil))
   (init)
-  (prove expr goal)
+  (prove expr goal nil 1 depth-limit rule-priorities)
   (pprint 
-   `((:success! ,(float (/ (length *successes*) *conclusion-count*)))
+   `((:success! ,(length *successes*) ,(float (/ (length *successes*) *conclusion-count*)))
      (:success-ccount,(mapcar #'success-ccount *successes*)
 		     :mean ,(float (/ (apply #'+ (mapcar #'success-ccount *successes*)) (length *successes*))))
      (:fail!taking-too-long! ,*too-long-fails* ,(float (/ *too-long-fails* *conclusion-count*)))
@@ -65,14 +64,17 @@
 	      collect (cons rname 0)))
   )
 
-(defun prove (expr goal &optional path (depth 1))
+;;; Rule-priorities can be a list of the names of rules in preferred
+;;; rank order.
+
+(defun prove (expr goal path depth depth-limit rule-priorities)
   ;;(print `(:proving ,expr ,path ,depth))
   (cond ((equal expr goal) (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
 	((= depth *depth-limit*) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
 	((repetitious? path) (incf *circular-fails*) (incf *conclusion-count*) `(:fail!going-in-circles! ,path))
-	(t (loop for rule@loc in (find-rules@locations expr)
+	(t (loop for rule@loc in (find-rules@locations expr rule-priorities)
 		 as newexpr = (simplify (apply-rule@loc expr (car rule@loc) (cdr rule@loc)))
-		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth))))))
+		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth) depth-limit rule-priorities)))))
 
 (defun repetitious? (path)
   (< 1 (count (caar path) path :test #'(lambda (target elt) (equal target (car elt))))))
@@ -83,12 +85,23 @@
 
 (defvar *rule-matches@locs* nil)
 
-(defun find-rules@locations (expr)
+(defun find-rules@locations (expr rule-priorities)
   ;;(print `(:findrulesfor ,expr))
   (setq *rule-matches@locs* nil)
   (find-rules@locations2 expr ())
+  (setf *rule-matches@locs* (remdups *rule-matches@locs* :test #'equal))
+  (when rule-priorities (pprint *rule-matches@locs*) (setf *rule-matches@locs* (sort-rules-by-priority rule-priorities)))
   ;;(print `(:found ,*rule-matches@locs* for ,expr))
   *rule-matches@locs*)
+
+(defun remdups (l &key (test #'eq))
+  (loop for l+ on l
+	unless (member (car l+) (cdr l+) :test test)
+	collect (car l+)))
+
+(defun sort-rules-by-priority (rule-priorities)
+  (pprint *rule-matches@locs*)
+  (break))
 
 (defun find-rules@locations2 (expr path)
   (when expr
@@ -200,4 +213,5 @@
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 (pprint (run '((4 over 2) / (2 over 6)) 6))
-;;;(print (prove '(4 over 2) 2))
+;;; (pprint (run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif)))
+;;; (print (prove '(4 over 2) 2))
