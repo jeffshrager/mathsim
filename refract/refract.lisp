@@ -20,7 +20,7 @@
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
     (:daf (=1 over =2) (=1 / =2)) ;; Divisionalize a fraction
     ;; !!! These two rules don't work !!! Bug with top-level matching
-    (:to_over1 =1 (=1 over 1)) ;; This should be more specific to a number. FFF WWW
+;    (:to_over1 =1 (=1 over 1)) ;; This should be more specific to a number. FFF WWW
     (:from_over1 (=1 over 1) =1) ;; This should be more specific to a number. FFF WWW
    ))
 
@@ -96,10 +96,11 @@
 	  as (name pat rebuild) = rule
 	  if (matches? pat expr)
 	  do (push (cons rule path) *rule-matches@locs*)
-	  (loop for subexpr in expr
-		as eltno from 0 by 1
-		do (find-rules@locations2 subexpr (cons eltno path))))))
-
+	  (unless (atom expr)
+	    (loop for subexpr in expr
+		  as eltno from 0 by 1
+		  do (find-rules@locations2 subexpr (cons eltno path)))))))
+  
 (defparameter *vars* '((=1) (=2) (=3) (=4))) ;; Could do this more elegantly
 
 (defun matches? (pat expr)
@@ -196,7 +197,7 @@
 ;;;
 
 (untrace)
-(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
+;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 (pprint (run '((4 over 2) / (2 over 6)) 6))
 ;;;(print (prove '(4 over 2) 2))
