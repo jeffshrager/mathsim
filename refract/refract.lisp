@@ -56,6 +56,7 @@
     (format t "~a length fails (~a%), ~a loop fails (~a%)~%"
 	    *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
 	    *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
+    (format t "With rule priorities: ~a and depth limit=~a found first success @ ~a~%" rule-priorities depth-limit (car success-locs))
     )
   (format t "~%----------------------------------------")
   (pprint *rule-counts*)
@@ -233,5 +234,8 @@
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 ;;; (pprint (run '((4 over 2) / (2 over 6)) 6))
-(pprint (run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif :xfracts)))
+(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif :xfracts))
+(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:xfracts :dbmoif))
+(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '(:dbmoif))
+(run '((4 over 2) / (2 over 6)) 6 :rule-priorities '())
 ;;; (print (prove '(4 over 2) 2))
