@@ -6,16 +6,6 @@
 ;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
 ;;;          (hacked by re-creting the *vars* on every match UUUUUUUUUUUUUUUUUUUUUUUUUU)
 
-#|
-Something's wrong here. It seems to be missing one DAF application????
------- At 16 (length 4):
-  ((3 OVER 1) / (6 OVER 2)) || Given
-  (3 / (3 OVER 1)) || Change a fraction into a division.   [DAF: (=1 OVER =2) -> (=1 / =2)]
-  (3 OVER (3 OVER 1)) || Change a division into a fraction.   [FAD: (=1 / =2) -> (=1 OVER =2)]
-  (1 OVER 1) || Something over 1 is just the thing.   [FROM_OVER1: (=1 OVER 1) -> =1]
-  1 || Something over 1 is just the thing.   [FROM_OVER1: (=1 OVER 1) -> =1]
-|#
-
 (setf *print-length* 99999 *print-pretty* nil)
 
 ;; We need, first off, to represent the problem itself. For that we have
@@ -28,6 +18,8 @@ Something's wrong here. It seems to be missing one DAF application????
 ;; evaluate them.
 
 (defvar *rules* nil)
+
+(defvar *rule-counts* nil)
 
 (defparameter *all-possible-rules* 
   '(
@@ -76,6 +68,7 @@ Something's wrong here. It seems to be missing one DAF application????
 (defvar *successes* nil)
 (defvar *too-long-fails* nil)
 (defvar *circular-fails* nil)
+(defvar *wrong-answer-fails* nil)
 
 ;;; You'd think that we could just count the paths for the conclusion
 ;;; count, but we can't bcs of the recursive embeddedness of the paths
@@ -84,7 +77,8 @@ Something's wrong here. It seems to be missing one DAF application????
 
 (defvar *conclusion-count* nil)
 
-(defun run (given goal &key (depth-limit *depth-limit*) (rule-priorities nil))
+(defun run (&key given (goal :any-number) (depth-limit *depth-limit*) (rule-priorities nil))
+  (if (null given) (break "You must provide a given."))
   (format t "~%~%======================================~%")
   (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" given goal depth-limit rule-priorities)
   (init)
@@ -103,10 +97,11 @@ Something's wrong here. It seems to be missing one DAF application????
 		nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
 		(car success-locs) (float (/ (apply #'+ success-locs) nsuccesses)))
       	(format t "There were no successes!~%"))
-    (format t "~a length fails (~a%), ~a loop fails (~a%)~%"
+    (format t "~a length fails (~a%), ~a error fails (~a), ~a loop fails (~a%)~%"
 	    *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
+	    *wrong-answer-fails* (round (* 100.0 (/ *wrong-answer-fails*  *conclusion-count*)))
 	    *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
-    (format t "With rule priorities: ~a and depth limit=~a found first success @ ~a~%" rule-priorities depth-limit (car success-locs))
+    (format t "For ~a -> ~a, with rule priorities: ~a and depth limit=~a found first success @ ~a~%" given goal rule-priorities depth-limit (car success-locs))
     )
   (format t "~%----------------------------------------")
   (pprint *rule-counts*)
@@ -114,11 +109,9 @@ Something's wrong here. It seems to be missing one DAF application????
   (mapcar #'(lambda (s) (ppsuccess s given)) (reverse *successes*))
   )
 
-(defvar *rule-counts* nil)
-
 (defun init ()
   (setf *rules* (copy-tree *rules-master*)) ;; Avoids a binder bug....or not???!!!
-  (setf *successes* nil *too-long-fails* 0 *circular-fails* 0 *conclusion-count* 0)
+  (setf *successes* nil *too-long-fails* 0 *circular-fails* 0 *conclusion-count* 0 *wrong-answer-fails* 0)
   (setf *rule-counts*
 	(loop for (rname) in *rules*
 	      collect (cons rname 0)))
@@ -129,7 +122,11 @@ Something's wrong here. It seems to be missing one DAF application????
 
 (defun prove (expr goal path depth depth-limit rule-priorities)
   ;;(print `(:proving ,expr ,path ,depth))
-  (cond ((equal expr goal) (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
+  (cond ((and (numberp expr) (eq :any-number goal))
+	 (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
+	((and (numberp expr) (not (equal expr goal)))
+	 (incf *wrong-answer-fails*) (incf *conclusion-count*) `(:fail!wrong-answer! ,path))
+	((equal expr goal) (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
 	((= depth *depth-limit*) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
 	((repetitious? path) (incf *circular-fails*) (incf *conclusion-count*) `(:fail!going-in-circles! ,path))
 	(t (loop for rule@loc in (find-rules@locations expr rule-priorities)
@@ -295,16 +292,16 @@ Something's wrong here. It seems to be missing one DAF application????
 (untrace)
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
-(defun test (given goal)
+(defun test (given &optional (goal :any-number) (depth-limit 6))
   (format t "~%~%*******************~%")
-  (format t "   ~a -> ~a~%" given goal)
+  (format t "   ~a -> ~a   (d=~a)~%" given goal depth-limit)
   (format t "*******************~%~%")
-  (run given goal :rule-priorities '(:dbmoif :xfracts))
-  (run given goal :rule-priorities '(:xfracts :dbmoif))
-  (run given goal :rule-priorities '(:xfracts))
-  (run given goal :rule-priorities '(:dbmoif))
-  (run given goal :rule-priorities '())
-  (run given goal :rule-priorities '() :depth-limit 10)
+  (run :given given :goal goal :rule-priorities '(:dbmoif :xfracts) :depth-limit depth-limit)
+  (run :given given :goal goal :rule-priorities '(:xfracts :dbmoif) :depth-limit depth-limit)
+  (run :given given :goal goal :rule-priorities '(:xfracts) :depth-limit depth-limit)
+  (run :given given :goal goal :rule-priorities '(:dbmoif) :depth-limit depth-limit)
+  (run :given given :goal goal :rule-priorities '() :depth-limit depth-limit)
+  (run :given given :goal goal :rule-priorities '() :depth-limit 10)
   )
 
 (defun run-all-tests ()
