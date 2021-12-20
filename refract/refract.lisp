@@ -77,37 +77,43 @@
 
 (defvar *conclusion-count* nil)
 
-(defun run (&key given (goal :any-number) (depth-limit *depth-limit*) (rule-priorities nil))
+(defun run (&key given (goal :any-number) (depth-limit *depth-limit*) (rule-priorities nil) (verbose? t))
+  "returns ccountofearliestsuccess (nil of no successes)"
   (if (null given) (break "You must provide a given."))
-  (format t "~%~%======================================~%")
-  (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" given goal depth-limit rule-priorities)
   (init)
-  (pprint *rules*)
+  (when verbose?
+    (format t "~%~%======================================~%")
+    (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" given goal depth-limit rule-priorities)
+    (pprint *rules*)
+  )
   (let ((simplified-given (simplify given)))
     (unless (equal simplified-given given)
-      (format t "~% ** Simplified given to: ~a~%" simplified-given)
+      (when verbose? (format t "~% ** Simplified given to: ~a~%" simplified-given))
       (setf given simplified-given)))
   (prove given goal nil 1 depth-limit rule-priorities)
-  (format t "~%----------------------------------------~%")
-  (let ((nsuccesses (length *successes*))
-	(success-locs (reverse (mapcar #'success-ccount *successes*)))
-	)
-    (if (not (zerop nsuccesses))
-	(format t "Number of successes: ~a (of ~a total conclusions) = ~a%, first @ ~a, mean @ ~a~%"
-		nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
-		(car success-locs) (float (/ (apply #'+ success-locs) nsuccesses)))
+  (let* ((nsuccesses (length *successes*))
+	 (success-locs (reverse (mapcar #'success-ccount *successes*)))
+	 (earliest-success (car success-locs))
+	 )
+    (when verbose?
+      (format t "~%----------------------------------------~%")
+      (if (not (zerop nsuccesses))
+	  (format t "Number of successes: ~a (of ~a total conclusions) = ~a%, first @ ~a, mean @ ~a~%"
+		  nsuccesses *conclusion-count* (* 100.0 (/ nsuccesses *conclusion-count*))
+		  earliest-success (float (/ (apply #'+ success-locs) nsuccesses)))
       	(format t "There were no successes!~%"))
-    (format t "~a length fails (~a%), ~a error fails (~a), ~a loop fails (~a%)~%"
-	    *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
-	    *wrong-answer-fails* (round (* 100.0 (/ *wrong-answer-fails*  *conclusion-count*)))
-	    *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
-    (format t "For ~a -> ~a, with rule priorities: ~a and depth limit=~a found first success @ ~a~%" given goal rule-priorities depth-limit (car success-locs))
-    )
-  (format t "~%----------------------------------------")
-  (pprint *rule-counts*)
-  (format t "~%----------------------------------------")
-  (mapcar #'(lambda (s) (ppsuccess s given)) (reverse *successes*))
-  )
+      (format t "~a length fails (~a%), ~a error fails (~a), ~a loop fails (~a%)~%"
+	      *too-long-fails* (round (* 100.0 (/ *too-long-fails* *conclusion-count*)))
+	      *wrong-answer-fails* (round (* 100.0 (/ *wrong-answer-fails*  *conclusion-count*)))
+	      *circular-fails* (round (* 100.0 (/ *circular-fails* *conclusion-count*))))
+      (format t "For ~a -> ~a, with rule priorities: ~a and depth limit=~a found first success @ ~a~%"
+	      given goal rule-priorities depth-limit earliest-success)
+      (format t "~%----------------------------------------")
+      (pprint *rule-counts*)
+      (format t "~%----------------------------------------")
+      (mapcar #'(lambda (s) (ppsuccess s given)) (reverse *successes*))
+      )
+    earliest-success))
 
 (defun init ()
   (setf *rules* (copy-tree *rules-master*)) ;; Avoids a binder bug....or not???!!!
@@ -325,7 +331,7 @@
 	      collect rule)))
 
 (reset-rules)
-(run-all-tests)
-(drop-rule :dbmoif)
-(run-all-tests)
-
+;; (run-all-tests)
+;; (drop-rule :dbmoif)
+;; (run-all-tests)
+(print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
