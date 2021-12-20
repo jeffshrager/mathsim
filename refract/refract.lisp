@@ -89,6 +89,10 @@ Something's wrong here. It seems to be missing one DAF application????
   (format t "Given: ~a, prove: ~a~%  (depth limit ~a, rule priorities: ~a)~%" given goal depth-limit rule-priorities)
   (init)
   (pprint *rules*)
+  (let ((simplified-given (simplify given)))
+    (unless (equal simplified-given given)
+      (format t "~% ** Simplified given to: ~a~%" simplified-given)
+      (setf given simplified-given)))
   (prove given goal nil 1 depth-limit rule-priorities)
   (format t "~%----------------------------------------~%")
   (let ((nsuccesses (length *successes*))
@@ -129,8 +133,9 @@ Something's wrong here. It seems to be missing one DAF application????
 	((= depth *depth-limit*) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
 	((repetitious? path) (incf *circular-fails*) (incf *conclusion-count*) `(:fail!going-in-circles! ,path))
 	(t (loop for rule@loc in (find-rules@locations expr rule-priorities)
-		 as newexpr = (simplify (apply-rule@loc expr (car rule@loc) (cdr rule@loc)))
-		 collect (prove newexpr goal (cons (cons newexpr rule@loc) path) (1+ depth) depth-limit rule-priorities)))))
+		 as newexpr = (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
+		 as simplified-newexpr = (simplify newexpr)
+		 collect (prove simplified-newexpr goal (cons (cons (cons simplified-newexpr newexpr) rule@loc) path) (1+ depth) depth-limit rule-priorities)))))
 
 (defun repetitious? (path)
   (< 1 (count (caar path) path :test #'(lambda (target elt) (equal target (car elt))))))
@@ -278,8 +283,11 @@ Something's wrong here. It seems to be missing one DAF application????
 
 (defun ppsuccess (success given)
   (format t "~%------ At ~a (length ~a):~%  ~a || Given~%" (success-ccount success) (length (success-path success)) given)
-  (loop for (result (name pat reb)) in (reverse (success-path success))
-	do (format t "  ~a || ~a   [~a: ~a -> ~a]~%" result (cdr (assoc name *rule-descriptions*)) name pat reb))
+  (loop for ((simplified-result . result) (name pat reb)) in (reverse (success-path success))
+	do
+	(if (equal simplified-result result)
+	    (format t "  ~a || ~a   [~a: ~a -> ~a]~%" result (cdr (assoc name *rule-descriptions*)) name pat reb)
+	  (format t "  ~a [<-~a] || ~a   [~a: ~a -> ~a]~%" simplified-result result (cdr (assoc name *rule-descriptions*)) name pat reb)))
   (format t "~%------~%~%"))
 
 ;;;
@@ -300,6 +308,7 @@ Something's wrong here. It seems to be missing one DAF application????
   )
 
 (defun run-all-tests ()
+  (test '((7 over 2) over (7 over 4)) 2)
   (test '((4 over 2) over (2 over 6)) 6)
   ;; Note that the OVER instead of / interacts with the prioritization
   ;; of DBMOIF to make it much harder to find the solution
