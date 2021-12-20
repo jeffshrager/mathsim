@@ -61,7 +61,7 @@
 
 ;;; Here there be a theorem prover!
 
-(defparameter *depth-limit* 6)
+(defparameter *default-depth-limit* 6)
 
 (defstruct success ccount path)
 
@@ -77,7 +77,7 @@
 
 (defvar *conclusion-count* nil)
 
-(defun run (&key given (goal :any-number) (depth-limit *depth-limit*) (rule-priorities nil) (verbose? t))
+(defun run (&key given (goal :any-number) (depth-limit *default-depth-limit*) (rule-priorities nil) (verbose? t))
   "returns ccountofearliestsuccess (nil of no successes)"
   (if (null given) (break "You must provide a given."))
   (init)
@@ -133,7 +133,7 @@
 	((and (numberp expr) (not (equal expr goal)))
 	 (incf *wrong-answer-fails*) (incf *conclusion-count*) `(:fail!wrong-answer! ,path))
 	((equal expr goal) (push (make-success :ccount *conclusion-count* :path path) *successes*) (incf *conclusion-count*) `(:success! ,path))
-	((= depth *depth-limit*) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
+	((= depth depth-limit) (incf *too-long-fails*) (incf *conclusion-count*) `(:fail!taking-too-long! ,path))
 	((repetitious? path) (incf *circular-fails*) (incf *conclusion-count*) `(:fail!going-in-circles! ,path))
 	(t (loop for rule@loc in (find-rules@locations expr rule-priorities)
 		 as newexpr = (apply-rule@loc expr (car rule@loc) (cdr rule@loc))
@@ -298,7 +298,7 @@
 (untrace)
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
-(defun test (given &optional (goal :any-number) (depth-limit 6))
+(defun test (given &optional (goal :any-number) (depth-limit *default-depth-limit*))
   (format t "~%~%*******************~%")
   (format t "   ~a -> ~a   (d=~a)~%" given goal depth-limit)
   (format t "*******************~%~%")
@@ -321,7 +321,7 @@
   )
 
 (defun reset-rules ()
-  (setf *rules-master* (copy-tree *all-possible-rules*)))
+  (setf *rules* (copy-tree (setf *rules-master* (copy-tree *all-possible-rules*)))))
 
 (defun drop-rule (name-of-rule-to-drop)
   (format t "~%~%******** Dropping rule: ~a ***********~%~%" name-of-rule-to-drop)
@@ -330,8 +330,27 @@
 	      unless (eq (car rule) name-of-rule-to-drop)
 	      collect rule)))
 
+;;; Reports stat on when problems are found under all possible rule rank orders
+
+(defun try-all-rule-orders (given goal &optional (depth-limit *default-depth-limit*))
+  (let* ((r (loop for order in (all-complete-orderings (mapcar #'car *rules*))
+		  collect (run :given given :goal goal :depth-limit depth-limit :rule-priorities order :verbose? nil))))
+    `(:min ,(apply #'min r) :max ,(apply #'max r) :mean ,(float (/ (apply #'+ r) (length r))))))
+    
+(defun insert-at-every-position (what into)
+  (loop for i below (1+ (length into))
+	collect (append (first-n i into)
+			(list what)
+			(nthcdr i into))))
+
+(defun all-complete-orderings (l)
+  (cond ((null (cdr l)) (list l))
+	(t (loop for sub in (all-complete-orderings (cdr l))
+		 append (insert-at-every-position (car l) sub)))))
+  
 (reset-rules)
 ;; (run-all-tests)
 ;; (drop-rule :dbmoif)
 ;; (run-all-tests)
-(print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
+;; (print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
+(print (try-all-rule-orders '((4 over 2) / (2 over 6)) 6))
