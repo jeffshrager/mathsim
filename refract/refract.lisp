@@ -5,6 +5,7 @@
 ;;;       Why does (:to_over1 =1 (=1 over 1)) crashe the prover?
 ;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
 ;;;          (hacked by re-creting the *vars* on every match UUUUUUUUUUUUUUUUUUUUUUUUUU)
+;;;       (run :given '(((4 over 2) over (2 over 6)) / ((12 over 2) over (6 over 3))) :goal 2) ???
 
 (setf *print-length* 99999 *print-pretty* nil)
 
@@ -295,9 +296,6 @@
 
 ;;;
 
-(untrace)
-;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
-
 (defun test (given &optional (goal :any-number) (depth-limit *default-depth-limit*))
   (format t "~%~%*******************~%")
   (format t "   ~a -> ~a   (d=~a)~%" given goal depth-limit)
@@ -335,7 +333,18 @@
 (defun try-all-rule-orders (given goal &optional (depth-limit *default-depth-limit*))
   (let* ((r (loop for order in (all-complete-orderings (mapcar #'car *rules*))
 		  collect (run :given given :goal goal :depth-limit depth-limit :rule-priorities order :verbose? nil))))
-    `(:min ,(apply #'min r) :max ,(apply #'max r) :mean ,(float (/ (apply #'+ r) (length r))))))
+    `(:given ,given :prove ,goal :min ,(apply #'min r) :max ,(apply #'max r) :mean ,(float (/ (apply #'+ r) (length r))) :mode ,(mode r))))
+
+(defun mode (l)
+  (car (sort (hist l) #'< :key #'car)))
+
+(defun hist (l)
+  (let ((r))
+    (loop for i in l
+	  as p = (assoc i r)
+	  do (if p (incf (cdr p))
+	       (push (cons i 1) r)))
+    r))
     
 (defun insert-at-every-position (what into)
   (loop for i below (1+ (length into))
@@ -348,9 +357,19 @@
 	(t (loop for sub in (all-complete-orderings (cdr l))
 		 append (insert-at-every-position (car l) sub)))))
   
+(untrace)
+;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
+
 (reset-rules)
-;; (run-all-tests)
-;; (drop-rule :dbmoif)
-;; (run-all-tests)
-;; (print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
+(run-all-tests)
+(drop-rule :dbmoif)
+(run-all-tests)
+(reset-rules)
 (print (try-all-rule-orders '((4 over 2) / (2 over 6)) 6))
+(print (try-all-rule-orders '((4 over 2) over (2 over 6)) 6))
+
+;;; Bugs:
+;(print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
+;(print (try-all-rule-orders '(((4 over 2) over (2 over 6)) / ((2 over 6) over (2 over 4))) 9))
+;(run :given '(((4 over 2) over (2 over 6)) / ((12 over 2) over (6 over 3))) :goal 2)
+
