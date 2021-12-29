@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.accordion {
+background-color: #eee;
+color: #444;
+cursor: pointer;
+padding: 18px;
+width: 100%;
+border: none;
+text-align: left;
+outline: none;
+font-size: 15px;
+transition: 0.4s;
+}
+
+.active, .accordion:hover {
+background-color: #ccc; 
+}
+
+.panel {
+padding: 0 18px;
+display: none;
+background-color: white;
+overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<h2>Inverse Midsegment Proof</h2><br>
+<image src="imsp.png"></image><br>
+Given: CD=DA. and: CE=EB<br>
+Prove: DE || AB, and: DE = &frac12;AB<br>
+<button class="accordion">I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law<br> (i.e., from the observation that sides with a common ratio have an embedded equal angle).</button>
+<div class="panel">
+<table>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:foo">s:foo</option>
+<option value="s:baz">s:baz</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:bar">r:bar</option>
+<option value="r:frob">r:frob</option>
+</select>
+</td></tr>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:foo">s:foo</option>
+<option value="s:baz">s:baz</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:bar">r:bar</option>
+<option value="r:frob">r:frob</option>
+</select>
+</td></tr>
+</table></div>
+<button class="accordion">II: Prove that DE = &frac12;AB by using similarity, proved above, to apply the commmon ratio DE and AB.</button>
+<div class="panel">
+<table>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:baz">s:baz</option>
+<option value="s:foo">s:foo</option>
+<option value="s:bozo">s:bozo</option>
+<option value="s:waka">s:waka</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:frob">r:frob</option>
+<option value="r:bar">r:bar</option>
+<option value="r:nono">r:nono</option>
+<option value="r:kawa">r:kawa</option>
+</select>
+</td></tr>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:baz">s:baz</option>
+<option value="s:foo">s:foo</option>
+<option value="s:bozo">s:bozo</option>
+<option value="s:waka">s:waka</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:frob">r:frob</option>
+<option value="r:bar">r:bar</option>
+<option value="r:nono">r:nono</option>
+<option value="r:kawa">r:kawa</option>
+</select>
+</td></tr>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:baz">s:baz</option>
+<option value="s:foo">s:foo</option>
+<option value="s:bozo">s:bozo</option>
+<option value="s:waka">s:waka</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:frob">r:frob</option>
+<option value="r:bar">r:bar</option>
+<option value="r:nono">r:nono</option>
+<option value="r:kawa">r:kawa</option>
+</select>
+</td></tr>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:baz">s:baz</option>
+<option value="s:foo">s:foo</option>
+<option value="s:bozo">s:bozo</option>
+<option value="s:waka">s:waka</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:frob">r:frob</option>
+<option value="r:bar">r:bar</option>
+<option value="r:nono">r:nono</option>
+<option value="r:kawa">r:kawa</option>
+</select>
+</td></tr>
+</table></div>
+<button class="accordion">III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles,<br>and then use the inverse of the corresponding angles across parallel line lemma<br>to conclude that the lines are parallel.</button>
+<div class="panel">
+<table>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:fee">s:fee</option>
+<option value="s:foe">s:foe</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:fii">r:fii</option>
+<option value="r:from">r:from</option>
+</select>
+</td></tr>
+<tr><td>
+<select name="statements" id="statements">
+<option value="s:fee">s:fee</option>
+<option value="s:foe">s:foe</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="r:fii">r:fii</option>
+<option value="r:from">r:from</option>
+</select>
+</td></tr>
+</table></div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+acc[i].addEventListener("click", function() {
+this.classList.toggle("active");
+var panel = this.nextElementSibling;
+if (panel.style.display === "block") {
+panel.style.display = "none";
+} else {
+panel.style.display = "block";
+}
+});
+}
+</script>
+
+</body>
+</html>
+
+
+
