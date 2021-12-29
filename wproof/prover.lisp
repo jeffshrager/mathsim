@@ -99,18 +99,17 @@ panel.style.display = \"block\";
 		:steps '((1 "&lt;C = &lt;C" "Relexivity")
 			 (2 "CA=CD+DA, and CE=CE+EB" "Segment Addition")
 			 (3 "CD=DA. and: CE=EB" "Given")
-			 (4 "CA=CD+CD, and CE=CE+CE" "Substutition of #3 into #2")
+			 (4 "CA=CD+CD, and CE=CE+CE" "Substitution of #3 into #2")
 			 (5 "CA=2CD, and CE=2CE" "Combing common terms")
 			 (6 "&Delta;CDE&asymp;&Delta;CAB" "Ratio SAS" "This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1<br><image src=imsp6.png>...</image>")
 			 ))
      (make-part :name "II: Use similarity, proved above, by appling the commmon ratio between DE and AB to conclude that DE = &frac12;AB."
-		:steps '((7 "s:baz" "r:frob")
-			 (8 "s:foo" "r:bar")
-			 (9 "s:bozo" "r:nono")
-			 (10 "s:waka" "r:kawa")))
+		:steps '((7 "DE and AB are corresponding parts similar triangles" "Definition of corresponding parts")
+			 (8 "AB=2DE" "Ratios of corresponding parts of similar triangles are equal")
+			 (10 "DE = &frac12;AB" "Algebra (division, commutativity of =)")))
      (make-part :name "III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles,<br>and then use the inverse of the corresponding angles across parallel line lemma<br>to conclude that the lines are parallel." 
-		:steps '((11 "s:fee" "r:fii")
-			 (12 "s:foe" "r:from"))))
+		:steps '((11 "&lt;CDE = &lt;CABs" "Inverse AAA similarity." "Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.")
+			 (12 "DE||AB" "Inverse corresponding angles across parallel lines" "Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles."))))
     )))
 
 (defun gen-body (proof o)
@@ -130,9 +129,9 @@ panel.style.display = \"block\";
     (loop for (n statement reason explanation) in steps
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" n))
-	  (selections statements o)
+	  (selections statements o statement)
 	  (out! "</td><td>")
-	  (selections reasons o)
+	  (selections reasons o reason)
 	  (out! "</td><td>")
 	  (when explanation (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
 	  (out! "</td></tr>"))
@@ -140,10 +139,12 @@ panel.style.display = \"block\";
     ))
 
 
-(defun selections (ss o)
+(defun selections (ss o selection)
   (out! "<select name=\"statements\" id=\"statements\">")
   (loop for s in ss
-	do (out! (format nil "<option value=~s>~a</option>" s s)))
+	if (string-equal s selection)
+	do (out! (format nil "<option value=~s selected>~a</option>" s s))
+	else do (out! (format nil "<option value=~s>~a</option>" s s)))
   (out! "</select>")
   )
 
