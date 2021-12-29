@@ -5,7 +5,7 @@
 (defmacro outbr! (text)
   `(format o "~a<br>~%" ,text))
 
-(defun gen-top (o)
+(defun render-top (o)
   (out! "
 <!DOCTYPE html>
 <html>
@@ -60,7 +60,7 @@ overflow: hidden;
 <body>
 "))
 
-(defun gen-bottom (o)
+(defun render-bottom (o)
   (out!  "
 <script>
 var acc = document.getElementsByClassName(\"accordion\");
@@ -82,13 +82,14 @@ panel.style.display = \"block\";
 </html>
 "))
 
-(defstruct proof name jpg given prove parts notes)
+(defstruct proof name short-name jpg notes given prove parts)
 (defstruct part name steps)
 
 (defvar *proofs*
   (list 
    (make-proof
     :name "Inverse Midsegment Proof"
+    :short-name "imsp"
     :jpg "imsp.png"
     :given "Given: CD=DA. and: CE=EB"
     :prove "Prove: DE || AB, and: DE = &frac12;AB"
@@ -112,15 +113,15 @@ panel.style.display = \"block\";
 			 (12 "DE||AB" "Inverse corresponding angles across parallel lines" "Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles."))))
     )))
 
-(defun gen-body (proof o)
+(defun render-body (proof o mode)
   (outbr!  (format nil "<h2>~a</h2>" (proof-name proof)))
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
   (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
   (loop for part in (proof-parts proof)
-	do (gen-part part o)))
+	do (render-part part o mode)))
 
-(defun gen-part (part o)
+(defun render-part (part o mode)
   (out! (format nil "<button class=\"accordion\">~a</button>~%<div class=\"panel\">" (part-name part)))
   (out! "<table border=1>")
   (let* ((steps (part-steps part))
@@ -129,28 +130,47 @@ panel.style.display = \"block\";
     (loop for (n statement reason explanation) in steps
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" n))
-	  (selections statements o statement)
+	  (selections statements o statement mode)
 	  (out! "</td><td>")
-	  (selections reasons o reason)
+	  (selections reasons o reason mode)
 	  (out! "</td><td>")
-	  (when explanation (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
+	  (when (and (eq mode :reveal) explanation)
+	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
 	  (out! "</td></tr>"))
     (out! "</table></div>")
     ))
 
-
-(defun selections (ss o selection)
+(defun selections (ss o selection mode &aux (choose? t))
   (out! "<select name=\"statements\" id=\"statements\">")
   (loop for s in ss
-	if (string-equal s selection)
-	do (out! (format nil "<option value=~s selected>~a</option>" s s))
-	else do (out! (format nil "<option value=~s>~a</option>" s s)))
+	do (if (eq mode :quiz)
+	       (progn 
+		 (when choose?
+		   (out! "<option value=choose selected>Choose!</option>")
+		   (setf choose? nil))
+		 (out! (format nil "<option value=~s>~a</option>" s s))
+		 )
+	     ;; Default mode (:reveal)
+	     (if (string-equal s selection)
+		 (out! (format nil "<option value=~s selected>~a</option>" s s))
+	       (out! (format nil "<option value=~s>~a</option>" s s)))))
   (out! "</select>")
   )
 
-(with-open-file
- (o "prover.html" :direction :output :if-exists :supersede)
- (gen-top o)
- (gen-body (first *proofs*) o)
- (gen-bottom o)
- )
+(defun render-proof (short-name) ;; mode is :quiz or :reveal (reveal is the default)
+  (let* ((proof (find short-name *proofs* :key #'proof-short-name :test #'string-equal))
+	 )
+    (with-open-file
+     (o (format nil "~a_r.html" short-name) :direction :output :if-exists :supersede)
+     (render-top o)
+     (render-body proof o :reveal)
+     (render-bottom o)
+     )
+    (with-open-file
+     (o (format nil "~a_q.html" short-name) :direction :output :if-exists :supersede)
+     (render-top o)
+     (render-body proof o :quiz)
+     (render-bottom o)
+     )))
+
+(render-proof "imsp")
