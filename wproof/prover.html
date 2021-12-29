@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,26 @@ display: none;
 background-color: white;
 overflow: hidden;
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 </style>
 </head>
 <body>
@@ -36,34 +57,133 @@ Given: CD=DA. and: CE=EB<br>
 Prove: DE || AB, and: DE = &frac12;AB<br>
 <button class="accordion">I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law<br> (i.e., from the observation that sides with a common ratio have an embedded equal angle).</button>
 <div class="panel">
-<table>
-<tr><td>
+<table border=1>
+<tr><td>1</td><td>
 <select name="statements" id="statements">
-<option value="s:foo">s:foo</option>
-<option value="s:baz">s:baz</option>
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="statements" id="statements">
-<option value="r:bar">r:bar</option>
-<option value="r:frob">r:frob</option>
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
 </select>
+</td><td>
 </td></tr>
-<tr><td>
+<tr><td>2</td><td>
 <select name="statements" id="statements">
-<option value="s:foo">s:foo</option>
-<option value="s:baz">s:baz</option>
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="statements" id="statements">
-<option value="r:bar">r:bar</option>
-<option value="r:frob">r:frob</option>
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
 </select>
+</td><td>
+</td></tr>
+<tr><td>3</td><td>
+<select name="statements" id="statements">
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
+</select>
+</td><td>
+</td></tr>
+<tr><td>4</td><td>
+<select name="statements" id="statements">
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
+</select>
+</td><td>
+</td></tr>
+<tr><td>5</td><td>
+<select name="statements" id="statements">
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
+</select>
+</td><td>
+</td></tr>
+<tr><td>6</td><td>
+<select name="statements" id="statements">
+<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
+<option value="CA=CD+DA, and CE=CE+EB">CA=CD+DA, and CE=CE+EB</option>
+<option value="CD=DA. and: CE=EB">CD=DA. and: CE=EB</option>
+<option value="CA=CD+CD, and CE=CE+CE">CA=CD+CD, and CE=CE+CE</option>
+<option value="CA=2CD, and CE=2CE">CA=2CD, and CE=2CE</option>
+<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+</select>
+</td><td>
+<select name="statements" id="statements">
+<option value="Relexivity">Relexivity</option>
+<option value="Segment Addition">Segment Addition</option>
+<option value="Given">Given</option>
+<option value="Substutition of #3 into #2">Substutition of #3 into #2</option>
+<option value="Combing common terms">Combing common terms</option>
+<option value="Ratio SAS">Ratio SAS</option>
+</select>
+</td><td>
+<div class="tooltip">&nbsp;&nbsp;&nbsp;?&nbsp;<span class="tooltiptext">This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1</span></div>
 </td></tr>
 </table></div>
 <button class="accordion">II: Prove that DE = &frac12;AB by using similarity, proved above, to apply the commmon ratio DE and AB.</button>
 <div class="panel">
-<table>
-<tr><td>
+<table border=1>
+<tr><td>7</td><td>
 <select name="statements" id="statements">
 <option value="s:baz">s:baz</option>
 <option value="s:foo">s:foo</option>
@@ -77,8 +197,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:nono">r:nono</option>
 <option value="r:kawa">r:kawa</option>
 </select>
+</td><td>
 </td></tr>
-<tr><td>
+<tr><td>8</td><td>
 <select name="statements" id="statements">
 <option value="s:baz">s:baz</option>
 <option value="s:foo">s:foo</option>
@@ -92,8 +213,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:nono">r:nono</option>
 <option value="r:kawa">r:kawa</option>
 </select>
+</td><td>
 </td></tr>
-<tr><td>
+<tr><td>9</td><td>
 <select name="statements" id="statements">
 <option value="s:baz">s:baz</option>
 <option value="s:foo">s:foo</option>
@@ -107,8 +229,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:nono">r:nono</option>
 <option value="r:kawa">r:kawa</option>
 </select>
+</td><td>
 </td></tr>
-<tr><td>
+<tr><td>10</td><td>
 <select name="statements" id="statements">
 <option value="s:baz">s:baz</option>
 <option value="s:foo">s:foo</option>
@@ -122,12 +245,13 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:nono">r:nono</option>
 <option value="r:kawa">r:kawa</option>
 </select>
+</td><td>
 </td></tr>
 </table></div>
 <button class="accordion">III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles,<br>and then use the inverse of the corresponding angles across parallel line lemma<br>to conclude that the lines are parallel.</button>
 <div class="panel">
-<table>
-<tr><td>
+<table border=1>
+<tr><td>11</td><td>
 <select name="statements" id="statements">
 <option value="s:fee">s:fee</option>
 <option value="s:foe">s:foe</option>
@@ -137,8 +261,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:fii">r:fii</option>
 <option value="r:from">r:from</option>
 </select>
+</td><td>
 </td></tr>
-<tr><td>
+<tr><td>12</td><td>
 <select name="statements" id="statements">
 <option value="s:fee">s:fee</option>
 <option value="s:foe">s:foe</option>
@@ -148,6 +273,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="r:fii">r:fii</option>
 <option value="r:from">r:from</option>
 </select>
+</td><td>
 </td></tr>
 </table></div>
 
@@ -167,9 +293,6 @@ panel.style.display = "block";
 });
 }
 </script>
-
 </body>
 </html>
-
-
 
