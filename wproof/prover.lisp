@@ -1,5 +1,10 @@
 ;;; (load (compile-file "prover.lisp"))
 
+;;; To Do:
+;;;   Do we want the outline (col 1) choices to be selectable in quiz mode? (This will be complicated!)
+;;;   Add check functionality (also complex)
+;;;   (Might as well go to a server! ... I'll need to go there eventually!)
+
 (defmacro out! (text)
   `(format o "~a~%" ,text))
 (defmacro outbr! (text)
@@ -13,23 +18,25 @@
 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 <style>
 .tooltip {
-  position: relative;
   display: inline-block;
+  width: 450px;
   position: absolute;
   z-index: 1;
-  transition: opacity 2s;
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 75px;
   background-color: #f8ecf2;
   color: #000;
-  text-align: center;
-  transition: opacity 2s;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 1.5s;
 }
+
 .tooltip:hover .tooltiptext {
   visibility: visible;
+  opacity: 1;
 }
 </style>
 </head>
@@ -54,6 +61,7 @@
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
   (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
+  (outbr! "<hr>")
   (loop for part in (proof-parts proof)
 	do (render-part part o mode)))
 
@@ -63,6 +71,7 @@
   (let* ((steps (part-steps part))
 	 (statements (mapcar #'second steps))
 	 (reasons (mapcar #'third steps)))
+    (out! "<tr><td></td><td>Statement</td><td>Rationale</td></tr>")
     (loop for (n statement reason explanation) in steps
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" n))

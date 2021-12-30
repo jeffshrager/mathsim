@@ -5,23 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .tooltip {
-  position: relative;
   display: inline-block;
+  width: 450px;
   position: absolute;
   z-index: 1;
-  transition: opacity 2s;
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 75px;
   background-color: #f8ecf2;
   color: #000;
-  text-align: center;
-  transition: opacity 2s;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 1.5s;
 }
+
 .tooltip:hover .tooltiptext {
   visibility: visible;
+  opacity: 1;
 }
 </style>
 </head>
@@ -31,11 +33,13 @@
 <table><tr><td><image src="imsp.png"></image></td><td>A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio.</td></tr></table><br>
 Given: CD=DA. and: CE=EB<br>
 Prove: DE || AB, and: DE = &frac12;AB<br>
+<hr><br>
 <table border=1>
 <tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
-I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar).
+<b>I</b>: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar).
 </td><td><table>
 
+<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
 <tr><td>1</td><td>
 <select name="statements" id="statements">
 <option value="&lt;C = &lt;C" selected>&lt;C = &lt;C</option>
@@ -160,9 +164,10 @@ I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the invers
 </table></td></table>
 <table border=1>
 <tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
-II: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB.
+<b>II</b>: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB.
 </td><td><table>
 
+<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
 <tr><td>7</td><td>
 <select name="statements" id="statements">
 <option value="DE and AB are corresponding parts of similar triangles" selected>DE and AB are corresponding parts of similar triangles</option>
@@ -208,9 +213,10 @@ II: Use the similarity proved above to conclude that DE = &frac12;AB, by appling
 </table></td></table>
 <table border=1>
 <tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
-III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles, and then use the inverse of the corresponding angles across parallel line lemma to conclude that the lines are parallel.
+<b>III</b>: Prove that DE || AB by using similarity, as above, to show corresponding equal angles, and then use the inverse of the corresponding angles across parallel line lemma to conclude that the lines are parallel.
 </td><td><table>
 
+<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
 <tr><td>11</td><td>
 <select name="statements" id="statements">
 <option value="&lt;CDE = &lt;CABs" selected>&lt;CDE = &lt;CABs</option>
