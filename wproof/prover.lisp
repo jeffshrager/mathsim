@@ -85,33 +85,7 @@ panel.style.display = \"block\";
 (defstruct proof name short-name jpg notes given prove parts)
 (defstruct part name steps)
 
-(defvar *proofs*
-  (list 
-   (make-proof
-    :name "Inverse Midsegment Proof"
-    :short-name "imsp"
-    :jpg "imsp.png"
-    :given "Given: CD=DA. and: CE=EB"
-    :prove "Prove: DE || AB, and: DE = &frac12;AB"
-    :notes "A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio." 
-    :parts
-    (list
-     (make-part :name "I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law<br> (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar)."
-		:steps '((1 "&lt;C = &lt;C" "Relexivity")
-			 (2 "CA=CD+DA, and CE=CE+EB" "Segment Addition")
-			 (3 "CD=DA. and: CE=EB" "Given")
-			 (4 "CA=CD+CD, and CE=CE+CE" "Substitution of #3 into #2")
-			 (5 "CA=2CD, and CE=2CE" "Combing common terms")
-			 (6 "&Delta;CDE&asymp;&Delta;CAB" "Ratio SAS" "This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1<br><image src=imsp6.png>...</image>")
-			 ))
-     (make-part :name "II: Use similarity, proved above, by appling the commmon ratio between DE and AB to conclude that DE = &frac12;AB."
-		:steps '((7 "DE and AB are corresponding parts similar triangles" "Definition of corresponding parts")
-			 (8 "AB=2DE" "Ratios of corresponding parts of similar triangles are equal")
-			 (10 "DE = &frac12;AB" "Algebra (division, commutativity of =)")))
-     (make-part :name "III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles,<br>and then use the inverse of the corresponding angles across parallel line lemma<br>to conclude that the lines are parallel." 
-		:steps '((11 "&lt;CDE = &lt;CABs" "Inverse AAA similarity." "Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.")
-			 (12 "DE||AB" "Inverse corresponding angles across parallel lines" "Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles."))))
-    )))
+(defvar *proofs* nil)
 
 (defun render-body (proof o mode)
   (outbr!  (format nil "<h2>~a</h2>" (proof-name proof)))
@@ -140,9 +114,16 @@ panel.style.display = \"block\";
     (out! "</table></div>")
     ))
 
+(defun shuffle (orginial-sequence)
+  (let ((sequence (copy-list orginial-sequence)))
+    (loop for i from (length sequence) downto 2
+          do (rotatef (elt sequence (random i))
+                      (elt sequence (1- i))))
+    sequence))
+
 (defun selections (ss o selection mode &aux (choose? t))
   (out! "<select name=\"statements\" id=\"statements\">")
-  (loop for s in ss
+  (loop for s in (if (eq mode :quiz) (shuffle ss) ss)
 	do (if (eq mode :quiz)
 	       (progn 
 		 (when choose?
@@ -158,16 +139,15 @@ panel.style.display = \"block\";
   )
 
 (defun render-proof (short-name) ;; mode is :quiz or :reveal (reveal is the default)
-  (let* ((proof (find short-name *proofs* :key #'proof-short-name :test #'string-equal))
-	 )
+  (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
     (with-open-file
-     (o (format nil "~a_r.html" short-name) :direction :output :if-exists :supersede)
+     (o (format nil "proofs/~a/~a_r.html" short-name short-name) :direction :output :if-exists :supersede)
      (render-top o)
      (render-body proof o :reveal)
      (render-bottom o)
      )
     (with-open-file
-     (o (format nil "~a_q.html" short-name) :direction :output :if-exists :supersede)
+     (o (format nil "proofs/~a/~a_q.html" short-name short-name) :direction :output :if-exists :supersede)
      (render-top o)
      (render-body proof o :quiz)
      (render-bottom o)
