@@ -4,33 +4,9 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-.accordion {
-background-color: #eee;
-color: #444;
-cursor: pointer;
-padding: 18px;
-width: 100%;
-border: none;
-text-align: left;
-outline: none;
-font-size: 15px;
-transition: 2s;
-}
-
-.active, .accordion:hover {
-background-color: #ccc; 
-}
-
-.panel {
-padding: 0 18px;
-display: none;
-background-color: white;
-overflow: hidden;
-}
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
   position: absolute;
   z-index: 1;
   transition: opacity 2s;
@@ -39,8 +15,8 @@ overflow: hidden;
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: black;
-  color: #fff;
+  background-color: #f8ecf2;
+  color: #000;
   text-align: center;
   transition: opacity 2s;
 }
@@ -55,9 +31,11 @@ overflow: hidden;
 <table><tr><td><image src="imsp.png"></image></td><td>A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio.</td></tr></table><br>
 Given: CD=DA. and: CE=EB<br>
 Prove: DE || AB, and: DE = &frac12;AB<br>
-<button class="accordion">I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law<br> (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar).</button>
-<div class="panel">
 <table border=1>
+<tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
+I: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar).
+</td><td><table>
+
 <tr><td>1</td><td>
 <select name="statements" id="statements">
 <option value=choose selected>Choose!</option>
@@ -190,14 +168,16 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </select>
 </td><td>
 </td></tr>
-</table></div>
-<button class="accordion">II: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB.</button>
-<div class="panel">
+</table></td></table>
 <table border=1>
+<tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
+II: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB.
+</td><td><table>
+
 <tr><td>7</td><td>
 <select name="statements" id="statements">
 <option value=choose selected>Choose!</option>
-<option value="DE and AB are corresponding parts similar triangles">DE and AB are corresponding parts similar triangles</option>
+<option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
 </select>
@@ -215,7 +195,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value=choose selected>Choose!</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
-<option value="DE and AB are corresponding parts similar triangles">DE and AB are corresponding parts similar triangles</option>
+<option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 </select>
 </td><td>
 <select name="statements" id="statements">
@@ -231,7 +211,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value=choose selected>Choose!</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
-<option value="DE and AB are corresponding parts similar triangles">DE and AB are corresponding parts similar triangles</option>
+<option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 </select>
 </td><td>
 <select name="statements" id="statements">
@@ -242,10 +222,12 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </select>
 </td><td>
 </td></tr>
-</table></div>
-<button class="accordion">III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles,<br>and then use the inverse of the corresponding angles across parallel line lemma<br>to conclude that the lines are parallel.</button>
-<div class="panel">
+</table></td></table>
 <table border=1>
+<tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
+III: Prove that DE || AB by using similarity, as above, to show corresponding equal angles, and then use the inverse of the corresponding angles across parallel line lemma to conclude that the lines are parallel.
+</td><td><table>
+
 <tr><td>11</td><td>
 <select name="statements" id="statements">
 <option value=choose selected>Choose!</option>
@@ -274,23 +256,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </select>
 </td><td>
 </td></tr>
-</table></div>
+</table></td></table>
 
 <script>
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-acc[i].addEventListener("click", function() {
-this.classList.toggle("active");
-var panel = this.nextElementSibling;
-if (panel.style.display === "block") {
-panel.style.display = "none";
-} else {
-panel.style.display = "block";
-}
-});
-}
 </script>
 </body>
 </html>

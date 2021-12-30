@@ -12,33 +12,9 @@
 <head>
 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 <style>
-.accordion {
-background-color: #eee;
-color: #444;
-cursor: pointer;
-padding: 18px;
-width: 100%;
-border: none;
-text-align: left;
-outline: none;
-font-size: 15px;
-transition: 2s;
-}
-
-.active, .accordion:hover {
-background-color: #ccc; 
-}
-
-.panel {
-padding: 0 18px;
-display: none;
-background-color: white;
-overflow: hidden;
-}
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
   position: absolute;
   z-index: 1;
   transition: opacity 2s;
@@ -47,8 +23,8 @@ overflow: hidden;
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: black;
-  color: #fff;
+  background-color: #f8ecf2;
+  color: #000;
   text-align: center;
   transition: opacity 2s;
 }
@@ -63,20 +39,6 @@ overflow: hidden;
 (defun render-bottom (o)
   (out!  "
 <script>
-var acc = document.getElementsByClassName(\"accordion\");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-acc[i].addEventListener(\"click\", function() {
-this.classList.toggle(\"active\");
-var panel = this.nextElementSibling;
-if (panel.style.display === \"block\") {
-panel.style.display = \"none\";
-} else {
-panel.style.display = \"block\";
-}
-});
-}
 </script>
 </body>
 </html>
@@ -96,8 +58,8 @@ panel.style.display = \"block\";
 	do (render-part part o mode)))
 
 (defun render-part (part o mode)
-  (out! (format nil "<button class=\"accordion\">~a</button>~%<div class=\"panel\">" (part-name part)))
   (out! "<table border=1>")
+  (out! (format nil "<tr><td width=250px; style=\"text-align:left;vertical-align:top;background-color:#f2d9e6\">~%~a~%</td><td><table>~%" (part-name part)))
   (let* ((steps (part-steps part))
 	 (statements (mapcar #'second steps))
 	 (reasons (mapcar #'third steps)))
@@ -111,7 +73,7 @@ panel.style.display = \"block\";
 	  (when (and (eq mode :study) explanation)
 	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
 	  (out! "</td></tr>"))
-    (out! "</table></div>")
+    (out! "</table></td></table>")
     ))
 
 (defun shuffle (orginial-sequence)
