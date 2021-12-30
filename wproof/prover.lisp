@@ -22,7 +22,7 @@ border: none;
 text-align: left;
 outline: none;
 font-size: 15px;
-transition: 0.4s;
+transition: 2s;
 }
 
 .active, .accordion:hover {
@@ -39,9 +39,9 @@ overflow: hidden;
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
+  transition: opacity 2s;
 }
 
 .tooltip .tooltiptext {
@@ -50,7 +50,7 @@ overflow: hidden;
   background-color: black;
   color: #fff;
   text-align: center;
-
+  transition: opacity 2s;
 }
 .tooltip:hover .tooltiptext {
   visibility: visible;
@@ -108,7 +108,7 @@ panel.style.display = \"block\";
 	  (out! "</td><td>")
 	  (selections reasons o reason mode)
 	  (out! "</td><td>")
-	  (when (and (eq mode :reveal) explanation)
+	  (when (and (eq mode :study) explanation)
 	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
 	  (out! "</td></tr>"))
     (out! "</table></div>")
@@ -131,26 +131,22 @@ panel.style.display = \"block\";
 		   (setf choose? nil))
 		 (out! (format nil "<option value=~s>~a</option>" s s))
 		 )
-	     ;; Default mode (:reveal)
+	     ;; Default mode (:study)
 	     (if (string-equal s selection)
 		 (out! (format nil "<option value=~s selected>~a</option>" s s))
 	       (out! (format nil "<option value=~s>~a</option>" s s)))))
   (out! "</select>")
   )
 
-(defun render-proof (short-name) ;; mode is :quiz or :reveal (reveal is the default)
+(defun render-proof (short-name) ;; mode is :quiz or :study (study is the default)
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
-    (with-open-file
-     (o (format nil "proofs/~a/~a_r.html" short-name short-name) :direction :output :if-exists :supersede)
-     (render-top o)
-     (render-body proof o :reveal)
-     (render-bottom o)
-     )
-    (with-open-file
-     (o (format nil "proofs/~a/~a_q.html" short-name short-name) :direction :output :if-exists :supersede)
-     (render-top o)
-     (render-body proof o :quiz)
-     (render-bottom o)
-     )))
+    (loop for mode in '(:study :quiz)
+	  do 
+	  (with-open-file
+	   (o (string-downcase (format nil "proofs/~a/~a_~a.html" short-name short-name mode)) :direction :output :if-exists :supersede)
+	   (render-top o)
+	   (render-body proof o mode)
+	   (render-bottom o)
+     ))))
 
 (render-proof "imsp")
