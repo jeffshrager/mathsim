@@ -18,8 +18,8 @@
      (make-part :name "<b>II</b>: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB."
 		:steps '((7 "DE and AB are corresponding parts of similar triangles" "Definition of corresponding parts")
 			 (8 "AB=2DE" "Ratios of corresponding parts of similar triangles are equal")
-			 (10 "DE = &frac12;AB" "Algebra (division, commutativity of =)")))
+			 (9 "DE = &frac12;AB" "Algebra (division, commutativity of =)")))
      (make-part :name "<b>III</b>: Prove that DE || AB by using similarity, as above, to show corresponding equal angles, and then use the inverse of the corresponding angles across parallel line lemma to conclude that the lines are parallel." 
-		:steps '((11 "&lt;CDE = &lt;CABs" "Inverse AAA similarity." "Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.")
-			 (12 "DE||AB" "Inverse corresponding angles across parallel lines" "Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles."))))
+		:steps '((10 "&lt;CDE = &lt;CABs" "Inverse AAA similarity." "Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.")
+			 (11 "DE||AB" "Inverse corresponding angles across parallel lines" "Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles."))))
     )

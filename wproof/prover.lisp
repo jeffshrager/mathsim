@@ -47,11 +47,12 @@
 
 (defun render-bottom (o)
   (out!  "
-<br><hr><br><button onclick=\"checkproof()\">Check Proof</button>
 <script>
+    let score = 100;
 	 function checkproof() {
   	 let choices = [];
 	 ")
+  (out! (format nil "let max = ~a" (length *choices-and-ids*)))
   (loop for (target-choice . id) in *choices-and-ids*
 	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);~%" target-choice id id)))
   (out!
@@ -60,8 +61,8 @@
      for (index = 0; index < choices.length; index++) {
       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != \"choose\")) {count++};
       }
-     alert(count);
-     alert(choices);
+     score = score - (max - count)
+     alert(\"You have \" + count + \" correct choices out of \" + max +\". Your score is now: \" + score + \" out of 100.\");
      } 	 
 </script>
 </body>
@@ -78,6 +79,7 @@
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
   (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
+  (outbr! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
   (outbr! "<hr>")
   (loop for part in (proof-parts proof)
 	as pn from 1 by 1
@@ -103,22 +105,33 @@
     (out! "</table></td></table>")
     ))
 
+;;; FFF UUU This choice-key thing is an ugly hack and needs to be cleaned up.
+
 (defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r pn n &aux (choose? t))
-  (let ((key (format nil "~a_~a_~a" s/r pn n)))
-    (out! (format nil "<select name=~s id=~a>" target-choice key))
-    (push (cons target-choice key) *choices-and-ids*)
+  (let ((pulldown-key (format nil "~a_~a_~a" s/r pn n))
+	(target-choice-key (format nil "c_~a" (loop for c in all-choices-in-correct-order
+						    as n from 1 by 1
+						    when (string-equal target-choice c)
+						    do (return n))))
+	)
+    (out! (format nil "<select name=~s id=~a>" target-choice pulldown-key))
+    (push (cons target-choice-key pulldown-key) *choices-and-ids*)
     (loop for s in (if (eq mode :quiz) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
+	  as choice-key = (format nil "c_~a" (loop for c in all-choices-in-correct-order
+						   as n from 1 by 1
+						   when (string-equal s c)
+						   do (return n)))
 	  do (if (eq mode :quiz)
 		 (progn 
 		   (when choose?
 		     (out! "<option value=choose selected>Choose!</option>")
 		     (setf choose? nil))
-		   (out! (format nil "<option value=~s>~a</option>" s s))
+		   (out! (format nil "<option value=~s>~a</option>" choice-key s))
 		   )
 	       ;; Default mode (:study)
 	       (if (string-equal s target-choice)
-		   (out! (format nil "<option value=~s selected>~a</option>" s s))
-		 (out! (format nil "<option value=~s>~a</option>" s s)))))
+		   (out! (format nil "<option value=~s selected>~a</option>" choice-key s))
+		 (out! (format nil "<option value=~s>~a</option>" choice-key s)))))
     (out! "</select>")
     ))
 

@@ -33,6 +33,7 @@
 <table><tr><td><image src="imsp.png"></image></td><td>A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio.</td></tr></table><br>
 Given: CD=DA. and: CE=EB<br>
 Prove: DE || AB, and: DE = &frac12;AB<br>
+<button onclick="checkproof()" style="font-size: 20px; height:40px; width:200px; background-color: #4dff88;">Check Proof</button><br>
 <hr><br>
 <table border=1>
 <tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
@@ -42,121 +43,121 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>1</td><td>
 <select name="&lt;C = &lt;C" id=S_1_1>
-<option value="&lt;C = &lt;C" selected>&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1" selected>&lt;C = &lt;C</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Reflexivity" id=R_1_1>
-<option value="Reflexivity" selected>Reflexivity</option>
-<option value="Segment Addition">Segment Addition</option>
-<option value="Given">Given</option>
-<option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
-<option value="Combining common terms">Combining common terms</option>
-<option value="Ratio SAS">Ratio SAS</option>
+<option value="c_1" selected>Reflexivity</option>
+<option value="c_2">Segment Addition</option>
+<option value="c_3">Given</option>
+<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_5">Combining common terms</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>2</td><td>
 <select name="CA=CD+DA, and CB=CE+EB" id=S_1_2>
-<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB" selected>CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1">&lt;C = &lt;C</option>
+<option value="c_2" selected>CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Segment Addition" id=R_1_2>
-<option value="Reflexivity">Reflexivity</option>
-<option value="Segment Addition" selected>Segment Addition</option>
-<option value="Given">Given</option>
-<option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
-<option value="Combining common terms">Combining common terms</option>
-<option value="Ratio SAS">Ratio SAS</option>
+<option value="c_1">Reflexivity</option>
+<option value="c_2" selected>Segment Addition</option>
+<option value="c_3">Given</option>
+<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_5">Combining common terms</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>3</td><td>
 <select name="CD=DA, and: CE=EB" id=S_1_3>
-<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB" selected>CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1">&lt;C = &lt;C</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3" selected>CD=DA, and: CE=EB</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Given" id=R_1_3>
-<option value="Reflexivity">Reflexivity</option>
-<option value="Segment Addition">Segment Addition</option>
-<option value="Given" selected>Given</option>
-<option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
-<option value="Combining common terms">Combining common terms</option>
-<option value="Ratio SAS">Ratio SAS</option>
+<option value="c_1">Reflexivity</option>
+<option value="c_2">Segment Addition</option>
+<option value="c_3" selected>Given</option>
+<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_5">Combining common terms</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>4</td><td>
 <select name="CA=CD+CD, and CB=CE+CE" id=S_1_4>
-<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE" selected>CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1">&lt;C = &lt;C</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
+<option value="c_4" selected>CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Substitution of #3 into #2" id=R_1_4>
-<option value="Reflexivity">Reflexivity</option>
-<option value="Segment Addition">Segment Addition</option>
-<option value="Given">Given</option>
-<option value="Substitution of #3 into #2" selected>Substitution of #3 into #2</option>
-<option value="Combining common terms">Combining common terms</option>
-<option value="Ratio SAS">Ratio SAS</option>
+<option value="c_1">Reflexivity</option>
+<option value="c_2">Segment Addition</option>
+<option value="c_3">Given</option>
+<option value="c_4" selected>Substitution of #3 into #2</option>
+<option value="c_5">Combining common terms</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>5</td><td>
 <select name="CA=2CD, and CB=2CE" id=S_1_5>
-<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE" selected>CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1">&lt;C = &lt;C</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5" selected>CA=2CD, and CB=2CE</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Combining common terms" id=R_1_5>
-<option value="Reflexivity">Reflexivity</option>
-<option value="Segment Addition">Segment Addition</option>
-<option value="Given">Given</option>
-<option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
-<option value="Combining common terms" selected>Combining common terms</option>
-<option value="Ratio SAS">Ratio SAS</option>
+<option value="c_1">Reflexivity</option>
+<option value="c_2">Segment Addition</option>
+<option value="c_3">Given</option>
+<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_5" selected>Combining common terms</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>6</td><td>
 <select name="&Delta;CDE&asymp;&Delta;CAB" id=S_1_6>
-<option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
-<option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
-<option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
-<option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
-<option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
-<option value="&Delta;CDE&asymp;&Delta;CAB" selected>&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_1">&lt;C = &lt;C</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
+<option value="c_6" selected>&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Ratio SAS" id=R_1_6>
-<option value="Reflexivity">Reflexivity</option>
-<option value="Segment Addition">Segment Addition</option>
-<option value="Given">Given</option>
-<option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
-<option value="Combining common terms">Combining common terms</option>
-<option value="Ratio SAS" selected>Ratio SAS</option>
+<option value="c_1">Reflexivity</option>
+<option value="c_2">Segment Addition</option>
+<option value="c_3">Given</option>
+<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_5">Combining common terms</option>
+<option value="c_6" selected>Ratio SAS</option>
 </select>
 </td><td>
 <div class="tooltip">&nbsp;&nbsp;&nbsp;?&nbsp;<span class="tooltiptext">This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1.)<br><image src=imsp6.png>...</image></span></div>
@@ -170,43 +171,43 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>7</td><td>
 <select name="DE and AB are corresponding parts of similar triangles" id=S_2_7>
-<option value="DE and AB are corresponding parts of similar triangles" selected>DE and AB are corresponding parts of similar triangles</option>
-<option value="AB=2DE">AB=2DE</option>
-<option value="DE = &frac12;AB">DE = &frac12;AB</option>
+<option value="c_1" selected>DE and AB are corresponding parts of similar triangles</option>
+<option value="c_2">AB=2DE</option>
+<option value="c_3">DE = &frac12;AB</option>
 </select>
 </td><td>
 <select name="Definition of corresponding parts" id=R_2_7>
-<option value="Definition of corresponding parts" selected>Definition of corresponding parts</option>
-<option value="Ratios of corresponding parts of similar triangles are equal">Ratios of corresponding parts of similar triangles are equal</option>
-<option value="Algebra (division, commutativity of =)">Algebra (division, commutativity of =)</option>
+<option value="c_1" selected>Definition of corresponding parts</option>
+<option value="c_2">Ratios of corresponding parts of similar triangles are equal</option>
+<option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>8</td><td>
 <select name="AB=2DE" id=S_2_8>
-<option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
-<option value="AB=2DE" selected>AB=2DE</option>
-<option value="DE = &frac12;AB">DE = &frac12;AB</option>
+<option value="c_1">DE and AB are corresponding parts of similar triangles</option>
+<option value="c_2" selected>AB=2DE</option>
+<option value="c_3">DE = &frac12;AB</option>
 </select>
 </td><td>
 <select name="Ratios of corresponding parts of similar triangles are equal" id=R_2_8>
-<option value="Definition of corresponding parts">Definition of corresponding parts</option>
-<option value="Ratios of corresponding parts of similar triangles are equal" selected>Ratios of corresponding parts of similar triangles are equal</option>
-<option value="Algebra (division, commutativity of =)">Algebra (division, commutativity of =)</option>
+<option value="c_1">Definition of corresponding parts</option>
+<option value="c_2" selected>Ratios of corresponding parts of similar triangles are equal</option>
+<option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
 </td></tr>
-<tr><td>10</td><td>
-<select name="DE = &frac12;AB" id=S_2_10>
-<option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
-<option value="AB=2DE">AB=2DE</option>
-<option value="DE = &frac12;AB" selected>DE = &frac12;AB</option>
+<tr><td>9</td><td>
+<select name="DE = &frac12;AB" id=S_2_9>
+<option value="c_1">DE and AB are corresponding parts of similar triangles</option>
+<option value="c_2">AB=2DE</option>
+<option value="c_3" selected>DE = &frac12;AB</option>
 </select>
 </td><td>
-<select name="Algebra (division, commutativity of =)" id=R_2_10>
-<option value="Definition of corresponding parts">Definition of corresponding parts</option>
-<option value="Ratios of corresponding parts of similar triangles are equal">Ratios of corresponding parts of similar triangles are equal</option>
-<option value="Algebra (division, commutativity of =)" selected>Algebra (division, commutativity of =)</option>
+<select name="Algebra (division, commutativity of =)" id=R_2_9>
+<option value="c_1">Definition of corresponding parts</option>
+<option value="c_2">Ratios of corresponding parts of similar triangles are equal</option>
+<option value="c_3" selected>Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
 </td></tr>
@@ -217,90 +218,91 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td><table>
 
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
-<tr><td>11</td><td>
-<select name="&lt;CDE = &lt;CABs" id=S_3_11>
-<option value="&lt;CDE = &lt;CABs" selected>&lt;CDE = &lt;CABs</option>
-<option value="DE||AB">DE||AB</option>
+<tr><td>10</td><td>
+<select name="&lt;CDE = &lt;CABs" id=S_3_10>
+<option value="c_1" selected>&lt;CDE = &lt;CABs</option>
+<option value="c_2">DE||AB</option>
 </select>
 </td><td>
-<select name="Inverse AAA similarity." id=R_3_11>
-<option value="Inverse AAA similarity." selected>Inverse AAA similarity.</option>
-<option value="Inverse corresponding angles across parallel lines">Inverse corresponding angles across parallel lines</option>
+<select name="Inverse AAA similarity." id=R_3_10>
+<option value="c_1" selected>Inverse AAA similarity.</option>
+<option value="c_2">Inverse corresponding angles across parallel lines</option>
 </select>
 </td><td>
 <div class="tooltip">&nbsp;&nbsp;&nbsp;?&nbsp;<span class="tooltiptext">Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.</span></div>
 </td></tr>
-<tr><td>12</td><td>
-<select name="DE||AB" id=S_3_12>
-<option value="&lt;CDE = &lt;CABs">&lt;CDE = &lt;CABs</option>
-<option value="DE||AB" selected>DE||AB</option>
+<tr><td>11</td><td>
+<select name="DE||AB" id=S_3_11>
+<option value="c_1">&lt;CDE = &lt;CABs</option>
+<option value="c_2" selected>DE||AB</option>
 </select>
 </td><td>
-<select name="Inverse corresponding angles across parallel lines" id=R_3_12>
-<option value="Inverse AAA similarity.">Inverse AAA similarity.</option>
-<option value="Inverse corresponding angles across parallel lines" selected>Inverse corresponding angles across parallel lines</option>
+<select name="Inverse corresponding angles across parallel lines" id=R_3_11>
+<option value="c_1">Inverse AAA similarity.</option>
+<option value="c_2" selected>Inverse corresponding angles across parallel lines</option>
 </select>
 </td><td>
 <div class="tooltip">&nbsp;&nbsp;&nbsp;?&nbsp;<span class="tooltiptext">Again, we're using a theorem in the opposite direction that we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles.</span></div>
 </td></tr>
 </table></td></table>
 
-<br><hr><br><button onclick="checkproof()">Check Proof</button>
 <script>
+    let score = 100;
 	 function checkproof() {
   	 let choices = [];
 	 
-choices.push(["Inverse corresponding angles across parallel lines","R_3_12",document.getElementById("R_3_12").value]);
+let max = 22
+choices.push(["c_2","R_3_11",document.getElementById("R_3_11").value]);
 
-choices.push(["DE||AB","S_3_12",document.getElementById("S_3_12").value]);
+choices.push(["c_2","S_3_11",document.getElementById("S_3_11").value]);
 
-choices.push(["Inverse AAA similarity.","R_3_11",document.getElementById("R_3_11").value]);
+choices.push(["c_1","R_3_10",document.getElementById("R_3_10").value]);
 
-choices.push(["&lt;CDE = &lt;CABs","S_3_11",document.getElementById("S_3_11").value]);
+choices.push(["c_1","S_3_10",document.getElementById("S_3_10").value]);
 
-choices.push(["Algebra (division, commutativity of =)","R_2_10",document.getElementById("R_2_10").value]);
+choices.push(["c_3","R_2_9",document.getElementById("R_2_9").value]);
 
-choices.push(["DE = &frac12;AB","S_2_10",document.getElementById("S_2_10").value]);
+choices.push(["c_3","S_2_9",document.getElementById("S_2_9").value]);
 
-choices.push(["Ratios of corresponding parts of similar triangles are equal","R_2_8",document.getElementById("R_2_8").value]);
+choices.push(["c_2","R_2_8",document.getElementById("R_2_8").value]);
 
-choices.push(["AB=2DE","S_2_8",document.getElementById("S_2_8").value]);
+choices.push(["c_2","S_2_8",document.getElementById("S_2_8").value]);
 
-choices.push(["Definition of corresponding parts","R_2_7",document.getElementById("R_2_7").value]);
+choices.push(["c_1","R_2_7",document.getElementById("R_2_7").value]);
 
-choices.push(["DE and AB are corresponding parts of similar triangles","S_2_7",document.getElementById("S_2_7").value]);
+choices.push(["c_1","S_2_7",document.getElementById("S_2_7").value]);
 
-choices.push(["Ratio SAS","R_1_6",document.getElementById("R_1_6").value]);
+choices.push(["c_6","R_1_6",document.getElementById("R_1_6").value]);
 
-choices.push(["&Delta;CDE&asymp;&Delta;CAB","S_1_6",document.getElementById("S_1_6").value]);
+choices.push(["c_6","S_1_6",document.getElementById("S_1_6").value]);
 
-choices.push(["Combining common terms","R_1_5",document.getElementById("R_1_5").value]);
+choices.push(["c_5","R_1_5",document.getElementById("R_1_5").value]);
 
-choices.push(["CA=2CD, and CB=2CE","S_1_5",document.getElementById("S_1_5").value]);
+choices.push(["c_5","S_1_5",document.getElementById("S_1_5").value]);
 
-choices.push(["Substitution of #3 into #2","R_1_4",document.getElementById("R_1_4").value]);
+choices.push(["c_4","R_1_4",document.getElementById("R_1_4").value]);
 
-choices.push(["CA=CD+CD, and CB=CE+CE","S_1_4",document.getElementById("S_1_4").value]);
+choices.push(["c_4","S_1_4",document.getElementById("S_1_4").value]);
 
-choices.push(["Given","R_1_3",document.getElementById("R_1_3").value]);
+choices.push(["c_3","R_1_3",document.getElementById("R_1_3").value]);
 
-choices.push(["CD=DA, and: CE=EB","S_1_3",document.getElementById("S_1_3").value]);
+choices.push(["c_3","S_1_3",document.getElementById("S_1_3").value]);
 
-choices.push(["Segment Addition","R_1_2",document.getElementById("R_1_2").value]);
+choices.push(["c_2","R_1_2",document.getElementById("R_1_2").value]);
 
-choices.push(["CA=CD+DA, and CB=CE+EB","S_1_2",document.getElementById("S_1_2").value]);
+choices.push(["c_2","S_1_2",document.getElementById("S_1_2").value]);
 
-choices.push(["Reflexivity","R_1_1",document.getElementById("R_1_1").value]);
+choices.push(["c_1","R_1_1",document.getElementById("R_1_1").value]);
 
-choices.push(["&lt;C = &lt;C","S_1_1",document.getElementById("S_1_1").value]);
+choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
 
 
      let count = 0
      for (index = 0; index < choices.length; index++) {
       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != "choose")) {count++};
       }
-     alert(count);
-     alert(choices);
+     score = score - (max - count)
+     alert("You have " + count + " correct choices out of " + max +". Your score is now: " + score + " out of 100.");
      } 	 
 </script>
 </body>
