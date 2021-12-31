@@ -15,7 +15,7 @@
 			 (5 "CA=2CD, and CB=2CE" "Combining common terms")
 			 (6 "&Delta;CDE&asymp;&Delta;CAB" "Ratio SAS" "This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1.)<br><image src=imsp6.png>...</image>")
 			 ))
-     (make-part :name "<b>II</b>: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB."
+     (make-part :name "<b>II</b>: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the common ratio between DE and AB."
 		:steps '((7 "DE and AB are corresponding parts of similar triangles" "Definition of corresponding parts")
 			 (8 "AB=2DE" "Ratios of corresponding parts of similar triangles are equal")
 			 (9 "DE = &frac12;AB" "Algebra (division, commutativity of =)")))

@@ -79,7 +79,8 @@
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
   (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
-  (outbr! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
+  (when (eq mode :quiz)
+    (outbr! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>"))
   (outbr! "<hr>")
   (loop for part in (proof-parts proof)
 	as pn from 1 by 1
