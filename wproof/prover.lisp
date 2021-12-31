@@ -5,6 +5,8 @@
 ;;;   Add check functionality (also complex)
 ;;;   (Might as well go to a server! ... I'll need to go there eventually!)
 
+(defvar *choices-and-ids* nil)
+
 (defmacro out! (text)
   `(format o "~a~%" ,text))
 (defmacro outbr! (text)
@@ -45,7 +47,22 @@
 
 (defun render-bottom (o)
   (out!  "
+<br><hr><br><button onclick=\"checkproof()\">Check Proof</button>
 <script>
+	 function checkproof() {
+  	 let choices = [];
+	 ")
+  (loop for (target-choice . id) in *choices-and-ids*
+	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);~%" target-choice id id)))
+  (out!
+   "
+     let count = 0
+     for (index = 0; index < choices.length; index++) {
+      if ((choices[index][0]==choices[index][2]) && (choices[index][0] != \"choose\")) {count++};
+      }
+     alert(count);
+     alert(choices);
+     } 	 
 </script>
 </body>
 </html>
@@ -63,9 +80,10 @@
   (outbr! (proof-prove proof))
   (outbr! "<hr>")
   (loop for part in (proof-parts proof)
-	do (render-part part o mode)))
+	as pn from 1 by 1
+	do (render-part part o mode pn)))
 
-(defun render-part (part o mode)
+(defun render-part (part o mode pn)
   (out! "<table border=1>")
   (out! (format nil "<tr><td width=250px; style=\"text-align:left;vertical-align:top;background-color:#f2d9e6\">~%~a~%</td><td><table>~%" (part-name part)))
   (let* ((steps (part-steps part))
@@ -75,9 +93,9 @@
     (loop for (n target-statement target-reason explanation) in steps
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" n))
-	  (render-pulldown statements o target-statement mode :s n)
+	  (render-pulldown statements o target-statement mode :s pn n)
 	  (out! "</td><td>")
-	  (render-pulldown reasons o target-reason mode :r n)
+	  (render-pulldown reasons o target-reason mode :r pn n)
 	  (out! "</td><td>")
 	  (when (and (eq mode :study) explanation)
 	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
@@ -85,22 +103,24 @@
     (out! "</table></td></table>")
     ))
 
-(defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r n &aux (choose? t))
-  (out! (format nil "<select name=~s id=~a~a>" target-choice s/r n))
-  (loop for s in (if (eq mode :quiz) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
-	do (if (eq mode :quiz)
-	       (progn 
-		 (when choose?
-		   (out! "<option value=choose selected>Choose!</option>")
-		   (setf choose? nil))
-		 (out! (format nil "<option value=~s>~a</option>" s s))
-		 )
-	     ;; Default mode (:study)
-	     (if (string-equal s target-choice)
-		 (out! (format nil "<option value=~s selected>~a</option>" s s))
-	       (out! (format nil "<option value=~s>~a</option>" s s)))))
-  (out! "</select>")
-  )
+(defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r pn n &aux (choose? t))
+  (let ((key (format nil "~a_~a_~a" s/r pn n)))
+    (out! (format nil "<select name=~s id=~a>" target-choice key))
+    (push (cons target-choice key) *choices-and-ids*)
+    (loop for s in (if (eq mode :quiz) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
+	  do (if (eq mode :quiz)
+		 (progn 
+		   (when choose?
+		     (out! "<option value=choose selected>Choose!</option>")
+		     (setf choose? nil))
+		   (out! (format nil "<option value=~s>~a</option>" s s))
+		   )
+	       ;; Default mode (:study)
+	       (if (string-equal s target-choice)
+		   (out! (format nil "<option value=~s selected>~a</option>" s s))
+		 (out! (format nil "<option value=~s>~a</option>" s s)))))
+    (out! "</select>")
+    ))
 
 (defun shuffle (orginial-sequence)
   (let ((sequence (copy-list orginial-sequence)))
@@ -113,6 +133,7 @@
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
     (loop for mode in '(:study :quiz)
 	  do 
+	  (setf *choices-and-ids* nil)
 	  (with-open-file
 	   (o (string-downcase (format nil "proofs/~a/~a_~a.html" short-name short-name mode)) :direction :output :if-exists :supersede)
 	   (render-top o)
