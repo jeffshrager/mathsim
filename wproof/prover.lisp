@@ -1,4 +1,4 @@
-;;; (load (compile-file "prover.lisp"))
+;;; sbcl --eval '(load (compile-file "prover.lisp"))'
 
 ;;; To Do:
 ;;;   Do we want the outline (col 1) choices to be selectable in quiz mode? (This will be complicated!)
@@ -72,12 +72,12 @@
 	 (statements (mapcar #'second steps))
 	 (reasons (mapcar #'third steps)))
     (out! "<tr><td></td><td>Statement</td><td>Rationale</td></tr>")
-    (loop for (n statement reason explanation) in steps
+    (loop for (n target-statement target-reason explanation) in steps
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" n))
-	  (selections statements o statement mode)
+	  (render-pulldown statements o target-statement mode :s n)
 	  (out! "</td><td>")
-	  (selections reasons o reason mode)
+	  (render-pulldown reasons o target-reason mode :r n)
 	  (out! "</td><td>")
 	  (when (and (eq mode :study) explanation)
 	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
@@ -85,16 +85,9 @@
     (out! "</table></td></table>")
     ))
 
-(defun shuffle (orginial-sequence)
-  (let ((sequence (copy-list orginial-sequence)))
-    (loop for i from (length sequence) downto 2
-          do (rotatef (elt sequence (random i))
-                      (elt sequence (1- i))))
-    sequence))
-
-(defun selections (ss o selection mode &aux (choose? t))
-  (out! "<select name=\"statements\" id=\"statements\">")
-  (loop for s in (if (eq mode :quiz) (shuffle ss) ss)
+(defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r n &aux (choose? t))
+  (out! (format nil "<select name=~s id=~a~a>" target-choice s/r n))
+  (loop for s in (if (eq mode :quiz) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
 	do (if (eq mode :quiz)
 	       (progn 
 		 (when choose?
@@ -103,11 +96,18 @@
 		 (out! (format nil "<option value=~s>~a</option>" s s))
 		 )
 	     ;; Default mode (:study)
-	     (if (string-equal s selection)
+	     (if (string-equal s target-choice)
 		 (out! (format nil "<option value=~s selected>~a</option>" s s))
 	       (out! (format nil "<option value=~s>~a</option>" s s)))))
   (out! "</select>")
   )
+
+(defun shuffle (orginial-sequence)
+  (let ((sequence (copy-list orginial-sequence)))
+    (loop for i from (length sequence) downto 2
+          do (rotatef (elt sequence (random i))
+                      (elt sequence (1- i))))
+    sequence))
 
 (defun render-proof (short-name) ;; mode is :quiz or :study (study is the default)
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))

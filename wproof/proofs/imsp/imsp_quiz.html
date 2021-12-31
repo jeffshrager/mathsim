@@ -39,9 +39,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <b>I</b>: Prove that &Delta;CDE is similar to the larger &Delta;CAB by using the inverse SAS law (i.e., from the observation that sides with a common ratio have and an embedded equal angle are similar).
 </td><td><table>
 
-<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
+<tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>1</td><td>
-<select name="statements" id="statements">
+<select name="&lt;C = &lt;C" id=S1>
 <option value=choose selected>Choose!</option>
 <option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
 <option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
@@ -51,7 +51,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Reflexivity" id=R1>
 <option value=choose selected>Choose!</option>
 <option value="Ratio SAS">Ratio SAS</option>
 <option value="Reflexivity">Reflexivity</option>
@@ -63,7 +63,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>2</td><td>
-<select name="statements" id="statements">
+<select name="CA=CD+DA, and CB=CE+EB" id=S2>
 <option value=choose selected>Choose!</option>
 <option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
 <option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
@@ -73,7 +73,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Segment Addition" id=R2>
 <option value=choose selected>Choose!</option>
 <option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
 <option value="Reflexivity">Reflexivity</option>
@@ -85,7 +85,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>3</td><td>
-<select name="statements" id="statements">
+<select name="CD=DA, and: CE=EB" id=S3>
 <option value=choose selected>Choose!</option>
 <option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
 <option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
@@ -95,7 +95,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Given" id=R3>
 <option value=choose selected>Choose!</option>
 <option value="Reflexivity">Reflexivity</option>
 <option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
@@ -107,7 +107,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>4</td><td>
-<select name="statements" id="statements">
+<select name="CA=CD+CD, and CB=CE+CE" id=S4>
 <option value=choose selected>Choose!</option>
 <option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
 <option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
@@ -117,7 +117,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="CA=CD+CD, and CB=CE+CE">CA=CD+CD, and CB=CE+CE</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Substitution of #3 into #2" id=R4>
 <option value=choose selected>Choose!</option>
 <option value="Ratio SAS">Ratio SAS</option>
 <option value="Substitution of #3 into #2">Substitution of #3 into #2</option>
@@ -129,7 +129,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>5</td><td>
-<select name="statements" id="statements">
+<select name="CA=2CD, and CB=2CE" id=S5>
 <option value=choose selected>Choose!</option>
 <option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
 <option value="&lt;C = &lt;C">&lt;C = &lt;C</option>
@@ -139,7 +139,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="CD=DA, and: CE=EB">CD=DA, and: CE=EB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Combining common terms" id=R5>
 <option value=choose selected>Choose!</option>
 <option value="Reflexivity">Reflexivity</option>
 <option value="Segment Addition">Segment Addition</option>
@@ -151,7 +151,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>6</td><td>
-<select name="statements" id="statements">
+<select name="&Delta;CDE&asymp;&Delta;CAB" id=S6>
 <option value=choose selected>Choose!</option>
 <option value="&Delta;CDE&asymp;&Delta;CAB">&Delta;CDE&asymp;&Delta;CAB</option>
 <option value="CA=2CD, and CB=2CE">CA=2CD, and CB=2CE</option>
@@ -161,7 +161,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="CA=CD+DA, and CB=CE+EB">CA=CD+DA, and CB=CE+EB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Ratio SAS" id=R6>
 <option value=choose selected>Choose!</option>
 <option value="Reflexivity">Reflexivity</option>
 <option value="Given">Given</option>
@@ -178,16 +178,16 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <b>II</b>: Use the similarity proved above to conclude that DE = &frac12;AB, by appling the commmon ratio between DE and AB.
 </td><td><table>
 
-<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
+<tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>7</td><td>
-<select name="statements" id="statements">
+<select name="DE and AB are corresponding parts of similar triangles" id=S7>
 <option value=choose selected>Choose!</option>
 <option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Definition of corresponding parts" id=R7>
 <option value=choose selected>Choose!</option>
 <option value="Definition of corresponding parts">Definition of corresponding parts</option>
 <option value="Ratios of corresponding parts of similar triangles are equal">Ratios of corresponding parts of similar triangles are equal</option>
@@ -196,14 +196,14 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>8</td><td>
-<select name="statements" id="statements">
+<select name="AB=2DE" id=S8>
 <option value=choose selected>Choose!</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
 <option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Ratios of corresponding parts of similar triangles are equal" id=R8>
 <option value=choose selected>Choose!</option>
 <option value="Ratios of corresponding parts of similar triangles are equal">Ratios of corresponding parts of similar triangles are equal</option>
 <option value="Algebra (division, commutativity of =)">Algebra (division, commutativity of =)</option>
@@ -212,14 +212,14 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>10</td><td>
-<select name="statements" id="statements">
+<select name="DE = &frac12;AB" id=S10>
 <option value=choose selected>Choose!</option>
 <option value="AB=2DE">AB=2DE</option>
 <option value="DE = &frac12;AB">DE = &frac12;AB</option>
 <option value="DE and AB are corresponding parts of similar triangles">DE and AB are corresponding parts of similar triangles</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Algebra (division, commutativity of =)" id=R10>
 <option value=choose selected>Choose!</option>
 <option value="Algebra (division, commutativity of =)">Algebra (division, commutativity of =)</option>
 <option value="Definition of corresponding parts">Definition of corresponding parts</option>
@@ -233,15 +233,15 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <b>III</b>: Prove that DE || AB by using similarity, as above, to show corresponding equal angles, and then use the inverse of the corresponding angles across parallel line lemma to conclude that the lines are parallel.
 </td><td><table>
 
-<tr><td></td><td width=50px>Statement</td><td width=50px>Rationale</td></tr>
+<tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>11</td><td>
-<select name="statements" id="statements">
+<select name="&lt;CDE = &lt;CABs" id=S11>
 <option value=choose selected>Choose!</option>
 <option value="&lt;CDE = &lt;CABs">&lt;CDE = &lt;CABs</option>
 <option value="DE||AB">DE||AB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Inverse AAA similarity." id=R11>
 <option value=choose selected>Choose!</option>
 <option value="Inverse corresponding angles across parallel lines">Inverse corresponding angles across parallel lines</option>
 <option value="Inverse AAA similarity.">Inverse AAA similarity.</option>
@@ -249,13 +249,13 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td><td>
 </td></tr>
 <tr><td>12</td><td>
-<select name="statements" id="statements">
+<select name="DE||AB" id=S12>
 <option value=choose selected>Choose!</option>
 <option value="&lt;CDE = &lt;CABs">&lt;CDE = &lt;CABs</option>
 <option value="DE||AB">DE||AB</option>
 </select>
 </td><td>
-<select name="statements" id="statements">
+<select name="Inverse corresponding angles across parallel lines" id=R12>
 <option value=choose selected>Choose!</option>
 <option value="Inverse AAA similarity.">Inverse AAA similarity.</option>
 <option value="Inverse corresponding angles across parallel lines">Inverse corresponding angles across parallel lines</option>
