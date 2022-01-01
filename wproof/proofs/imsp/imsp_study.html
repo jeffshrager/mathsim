@@ -54,7 +54,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1" selected>Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -74,7 +74,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Reflexivity</option>
 <option value="c_2" selected>Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -94,7 +94,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3" selected>Given</option>
-<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -110,11 +110,11 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
-<select name="Substitution of #3 into #2" id=R_1_4>
+<select name="Substitution" id=R_1_4>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4" selected>Substitution of #3 into #2</option>
+<option value="c_4" selected>Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -134,7 +134,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_4">Substitution</option>
 <option value="c_5" selected>Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -154,7 +154,7 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4">Substitution of #3 into #2</option>
+<option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6" selected>Ratio SAS</option>
 </select>
@@ -301,7 +301,9 @@ choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != "choose")) {count++};
       }
      score = score - (max - count)
+     document.getElementById("thescore").value = score;
      alert("You have " + count + " correct choices out of " + max +". Your score is now: " + score + " out of 100.");
+     
      } 	 
 </script>
 </body>

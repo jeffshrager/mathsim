@@ -62,7 +62,9 @@
       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != \"choose\")) {count++};
       }
      score = score - (max - count)
+     document.getElementById(\"thescore\").value = score;
      alert(\"You have \" + count + \" correct choices out of \" + max +\". Your score is now: \" + score + \" out of 100.\");
+     
      } 	 
 </script>
 </body>
@@ -80,25 +82,27 @@
   (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
   (when (eq mode :quiz)
-    (outbr! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>"))
+    (out! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
+    (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" value=\"(Not checked)\" style=\"font-size: 20px; height:40px; width:200px;\">")
+    )
   (outbr! "<hr>")
   (loop for part in (proof-parts proof)
-	as pn from 1 by 1
-	do (render-part part o mode pn)))
+	as part-number from 1 by 1
+	do (render-part part o mode part-number)))
 
-(defun render-part (part o mode pn)
+(defun render-part (part o mode part-number)
   (out! "<table border=1>")
   (out! (format nil "<tr><td width=250px; style=\"text-align:left;vertical-align:top;background-color:#f2d9e6\">~%~a~%</td><td><table>~%" (part-name part)))
   (let* ((steps (part-steps part))
 	 (statements (mapcar #'second steps))
 	 (reasons (mapcar #'third steps)))
     (out! "<tr><td></td><td>Statement</td><td>Rationale</td></tr>")
-    (loop for (n target-statement target-reason explanation) in steps
+    (loop for (step-number target-statement target-reason explanation) in steps
 	  do
-	  (out! (format nil "<tr><td>~a</td><td>" n))
-	  (render-pulldown statements o target-statement mode :s pn n)
+	  (out! (format nil "<tr><td>~a</td><td>" step-number))
+	  (render-pulldown statements o target-statement mode :s part-number step-number)
 	  (out! "</td><td>")
-	  (render-pulldown reasons o target-reason mode :r pn n)
+	  (render-pulldown reasons o target-reason mode :r part-number step-number)
 	  (out! "</td><td>")
 	  (when (and (eq mode :study) explanation)
 	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
@@ -108,8 +112,8 @@
 
 ;;; FFF UUU This choice-key thing is an ugly hack and needs to be cleaned up.
 
-(defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r pn n &aux (choose? t))
-  (let ((pulldown-key (format nil "~a_~a_~a" s/r pn n))
+(defun render-pulldown (all-choices-in-correct-order o target-choice mode s/r part-number step-number &aux (choose? t))
+  (let ((pulldown-key (format nil "~a_~a_~a" s/r part-number step-number))
 	(target-choice-key (format nil "c_~a" (loop for c in all-choices-in-correct-order
 						    as n from 1 by 1
 						    when (string-equal target-choice c)

@@ -11,7 +11,7 @@
 		:steps '((1 "&lt;C = &lt;C" "Reflexivity")
 			 (2 "CA=CD+DA, and CB=CE+EB" "Segment Addition")
 			 (3 "CD=DA, and: CE=EB" "Given")
-			 (4 "CA=CD+CD, and CB=CE+CE" "Substitution of #3 into #2")
+			 (4 "CA=CD+CD, and CB=CE+CE" "Substitution")
 			 (5 "CA=2CD, and CB=2CE" "Combining common terms")
 			 (6 "&Delta;CDE&asymp;&Delta;CAB" "Ratio SAS" "This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1.)<br><image src=imsp6.png>...</image>")
 			 ))
