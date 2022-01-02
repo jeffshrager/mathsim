@@ -153,7 +153,7 @@ function setSelectedIndex(s, v) {
 	)
     (out! (format nil "<select name=~s id=~a>" target-choice pulldown-key))
     (push (cons target-choice-key pulldown-key) *choices-and-ids*)
-    (loop for s in (if (eq mode :quiz) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
+    (loop for s in (if (member mode '(:quiz :practice)) (shuffle all-choices-in-correct-order) all-choices-in-correct-order)
 	  as choice-key = (format nil "c_~a" (loop for c in all-choices-in-correct-order
 						   as n from 1 by 1
 						   when (string-equal s c)
