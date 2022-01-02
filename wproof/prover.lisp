@@ -179,16 +179,26 @@ function setSelectedIndex(s, v) {
                       (elt sequence (1- i))))
     sequence))
 
-(defun render-proof (short-name) ;; mode is :quiz or :study (study is the default)
+(defun render-proof (short-name index-stream) ;; mode is :quiz or :study (study is the default)
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
-    (loop for mode in '(:study :quiz :practice)
+    (format index-stream "~%<br><hr><h3>~a:</h3><br>~%" (proof-name proof))
+    (loop for mode in '(:study :practice :quiz)
+	  as path = (string-downcase (format nil "proofs/~a/~a_~a.html" short-name short-name mode))
 	  do 
+	  (format index-stream "<a href=~a>~a ~a</a><br>~%" path mode (proof-name proof))
 	  (setf *choices-and-ids* nil)
 	  (with-open-file
-	   (o (string-downcase (format nil "proofs/~a/~a_~a.html" short-name short-name mode)) :direction :output :if-exists :supersede)
+	   (o path :direction :output :if-exists :supersede)
 	   (render-top o)
 	   (render-body proof o mode)
 	   (render-bottom o)
      ))))
 
-(render-proof "imsp")
+(defun render-all ()
+  (let ((short-names (mapcar #'(lambda (p) (car (last (pathname-directory p)))) (directory "proofs/*.*"))))
+    (with-open-file
+     (index-stream "proofs.html" :direction :output :if-exists :supersede)
+     (loop for short-name in short-names
+	   do (render-proof short-name index-stream)))))
+
+(render-all)
