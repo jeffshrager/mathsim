@@ -31,8 +31,10 @@
 
 <h2>Inverse Midsegment Proof</h2><br>
 <table><tr><td><image src="imsp.png"></image></td><td>A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio.</td></tr></table><br>
-Given: CD=DA. and: CE=EB<br>
+<hr><br>
+Given: CD=DA. and: CE=EB
 Prove: DE || AB, and: DE = &frac12;AB<br>
+<hr><br>
 <hr><br>
 <table border=1>
 <tr><td width=250px; style="text-align:left;vertical-align:top;background-color:#f2d9e6">
@@ -246,64 +248,72 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </table></td></table>
 
 <script>
-    let score = 100;
-	 function checkproof() {
-  	 let choices = [];
-	 
-let max = 22
+   let score = 100;
+
+   let max = 22;
+
+   function checkproof() {
+   let choices = [];
 choices.push(["c_2","R_3_11",document.getElementById("R_3_11").value]);
-
 choices.push(["c_2","S_3_11",document.getElementById("S_3_11").value]);
-
 choices.push(["c_1","R_3_10",document.getElementById("R_3_10").value]);
-
 choices.push(["c_1","S_3_10",document.getElementById("S_3_10").value]);
-
 choices.push(["c_3","R_2_9",document.getElementById("R_2_9").value]);
-
 choices.push(["c_3","S_2_9",document.getElementById("S_2_9").value]);
-
 choices.push(["c_2","R_2_8",document.getElementById("R_2_8").value]);
-
 choices.push(["c_2","S_2_8",document.getElementById("S_2_8").value]);
-
 choices.push(["c_1","R_2_7",document.getElementById("R_2_7").value]);
-
 choices.push(["c_1","S_2_7",document.getElementById("S_2_7").value]);
-
 choices.push(["c_6","R_1_6",document.getElementById("R_1_6").value]);
-
 choices.push(["c_6","S_1_6",document.getElementById("S_1_6").value]);
-
 choices.push(["c_5","R_1_5",document.getElementById("R_1_5").value]);
-
 choices.push(["c_5","S_1_5",document.getElementById("S_1_5").value]);
-
 choices.push(["c_4","R_1_4",document.getElementById("R_1_4").value]);
-
 choices.push(["c_4","S_1_4",document.getElementById("S_1_4").value]);
-
 choices.push(["c_3","R_1_3",document.getElementById("R_1_3").value]);
-
 choices.push(["c_3","S_1_3",document.getElementById("S_1_3").value]);
-
 choices.push(["c_2","R_1_2",document.getElementById("R_1_2").value]);
-
 choices.push(["c_2","S_1_2",document.getElementById("S_1_2").value]);
-
 choices.push(["c_1","R_1_1",document.getElementById("R_1_1").value]);
-
 choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
-
 
      let count = 0
      for (index = 0; index < choices.length; index++) {
-      if ((choices[index][0]==choices[index][2]) && (choices[index][0] != "choose")) {count++};
-      }
+       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != "choose")) {count++};
+       }
      score = score - (max - count)
      document.getElementById("thescore").value = score;
      alert("You have " + count + " correct choices out of " + max +". Your score is now: " + score + " out of 100.");
-     
+     } 	 
+  
+
+   function turnin(){alert("Not yet implemented.")}
+
+   function randomize() {
+   
+choices.push(["c_2","R_3_11",document.getElementById("R_3_11").value]);
+choices.push(["c_2","S_3_11",document.getElementById("S_3_11").value]);
+choices.push(["c_1","R_3_10",document.getElementById("R_3_10").value]);
+choices.push(["c_1","S_3_10",document.getElementById("S_3_10").value]);
+choices.push(["c_3","R_2_9",document.getElementById("R_2_9").value]);
+choices.push(["c_3","S_2_9",document.getElementById("S_2_9").value]);
+choices.push(["c_2","R_2_8",document.getElementById("R_2_8").value]);
+choices.push(["c_2","S_2_8",document.getElementById("S_2_8").value]);
+choices.push(["c_1","R_2_7",document.getElementById("R_2_7").value]);
+choices.push(["c_1","S_2_7",document.getElementById("S_2_7").value]);
+choices.push(["c_6","R_1_6",document.getElementById("R_1_6").value]);
+choices.push(["c_6","S_1_6",document.getElementById("S_1_6").value]);
+choices.push(["c_5","R_1_5",document.getElementById("R_1_5").value]);
+choices.push(["c_5","S_1_5",document.getElementById("S_1_5").value]);
+choices.push(["c_4","R_1_4",document.getElementById("R_1_4").value]);
+choices.push(["c_4","S_1_4",document.getElementById("S_1_4").value]);
+choices.push(["c_3","R_1_3",document.getElementById("R_1_3").value]);
+choices.push(["c_3","S_1_3",document.getElementById("S_1_3").value]);
+choices.push(["c_2","R_1_2",document.getElementById("R_1_2").value]);
+choices.push(["c_2","S_1_2",document.getElementById("S_1_2").value]);
+choices.push(["c_1","R_1_1",document.getElementById("R_1_1").value]);
+choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
+
      } 	 
 </script>
 </body>

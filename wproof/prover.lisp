@@ -48,23 +48,36 @@
 (defun render-bottom (o)
   (out!  "
 <script>
-    let score = 100;
-	 function checkproof() {
-  	 let choices = [];
-	 ")
-  (out! (format nil "let max = ~a" (length *choices-and-ids*)))
+   let score = 100;")
+  (out! (format nil "
+   let max = ~a;" (length *choices-and-ids*)))
+  (out!
+   "
+   function checkproof() {
+   let choices = [];")
   (loop for (target-choice . id) in *choices-and-ids*
-	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);~%" target-choice id id)))
+	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);" target-choice id id)))
   (out!
    "
      let count = 0
      for (index = 0; index < choices.length; index++) {
-      if ((choices[index][0]==choices[index][2]) && (choices[index][0] != \"choose\")) {count++};
-      }
+       if ((choices[index][0]==choices[index][2]) && (choices[index][0] != \"choose\")) {count++};
+       }
      score = score - (max - count)
      document.getElementById(\"thescore\").value = score;
      alert(\"You have \" + count + \" correct choices out of \" + max +\". Your score is now: \" + score + \" out of 100.\");
-     
+     } 	 
+  ")
+  (out! "
+   function turnin(){alert(\"Not yet implemented.\")}")
+  (out!
+   "
+   function randomize() {
+   ")
+  (loop for (target-choice . id) in *choices-and-ids*
+	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);" target-choice id id)))
+  (out!
+   "
      } 	 
 </script>
 </body>
@@ -79,12 +92,15 @@
 (defun render-body (proof o mode)
   (outbr!  (format nil "<h2>~a</h2>" (proof-name proof)))
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
-  (outbr! (proof-given proof))
+  (outbr! "<hr>")
+  (out! (proof-given proof))
   (outbr! (proof-prove proof))
-  (when (eq mode :quiz)
+  (outbr! "<hr>")
+  (when (member mode '(:quiz :practice))
     (out! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
-    (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" value=\"(Not checked)\" style=\"font-size: 20px; height:40px; width:200px;\">")
-    )
+    (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" value=\"(Not checked)\" style=\"font-size: 20px; hight:40px; width:200px;\">"))
+  (when (eq mode :quiz) (out! "<button onclick=\"turnin()\" style=\"font-size: 20px; height:40px; width:200px; background-color: red;\">Turn In</button>"))
+  (when (eq mode :practice) (out! "<button onclick=\"randomize()\" style=\"font-size: 20px; height:40px; width:200px; background-color: lightblue;\">Randomize</button>"))
   (outbr! "<hr>")
   (loop for part in (proof-parts proof)
 	as part-number from 1 by 1
@@ -149,7 +165,7 @@
 
 (defun render-proof (short-name) ;; mode is :quiz or :study (study is the default)
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
-    (loop for mode in '(:study :quiz)
+    (loop for mode in '(:study :quiz :practice)
 	  do 
 	  (setf *choices-and-ids* nil)
 	  (with-open-file
