@@ -36,7 +36,7 @@ Given: CD=DA. and: CE=EB
 Prove: DE || AB, and: DE = &frac12;AB<br>
 <hr><br>
 <button onclick="checkproof()" style="font-size: 20px; height:40px; width:200px; background-color: #4dff88;">Check Proof</button>
-<font style="font-size: 20px;">Cumulative Score:</font> <input type="text" id="thescore" value="(Not checked)" style="font-size: 20px; hight:40px; width:200px;"><br>
+<font style="font-size: 20px;">Cumulative Score:</font> <input type="text" id="thescore" READONLY value="Not Checked" style="font-size: 20px; hight:40px; width:200px;"><br>
 <button onclick="randomize()" style="font-size: 20px; height:40px; width:200px; background-color: lightblue;">Randomize</button>
 <hr><br>
 <table border=1>
@@ -47,7 +47,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>1</td><td>
 <select name="&lt;C = &lt;C" id=S_1_1>
-<option value="c_1" selected>&lt;C = &lt;C</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">&lt;C = &lt;C</option>
 <option value="c_2">CA=CD+DA, and CB=CE+EB</option>
 <option value="c_3">CD=DA, and: CE=EB</option>
 <option value="c_4">CA=CD+CD, and CB=CE+CE</option>
@@ -56,7 +57,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </select>
 </td><td>
 <select name="Reflexivity" id=R_1_1>
-<option value="c_1" selected>Reflexivity</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
 <option value="c_4">Substitution</option>
@@ -67,8 +69,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td></tr>
 <tr><td>2</td><td>
 <select name="CA=CD+DA, and CB=CE+EB" id=S_1_2>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;C = &lt;C</option>
-<option value="c_2" selected>CA=CD+DA, and CB=CE+EB</option>
+<option value="c_2">CA=CD+DA, and CB=CE+EB</option>
 <option value="c_3">CD=DA, and: CE=EB</option>
 <option value="c_4">CA=CD+CD, and CB=CE+CE</option>
 <option value="c_5">CA=2CD, and CB=2CE</option>
@@ -76,8 +79,9 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </select>
 </td><td>
 <select name="Segment Addition" id=R_1_2>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Reflexivity</option>
-<option value="c_2" selected>Segment Addition</option>
+<option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
 <option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
@@ -87,18 +91,20 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td></tr>
 <tr><td>3</td><td>
 <select name="CD=DA, and: CE=EB" id=S_1_3>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;C = &lt;C</option>
 <option value="c_2">CA=CD+DA, and CB=CE+EB</option>
-<option value="c_3" selected>CD=DA, and: CE=EB</option>
+<option value="c_3">CD=DA, and: CE=EB</option>
 <option value="c_4">CA=CD+CD, and CB=CE+CE</option>
 <option value="c_5">CA=2CD, and CB=2CE</option>
 <option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Given" id=R_1_3>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
-<option value="c_3" selected>Given</option>
+<option value="c_3">Given</option>
 <option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
@@ -107,19 +113,21 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td></tr>
 <tr><td>4</td><td>
 <select name="CA=CD+CD, and CB=CE+CE" id=S_1_4>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;C = &lt;C</option>
 <option value="c_2">CA=CD+DA, and CB=CE+EB</option>
 <option value="c_3">CD=DA, and: CE=EB</option>
-<option value="c_4" selected>CA=CD+CD, and CB=CE+CE</option>
+<option value="c_4">CA=CD+CD, and CB=CE+CE</option>
 <option value="c_5">CA=2CD, and CB=2CE</option>
 <option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Substitution" id=R_1_4>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
-<option value="c_4" selected>Substitution</option>
+<option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
@@ -127,41 +135,45 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td></tr>
 <tr><td>5</td><td>
 <select name="CA=2CD, and CB=2CE" id=S_1_5>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;C = &lt;C</option>
 <option value="c_2">CA=CD+DA, and CB=CE+EB</option>
 <option value="c_3">CD=DA, and: CE=EB</option>
 <option value="c_4">CA=CD+CD, and CB=CE+CE</option>
-<option value="c_5" selected>CA=2CD, and CB=2CE</option>
+<option value="c_5">CA=2CD, and CB=2CE</option>
 <option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Combining common terms" id=R_1_5>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
 <option value="c_4">Substitution</option>
-<option value="c_5" selected>Combining common terms</option>
+<option value="c_5">Combining common terms</option>
 <option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>6</td><td>
 <select name="&Delta;CDE&asymp;&Delta;CAB" id=S_1_6>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;C = &lt;C</option>
 <option value="c_2">CA=CD+DA, and CB=CE+EB</option>
 <option value="c_3">CD=DA, and: CE=EB</option>
 <option value="c_4">CA=CD+CD, and CB=CE+CE</option>
 <option value="c_5">CA=2CD, and CB=2CE</option>
-<option value="c_6" selected>&Delta;CDE&asymp;&Delta;CAB</option>
+<option value="c_6">&Delta;CDE&asymp;&Delta;CAB</option>
 </select>
 </td><td>
 <select name="Ratio SAS" id=R_1_6>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Reflexivity</option>
 <option value="c_2">Segment Addition</option>
 <option value="c_3">Given</option>
 <option value="c_4">Substitution</option>
 <option value="c_5">Combining common terms</option>
-<option value="c_6" selected>Ratio SAS</option>
+<option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
 </td></tr>
@@ -174,13 +186,15 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>7</td><td>
 <select name="DE and AB are corresponding parts of similar triangles" id=S_2_7>
-<option value="c_1" selected>DE and AB are corresponding parts of similar triangles</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">DE and AB are corresponding parts of similar triangles</option>
 <option value="c_2">AB=2DE</option>
 <option value="c_3">DE = &frac12;AB</option>
 </select>
 </td><td>
 <select name="Definition of corresponding parts" id=R_2_7>
-<option value="c_1" selected>Definition of corresponding parts</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">Definition of corresponding parts</option>
 <option value="c_2">Ratios of corresponding parts of similar triangles are equal</option>
 <option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
@@ -188,29 +202,33 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 </td></tr>
 <tr><td>8</td><td>
 <select name="AB=2DE" id=S_2_8>
+<option value=choose selected>Choose!</option>
 <option value="c_1">DE and AB are corresponding parts of similar triangles</option>
-<option value="c_2" selected>AB=2DE</option>
+<option value="c_2">AB=2DE</option>
 <option value="c_3">DE = &frac12;AB</option>
 </select>
 </td><td>
 <select name="Ratios of corresponding parts of similar triangles are equal" id=R_2_8>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Definition of corresponding parts</option>
-<option value="c_2" selected>Ratios of corresponding parts of similar triangles are equal</option>
+<option value="c_2">Ratios of corresponding parts of similar triangles are equal</option>
 <option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>9</td><td>
 <select name="DE = &frac12;AB" id=S_2_9>
+<option value=choose selected>Choose!</option>
 <option value="c_1">DE and AB are corresponding parts of similar triangles</option>
 <option value="c_2">AB=2DE</option>
-<option value="c_3" selected>DE = &frac12;AB</option>
+<option value="c_3">DE = &frac12;AB</option>
 </select>
 </td><td>
 <select name="Algebra (division, commutativity of =)" id=R_2_9>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Definition of corresponding parts</option>
 <option value="c_2">Ratios of corresponding parts of similar triangles are equal</option>
-<option value="c_3" selected>Algebra (division, commutativity of =)</option>
+<option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
 </td></tr>
@@ -223,25 +241,29 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <tr><td></td><td>Statement</td><td>Rationale</td></tr>
 <tr><td>10</td><td>
 <select name="&lt;CDE = &lt;CABs" id=S_3_10>
-<option value="c_1" selected>&lt;CDE = &lt;CABs</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">&lt;CDE = &lt;CABs</option>
 <option value="c_2">DE||AB</option>
 </select>
 </td><td>
 <select name="Inverse AAA similarity." id=R_3_10>
-<option value="c_1" selected>Inverse AAA similarity.</option>
+<option value=choose selected>Choose!</option>
+<option value="c_1">Inverse AAA similarity.</option>
 <option value="c_2">Inverse corresponding angles across parallel lines</option>
 </select>
 </td><td>
 </td></tr>
 <tr><td>11</td><td>
 <select name="DE||AB" id=S_3_11>
+<option value=choose selected>Choose!</option>
 <option value="c_1">&lt;CDE = &lt;CABs</option>
-<option value="c_2" selected>DE||AB</option>
+<option value="c_2">DE||AB</option>
 </select>
 </td><td>
 <select name="Inverse corresponding angles across parallel lines" id=R_3_11>
+<option value=choose selected>Choose!</option>
 <option value="c_1">Inverse AAA similarity.</option>
-<option value="c_2" selected>Inverse corresponding angles across parallel lines</option>
+<option value="c_2">Inverse corresponding angles across parallel lines</option>
 </select>
 </td><td>
 </td></tr>
@@ -287,32 +309,48 @@ choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
      } 	 
   
 
-   function turnin(){alert("Not yet implemented.")}
+   function turnin(){
+     if (document.getElementById("thescore").value=="Not Checked"){
+       alert("You need to check the proof before turning it in!")
+       }
+       else{alert("Automatic turn-in is not yet implemented. Call your teacher or proctor over and show them your score.")}
+    }
 
+
+function setSelectedIndex(s, v) {
+    s.options[0].selected = true;
+    for ( var i = 0; i < s.options.length; i++ ) {
+        s.options[i].selected = false;
+        if ((s.options[i].value == v) && (Math.random()<0.666)) {
+            s.options[i].selected = true;
+            return;
+        }
+    }
+}
    function randomize() {
    
-choices.push(["c_2","R_3_11",document.getElementById("R_3_11").value]);
-choices.push(["c_2","S_3_11",document.getElementById("S_3_11").value]);
-choices.push(["c_1","R_3_10",document.getElementById("R_3_10").value]);
-choices.push(["c_1","S_3_10",document.getElementById("S_3_10").value]);
-choices.push(["c_3","R_2_9",document.getElementById("R_2_9").value]);
-choices.push(["c_3","S_2_9",document.getElementById("S_2_9").value]);
-choices.push(["c_2","R_2_8",document.getElementById("R_2_8").value]);
-choices.push(["c_2","S_2_8",document.getElementById("S_2_8").value]);
-choices.push(["c_1","R_2_7",document.getElementById("R_2_7").value]);
-choices.push(["c_1","S_2_7",document.getElementById("S_2_7").value]);
-choices.push(["c_6","R_1_6",document.getElementById("R_1_6").value]);
-choices.push(["c_6","S_1_6",document.getElementById("S_1_6").value]);
-choices.push(["c_5","R_1_5",document.getElementById("R_1_5").value]);
-choices.push(["c_5","S_1_5",document.getElementById("S_1_5").value]);
-choices.push(["c_4","R_1_4",document.getElementById("R_1_4").value]);
-choices.push(["c_4","S_1_4",document.getElementById("S_1_4").value]);
-choices.push(["c_3","R_1_3",document.getElementById("R_1_3").value]);
-choices.push(["c_3","S_1_3",document.getElementById("S_1_3").value]);
-choices.push(["c_2","R_1_2",document.getElementById("R_1_2").value]);
-choices.push(["c_2","S_1_2",document.getElementById("S_1_2").value]);
-choices.push(["c_1","R_1_1",document.getElementById("R_1_1").value]);
-choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
+setSelectedIndex(document.getElementById("R_3_11"),"c_2");
+setSelectedIndex(document.getElementById("S_3_11"),"c_2");
+setSelectedIndex(document.getElementById("R_3_10"),"c_1");
+setSelectedIndex(document.getElementById("S_3_10"),"c_1");
+setSelectedIndex(document.getElementById("R_2_9"),"c_3");
+setSelectedIndex(document.getElementById("S_2_9"),"c_3");
+setSelectedIndex(document.getElementById("R_2_8"),"c_2");
+setSelectedIndex(document.getElementById("S_2_8"),"c_2");
+setSelectedIndex(document.getElementById("R_2_7"),"c_1");
+setSelectedIndex(document.getElementById("S_2_7"),"c_1");
+setSelectedIndex(document.getElementById("R_1_6"),"c_6");
+setSelectedIndex(document.getElementById("S_1_6"),"c_6");
+setSelectedIndex(document.getElementById("R_1_5"),"c_5");
+setSelectedIndex(document.getElementById("S_1_5"),"c_5");
+setSelectedIndex(document.getElementById("R_1_4"),"c_4");
+setSelectedIndex(document.getElementById("S_1_4"),"c_4");
+setSelectedIndex(document.getElementById("R_1_3"),"c_3");
+setSelectedIndex(document.getElementById("S_1_3"),"c_3");
+setSelectedIndex(document.getElementById("R_1_2"),"c_2");
+setSelectedIndex(document.getElementById("S_1_2"),"c_2");
+setSelectedIndex(document.getElementById("R_1_1"),"c_1");
+setSelectedIndex(document.getElementById("S_1_1"),"c_1");
 
      } 	 
 </script>

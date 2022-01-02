@@ -36,7 +36,7 @@ Given: CD=DA. and: CE=EB
 Prove: DE || AB, and: DE = &frac12;AB<br>
 <hr><br>
 <button onclick="checkproof()" style="font-size: 20px; height:40px; width:200px; background-color: #4dff88;">Check Proof</button>
-<font style="font-size: 20px;">Cumulative Score:</font> <input type="text" id="thescore" value="(Not checked)" style="font-size: 20px; hight:40px; width:200px;"><br>
+<font style="font-size: 20px;">Cumulative Score:</font> <input type="text" id="thescore" READONLY value="Not Checked" style="font-size: 20px; hight:40px; width:200px;"><br>
 <button onclick="turnin()" style="font-size: 20px; height:40px; width:200px; background-color: red;">Turn In</button>
 <hr><br>
 <table border=1>
@@ -309,32 +309,48 @@ choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
      } 	 
   
 
-   function turnin(){alert("Not yet implemented.")}
+   function turnin(){
+     if (document.getElementById("thescore").value=="Not Checked"){
+       alert("You need to check the proof before turning it in!")
+       }
+       else{alert("Automatic turn-in is not yet implemented. Call your teacher or proctor over and show them your score.")}
+    }
 
+
+function setSelectedIndex(s, v) {
+    s.options[0].selected = true;
+    for ( var i = 0; i < s.options.length; i++ ) {
+        s.options[i].selected = false;
+        if ((s.options[i].value == v) && (Math.random()<0.666)) {
+            s.options[i].selected = true;
+            return;
+        }
+    }
+}
    function randomize() {
    
-choices.push(["c_2","R_3_11",document.getElementById("R_3_11").value]);
-choices.push(["c_2","S_3_11",document.getElementById("S_3_11").value]);
-choices.push(["c_1","R_3_10",document.getElementById("R_3_10").value]);
-choices.push(["c_1","S_3_10",document.getElementById("S_3_10").value]);
-choices.push(["c_3","R_2_9",document.getElementById("R_2_9").value]);
-choices.push(["c_3","S_2_9",document.getElementById("S_2_9").value]);
-choices.push(["c_2","R_2_8",document.getElementById("R_2_8").value]);
-choices.push(["c_2","S_2_8",document.getElementById("S_2_8").value]);
-choices.push(["c_1","R_2_7",document.getElementById("R_2_7").value]);
-choices.push(["c_1","S_2_7",document.getElementById("S_2_7").value]);
-choices.push(["c_6","R_1_6",document.getElementById("R_1_6").value]);
-choices.push(["c_6","S_1_6",document.getElementById("S_1_6").value]);
-choices.push(["c_5","R_1_5",document.getElementById("R_1_5").value]);
-choices.push(["c_5","S_1_5",document.getElementById("S_1_5").value]);
-choices.push(["c_4","R_1_4",document.getElementById("R_1_4").value]);
-choices.push(["c_4","S_1_4",document.getElementById("S_1_4").value]);
-choices.push(["c_3","R_1_3",document.getElementById("R_1_3").value]);
-choices.push(["c_3","S_1_3",document.getElementById("S_1_3").value]);
-choices.push(["c_2","R_1_2",document.getElementById("R_1_2").value]);
-choices.push(["c_2","S_1_2",document.getElementById("S_1_2").value]);
-choices.push(["c_1","R_1_1",document.getElementById("R_1_1").value]);
-choices.push(["c_1","S_1_1",document.getElementById("S_1_1").value]);
+setSelectedIndex(document.getElementById("R_3_11"),"c_2");
+setSelectedIndex(document.getElementById("S_3_11"),"c_2");
+setSelectedIndex(document.getElementById("R_3_10"),"c_1");
+setSelectedIndex(document.getElementById("S_3_10"),"c_1");
+setSelectedIndex(document.getElementById("R_2_9"),"c_3");
+setSelectedIndex(document.getElementById("S_2_9"),"c_3");
+setSelectedIndex(document.getElementById("R_2_8"),"c_2");
+setSelectedIndex(document.getElementById("S_2_8"),"c_2");
+setSelectedIndex(document.getElementById("R_2_7"),"c_1");
+setSelectedIndex(document.getElementById("S_2_7"),"c_1");
+setSelectedIndex(document.getElementById("R_1_6"),"c_6");
+setSelectedIndex(document.getElementById("S_1_6"),"c_6");
+setSelectedIndex(document.getElementById("R_1_5"),"c_5");
+setSelectedIndex(document.getElementById("S_1_5"),"c_5");
+setSelectedIndex(document.getElementById("R_1_4"),"c_4");
+setSelectedIndex(document.getElementById("S_1_4"),"c_4");
+setSelectedIndex(document.getElementById("R_1_3"),"c_3");
+setSelectedIndex(document.getElementById("S_1_3"),"c_3");
+setSelectedIndex(document.getElementById("R_1_2"),"c_2");
+setSelectedIndex(document.getElementById("S_1_2"),"c_2");
+setSelectedIndex(document.getElementById("R_1_1"),"c_1");
+setSelectedIndex(document.getElementById("S_1_1"),"c_1");
 
      } 	 
 </script>

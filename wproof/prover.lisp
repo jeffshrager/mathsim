@@ -69,13 +69,29 @@
      } 	 
   ")
   (out! "
-   function turnin(){alert(\"Not yet implemented.\")}")
+   function turnin(){
+     if (document.getElementById(\"thescore\").value==\"Not Checked\"){
+       alert(\"You need to check the proof before turning it in!\")
+       }
+       else{alert(\"Automatic turn-in is not yet implemented. Call your teacher or proctor over and show them your score.\")}
+    }
+")
   (out!
    "
+function setSelectedIndex(s, v) {
+    s.options[0].selected = true;
+    for ( var i = 0; i < s.options.length; i++ ) {
+        s.options[i].selected = false;
+        if ((s.options[i].value == v) && (Math.random()<0.666)) {
+            s.options[i].selected = true;
+            return;
+        }
+    }
+}
    function randomize() {
    ")
   (loop for (target-choice . id) in *choices-and-ids*
-	do (out! (format nil "choices.push([~s,~s,document.getElementById(~s).value]);" target-choice id id)))
+	do (out! (format nil "setSelectedIndex(document.getElementById(~s),~s);" id target-choice)))
   (out!
    "
      } 	 
@@ -98,7 +114,7 @@
   (outbr! "<hr>")
   (when (member mode '(:quiz :practice))
     (out! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
-    (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" value=\"(Not checked)\" style=\"font-size: 20px; hight:40px; width:200px;\">"))
+    (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" READONLY value=\"Not Checked\" style=\"font-size: 20px; hight:40px; width:200px;\">"))
   (when (eq mode :quiz) (out! "<button onclick=\"turnin()\" style=\"font-size: 20px; height:40px; width:200px; background-color: red;\">Turn In</button>"))
   (when (eq mode :practice) (out! "<button onclick=\"randomize()\" style=\"font-size: 20px; height:40px; width:200px; background-color: lightblue;\">Randomize</button>"))
   (outbr! "<hr>")
@@ -142,7 +158,7 @@
 						   as n from 1 by 1
 						   when (string-equal s c)
 						   do (return n)))
-	  do (if (eq mode :quiz)
+	  do (if (member mode '(:quiz :practice))
 		 (progn 
 		   (when choose?
 		     (out! "<option value=choose selected>Choose!</option>")
