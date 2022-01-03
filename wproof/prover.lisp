@@ -100,18 +100,29 @@ function setSelectedIndex(s, v) {
 </html>
 "))
 
-(defstruct proof name short-name jpg notes given prove parts)
+(defstruct proof name short-name jpg notes given prove parts prereqs)
 (defstruct part name steps)
 
 (defvar *proofs* nil)
 
+(defun ugly-hack-to-get-a-proof-slot-from-its-short-name-without-loading-it (short-name accessfn)
+  (funcall accessfn (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
+
+(defun proof-html-file-path (short-name mode &optional (relative? nil))
+  (string-downcase (format nil "~a/~a/~a_~a.html" (if relative? "../" "proofs") short-name short-name mode)))
+
 (defun render-body (proof o mode)
   (outbr!  (format nil "<h2>~a</h2>" (proof-name proof)))
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
-  (outbr! "<hr>")
   (out! (proof-given proof))
   (outbr! (proof-prove proof))
-  (outbr! "<hr>")
+  (out! "<hr>")
+  (let ((prereqs (proof-prereqs proof)))
+    (when prereqs (outbr! (format nil "<b>Reference Proofs (these will open as study versions in a new tab):</b>"))
+	  (loop for prereq in prereqs
+		do (out! (format nil "[<a href=~s target=_blank>~a</a>]&nbsp;&nbsp;" (proof-html-file-path prereq :study :relative)
+				   (ugly-hack-to-get-a-proof-slot-from-its-short-name-without-loading-it (proof-short-name proof) #'proof-name)))
+		finally (out! "<hr>"))))
   (when (member mode '(:quiz :practice))
     (out! "<button onclick=\"checkproof()\" style=\"font-size: 20px; height:40px; width:200px; background-color: #4dff88;\">Check Proof</button>")
     (outbr! "<font style=\"font-size: 20px;\">Cumulative Score:</font> <input type=\"text\" id=\"thescore\" READONLY value=\"Not Checked\" style=\"font-size: 20px; hight:40px; width:200px;\">"))
@@ -183,7 +194,7 @@ function setSelectedIndex(s, v) {
   (let* ((proof (eval (with-open-file (i (format nil "proofs/~a/~a.proof" short-name short-name)) (read i)))))
     (format index-stream "~%<br><hr><h3>~a:</h3><br>~%" (proof-name proof))
     (loop for mode in '(:study :practice :quiz)
-	  as path = (string-downcase (format nil "proofs/~a/~a_~a.html" short-name short-name mode))
+	  as path = (proof-html-file-path short-name mode)
 	  do 
 	  (format index-stream "<a href=~a>~a ~a</a><br>~%" path mode (proof-name proof))
 	  (setf *choices-and-ids* nil)
@@ -195,10 +206,13 @@ function setSelectedIndex(s, v) {
      ))))
 
 (defun render-all ()
-  (let ((short-names (mapcar #'(lambda (p) (car (last (pathname-directory p)))) (directory "proofs/*.*"))))
+  (let ((short-names (loop for p in (directory "proofs/*.*")
+			   unless (position #\. (pathname-name p))
+			   collect (car (last (pathname-directory p))))))
     (with-open-file
      (index-stream "proofs.html" :direction :output :if-exists :supersede)
      (loop for short-name in short-names
 	   do (render-proof short-name index-stream)))))
 
+;(trace render-proof proof-html-file-path)
 (render-all)
