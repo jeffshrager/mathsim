@@ -12,6 +12,17 @@
 (defmacro outbr! (text)
   `(format o "~a<br>~%" ,text))
 
+(defparameter *default-explanations*
+  '(("reflexivity" "Reflexivity is used to explain that something is itself. This isn't quite a trivial as it might seem. The most common case is just that something is exactly itself, like &lt;C = &lt;C, but you can also use it to equate an angle that has the same middle point, but one or both of the end points is different, for example, &lt;ABC = &lt;DBE, as long as AB and DB are colinear, and BC and BE are also co-linear. So &lt;ABC really is the same angle as &lt;DBE, but A and C are at different points along their respective lines than are points D and E.")
+    ("segment addition" "Segment Addition is used to explain either how you got from a set of co-linear segments to a larger one that is their concatenation, or, alternatively, how you break a larger segment into smaller, co-linear parts. (Yeah that should probably be called something like segment subtraction, but most of these can be used in either direction, so we usaully just list one of the two possible directions. Yes, that's confusing!)")
+    ("given" "In order to be a 'Given' the statement must be explicitly listed as a 'Given' with the problem, or it must be directly readable from the diagram. (Technically, even if, for example, A=B was explicitly given, you wouldn't be able to list B=A as given, but would have to do an additional step, based on commutativity of equality, to reverse the expression. However, we often allow givens to be rewritten, as long as the rewitting is trivial (like the above example).)")
+    ("given" "In order to use 'Given' as an explanation, the statement must be explicitly listed as a 'Given' with the problem (above), or it must be directly readable from the diagram. If it's from the diagram, you should really use 'Diagram', not 'Given', although some people consider these interchangable in beginning Geometry. Technically, even if, for example, A=B was explicitly given, you wouldn't be able to list B=A as given, but would have to do an additional step, based on commutativity of equality, to reverse the expression. However, we often allow givens to be rewritten, as long as the rewitting is trivial (like the above example.")
+    ("substitution" "This is agebraic substitution. In order to use it, you need to be referring to (at least) two different prior statements. For example, if you have A=B+C someplace above, and also B=C, then by substitution you could conclude either A=B+B or A=C+C.")
+    ("construction" "Use 'Contruction' as an explanation when you create a new part on the diagram. (Do not use 'Construction' when all you are doing is marking the diagram, for example, to indicate that two angles are congruent. That sort of marking doesn't require a separate line in proofs.)")
+    ("CPCTC" "Short for: Corresponding Parts of Congruent Triangles (or, more generally, Things) are Congruent. Sometimes this is written out as 'Definition of Corresponding Parts'.")
+    ("definition of corresponding parts" "Once you have shown two things (e.g., triangles) to be congruent, you can use 'Definition of Corresponding Parts' to explain conclude that the corresponding lines or angles are of equal measure (i.e., are congruent).  Sometimes this is abbreviated as 'CPCTC'.")
+    ))
+
 (defun render-top (o)
   (out! "
 <!DOCTYPE html>
@@ -201,16 +212,17 @@ function dopopup(n) {
 	 (reasons (mapcar #'third steps)))
     (out! "<tr><td></td><td>Statement</td><td>Rationale</td></tr>")
     (loop for (step-number target-statement target-reason explanation) in steps
+	  as explanation+ = (or explanation (cadr (assoc target-reason *default-explanations* :test #'string-equal)))
 	  do
 	  (out! (format nil "<tr><td>~a</td><td>" step-number))
 	  (render-pulldown statements o target-statement mode :s part-number step-number)
 	  (out! "</td><td>")
 	  (render-pulldown reasons o target-reason mode :r part-number step-number)
 	  (out! "</td><td>")
-	  (when (and (eq mode :study) explanation)
-	    ;(out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation))
+	  (when (and (member mode '(:study :practice)) explanation+)
+	    ;(out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation+))
 	    (out! (format nil "<div class=\"popup\" onclick=\"dopopup(~a)\">?<span class=\"popuptext\" id=\"myPopup_~a\">~a</span>
-</div>" step-number step-number explanation)))
+</div>" step-number step-number explanation+)))
 	  (out! "</td></tr>"))
     (out! "</table></td></table>")
     ))

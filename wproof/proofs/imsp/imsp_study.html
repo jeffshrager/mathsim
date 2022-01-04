@@ -118,6 +118,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(1)">?<span class="popuptext" id="myPopup_1">Reflexivity is used to explain that something is itself. This isn't quite a trivial as it might seem. The most common case is just that something is exactly itself, like &lt;C = &lt;C, but you can also use it to equate an angle that has the same middle point, but one or both of the end points is different, for example, &lt;ABC = &lt;DBE, as long as AB and DB are colinear, and BC and BE are also co-linear. So &lt;ABC really is the same angle as &lt;DBE, but A and C are at different points along their respective lines than are points D and E.</span>
+</div>
 </td></tr>
 <tr><td>2</td><td>
 <select name="CA=CD+DA, and CB=CE+EB" id=S_1_2>
@@ -138,6 +140,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(2)">?<span class="popuptext" id="myPopup_2">Segment Addition is used to explain either how you got from a set of co-linear segments to a larger one that is their concatenation, or, alternatively, how you break a larger segment into smaller, co-linear parts. (Yeah that should probably be called something like segment subtraction, but most of these can be used in either direction, so we usaully just list one of the two possible directions. Yes, that's confusing!)</span>
+</div>
 </td></tr>
 <tr><td>3</td><td>
 <select name="CD=DA, and: CE=EB" id=S_1_3>
@@ -158,6 +162,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(3)">?<span class="popuptext" id="myPopup_3">In order to be a 'Given' the statement must be explicitly listed as a 'Given' with the problem, or it must be directly readable from the diagram. (Technically, even if, for example, A=B was explicitly given, you wouldn't be able to list B=A as given, but would have to do an additional step, based on commutativity of equality, to reverse the expression. However, we often allow givens to be rewritten, as long as the rewitting is trivial (like the above example).)</span>
+</div>
 </td></tr>
 <tr><td>4</td><td>
 <select name="CA=CD+CD, and CB=CE+CE" id=S_1_4>
@@ -178,6 +184,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_6">Ratio SAS</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(4)">?<span class="popuptext" id="myPopup_4">This is agebraic substitution. In order to use it, you need to be referring to (at least) two different prior statements. For example, if you have A=B+C someplace above, and also B=C, then by substitution you could conclude either A=B+B or A=C+C.</span>
+</div>
 </td></tr>
 <tr><td>5</td><td>
 <select name="CA=2CD, and CB=2CE" id=S_1_5>
@@ -241,6 +249,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(7)">?<span class="popuptext" id="myPopup_7">Once you have shown two things (e.g., triangles) to be congruent, you can use 'Definition of Corresponding Parts' to explain conclude that the corresponding lines or angles are of equal measure (i.e., are congruent).  Sometimes this is abbreviated as 'CPCTC'.</span>
+</div>
 </td></tr>
 <tr><td>8</td><td>
 <select name="AB=2DE" id=S_2_8>

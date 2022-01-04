@@ -123,6 +123,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_3">Given</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(1)">?<span class="popuptext" id="myPopup_1">Reflexivity is used to explain that something is itself. This isn't quite a trivial as it might seem. The most common case is just that something is exactly itself, like &lt;C = &lt;C, but you can also use it to equate an angle that has the same middle point, but one or both of the end points is different, for example, &lt;ABC = &lt;DBE, as long as AB and DB are colinear, and BC and BE are also co-linear. So &lt;ABC really is the same angle as &lt;DBE, but A and C are at different points along their respective lines than are points D and E.</span>
+</div>
 </td></tr>
 <tr><td>2</td><td>
 <select name="CA=CD+DA, and CB=CE+EB" id=S_1_2>
@@ -145,6 +147,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_3">Given</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(2)">?<span class="popuptext" id="myPopup_2">Segment Addition is used to explain either how you got from a set of co-linear segments to a larger one that is their concatenation, or, alternatively, how you break a larger segment into smaller, co-linear parts. (Yeah that should probably be called something like segment subtraction, but most of these can be used in either direction, so we usaully just list one of the two possible directions. Yes, that's confusing!)</span>
+</div>
 </td></tr>
 <tr><td>3</td><td>
 <select name="CD=DA, and: CE=EB" id=S_1_3>
@@ -167,6 +171,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_2">Segment Addition</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(3)">?<span class="popuptext" id="myPopup_3">In order to be a 'Given' the statement must be explicitly listed as a 'Given' with the problem, or it must be directly readable from the diagram. (Technically, even if, for example, A=B was explicitly given, you wouldn't be able to list B=A as given, but would have to do an additional step, based on commutativity of equality, to reverse the expression. However, we often allow givens to be rewritten, as long as the rewitting is trivial (like the above example).)</span>
+</div>
 </td></tr>
 <tr><td>4</td><td>
 <select name="CA=CD+CD, and CB=CE+CE" id=S_1_4>
@@ -189,6 +195,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Reflexivity</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(4)">?<span class="popuptext" id="myPopup_4">This is agebraic substitution. In order to use it, you need to be referring to (at least) two different prior statements. For example, if you have A=B+C someplace above, and also B=C, then by substitution you could conclude either A=B+B or A=C+C.</span>
+</div>
 </td></tr>
 <tr><td>5</td><td>
 <select name="CA=2CD, and CB=2CE" id=S_1_5>
@@ -233,6 +241,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_5">Combining common terms</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(6)">?<span class="popuptext" id="myPopup_6">This is a use of SAS that concludes similarity instead of congruence. If the ratio of the sides between the two triangles is the same in the case of both sides (and you have an internal angle, as usual), then you can conclude that the triangles are similar with the observed ratio. (Note that, this is actually the same as SAS for congruence, but in that case, the ratio is 1.)<br><image src=imsp6.png>...</image></span>
+</div>
 </td></tr>
 </table></td></table>
 <table border=1>
@@ -256,6 +266,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_3">Algebra (division, commutativity of =)</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(7)">?<span class="popuptext" id="myPopup_7">Once you have shown two things (e.g., triangles) to be congruent, you can use 'Definition of Corresponding Parts' to explain conclude that the corresponding lines or angles are of equal measure (i.e., are congruent).  Sometimes this is abbreviated as 'CPCTC'.</span>
+</div>
 </td></tr>
 <tr><td>8</td><td>
 <select name="AB=2DE" id=S_2_8>
@@ -309,6 +321,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_1">Inverse AAA similarity.</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(10)">?<span class="popuptext" id="myPopup_10">Since we can conclude similarity from AAA (all the same angles), we can use AAA the other way and conclude that all the angles of similar trianlges are equal.</span>
+</div>
 </td></tr>
 <tr><td>11</td><td>
 <select name="DE||AB" id=S_3_11>
@@ -323,6 +337,8 @@ Prove: DE || AB, and: DE = &frac12;AB<br>
 <option value="c_2">Inverse corresponding angles across parallel lines</option>
 </select>
 </td><td>
+<div class="popup" onclick="dopopup(11)">?<span class="popuptext" id="myPopup_11">Again, we're using a theorem in the opposite direction than we usually use it. We usually use parallel lines and a transecting third line to conclude that corresponding angles are equal. Here we're doing the opposite: Concluding that the lines are parallel because we have found equal corresponding angles.</span>
+</div>
 </td></tr>
 </table></td></table>
 
