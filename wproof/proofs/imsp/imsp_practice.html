@@ -25,13 +25,65 @@
   visibility: visible;
   opacity: 1;
 }
+/* Popup container */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 450px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
 </style>
 </head>
 <body>
 
 <h2>Inverse Midsegment Proof</h2><br>
 <table><tr><td><image src="imsp.png"></image></td><td>A midsegment is a line parallel to one side of a triangle, connecting the midpoints of the two sides. Interestingly, the midsegment is half the length of the corresponding side (even though it doesn't look it -- that's an illusion...measure it!) Normally you're given the parallel and midpoint facts and have to prove that the large triangle and the smaller triangle created by the midsegment are similar, and then the illusory length ratio. Here we give the midpoint facts, but not the parallelism of the midsegment with the corresponding side of the larger triangle, and have to prove that the parallelism, as well as the ratio.</td></tr></table><br>
-Given: CD=DA. and: CE=EB
+Given: CD=DA. and: CE=EB<br>
 Prove: DE || AB, and: DE = &frac12;AB<br>
 <hr>
 <b>Reference Proofs (these will open as study versions in a new tab):</b><br>
@@ -355,6 +407,11 @@ setSelectedIndex(document.getElementById("R_1_1"),"c_1");
 setSelectedIndex(document.getElementById("S_1_1"),"c_1");
 
      } 	 
+// When the user clicks on <div>, open the popup
+function dopopup(n) {
+  var popup = document.getElementById("myPopup_"+n);
+  popup.classList.toggle("show");
+}
 </script>
 </body>
 </html>

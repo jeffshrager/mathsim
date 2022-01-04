@@ -40,6 +40,58 @@
   visibility: visible;
   opacity: 1;
 }
+/* Popup container */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 450px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: \"\";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
 </style>
 </head>
 <body>
@@ -95,6 +147,11 @@ function setSelectedIndex(s, v) {
   (out!
    "
      } 	 
+// When the user clicks on <div>, open the popup
+function dopopup(n) {
+  var popup = document.getElementById(\"myPopup_\"+n);
+  popup.classList.toggle(\"show\");
+}
 </script>
 </body>
 </html>
@@ -114,7 +171,7 @@ function setSelectedIndex(s, v) {
 (defun render-body (proof o mode)
   (outbr!  (format nil "<h2>~a</h2>" (proof-name proof)))
   (outbr! (format nil "<table><tr><td><image src=~s></image></td><td>~a</td></tr></table>" (proof-jpg proof) (proof-notes proof)))
-  (out! (proof-given proof))
+  (outbr! (proof-given proof))
   (outbr! (proof-prove proof))
   (out! "<hr>")
   (let ((prereqs (proof-prereqs proof)))
@@ -148,7 +205,9 @@ function setSelectedIndex(s, v) {
 	  (render-pulldown reasons o target-reason mode :r part-number step-number)
 	  (out! "</td><td>")
 	  (when (and (eq mode :study) explanation)
-	    (out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation)))
+	    ;(out! (format nil "<div class=\"tooltip\">&nbsp;&nbsp;&nbsp;?&nbsp;<span class=\"tooltiptext\">~a</span></div>" explanation))
+	    (out! (format nil "<div class=\"popup\" onclick=\"dopopup(~a)\">?<span class=\"popuptext\" id=\"myPopup_~a\">~a</span>
+</div>" step-number step-number explanation)))
 	  (out! "</td></tr>"))
     (out! "</table></td></table>")
     ))
