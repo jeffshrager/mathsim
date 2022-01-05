@@ -1,4 +1,4 @@
-;;; (load (compile-file "refract.lisp"))
+;;; sbcl --eval '(load (compile-file "refract.lisp"))'
 ;;; REFRACT = REasoner about FRACTions.
 
 ;;; Todo: Without DBMOIF it can't find any derivations at all...why not?
