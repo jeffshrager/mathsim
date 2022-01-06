@@ -2,7 +2,9 @@
 ;;; REFRACT = REasoner about FRACTions.
 
 ;;; Todo: Without DBMOIF it can't find any derivations at all...why not?
+;;;       (run :given '((2 / x) * (x / y)) :goal '(2 / y) :verbose? t :depth-limit 6) ;; This it can do even w/o DBMOIF
 ;;;       Why does (:to_over1 =1 (=1 over 1)) crashe the prover?
+;;;       (:tfup ((=1 over =2) = (=3 over 4)) ((=2 over =1) = (=4 over 3))) ;; turn-fraction-upside-down
 ;;;       The binder is making a side-effect mess somehow! .... (:TO_OVER1 (=1 . 6) (=1 OVER 1)))
 ;;;          (hacked by re-creting the *vars* on every match UUUUUUUUUUUUUUUUUUUUUUUUUU)
 ;;;       (run :given '(((4 over 2) over (2 over 6)) / ((12 over 2) over (6 over 3))) :goal 2) ???
@@ -24,6 +26,8 @@
 
 (defparameter *all-possible-rules* 
   '(
+    (:cross-cancel ((=1 / =2) * (=2 / =3)) ((=1 / =3)))
+    (:commmute* (=1 * =2) (=2 * =1))
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
@@ -31,13 +35,15 @@
     (:from_over1 (=1 over 1) =1) 
     (:to_over1 (=1) (=1 over 1)) ;; Hack for the crash problem in the next rule
     ;; Invalid operations that kids sometimes do anyways!
+    ;;(:tfup ((=1 over =2) = (=3 over 4)) ((=2 over =1) = (=4 over 3))) ;; turn-fraction-upside-down
     ;; (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
-
     ;; (:to_over1 =1 (=1 over 1)) ;; !!! crashes the prover !!!
    ))
 
 (defvar *rules-master* ;; Gets copy-treed into *rules* in init because of a bug in the binder.
   '(
+    (:cross-cancel ((=1 / =2) * (=2 / =3)) ((=1 / =3)))
+    (:commmute* (=1 * =2) (=2 * =1))
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
@@ -46,12 +52,14 @@
     (:to_over1 (=1) (=1 over 1)) ;; Hack for the crash problem in the next rule
     ;; Invalid operations that kids sometimes do anyways!
     ;; (:tfup (=1 over =2) (=2 over =1)) ;; turn-fraction-upside-down
-
     ;; (:to_over1 =1 (=1 over 1)) ;; !!! crashes the prover !!!
    ))
 
 (defparameter *rule-descriptions*
-  '((:dbmoif . "Divide a fraction by multiplying by its inverse.")
+  '(
+    (:cross-cancel "Cross-cancel")
+    (:commmute* "Commute*")
+    (:dbmoif . "Divide a fraction by multiplying by its inverse.")
     (:tfup . "Turn a fraction upside down.")
     (:xfracts . "Fraction multiplication.")
     (:foil++ . "(positive) FOIL")
@@ -361,12 +369,15 @@
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 (reset-rules)
-(run-all-tests)
-(drop-rule :dbmoif)
-(run-all-tests)
-(reset-rules)
-(print (try-all-rule-orders '((4 over 2) / (2 over 6)) 6))
-(print (try-all-rule-orders '((4 over 2) over (2 over 6)) 6))
+(trace prove)
+(run :given '((2 / x) * (x / y)) :goal '(2 / y) :verbose? t :depth-limit 6) ;; This it can do even w/o DBMOIF
+
+;(run-all-tests)
+;(drop-rule :dbmoif)
+;(run-all-tests)
+;(reset-rules)
+;(print (try-all-rule-orders '((4 over 2) / (2 over 6)) 6))
+;(print (try-all-rule-orders '((4 over 2) over (2 over 6)) 6))
 
 ;;; Bugs:
 ;(print (run :given '((4 over 2) over (2 over 6)) :goal 6 :rule-priorities '(:dbmoif :xfracts) :depth-limit 6 :verbose? t))
