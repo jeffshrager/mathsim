@@ -26,8 +26,8 @@
 
 (defparameter *all-possible-rules* 
   '(
-    (:cross-cancel ((=1 / =2) * (=2 / =3)) ((=1 / =3)))
-    (:commmute* (=1 * =2) (=2 * =1))
+    (:cross-cancel ((=1 / =2) * (=2 / =3)) (=1 / =3))
+    (:commute* (=1 * =2) (=2 * =1))
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
@@ -43,7 +43,7 @@
 (defvar *rules-master* ;; Gets copy-treed into *rules* in init because of a bug in the binder.
   '(
     (:cross-cancel ((=1 / =2) * (=2 / =3)) ((=1 / =3)))
-    (:commmute* (=1 * =2) (=2 * =1))
+    (:commute* (=1 * =2) (=2 * =1))
     (:dbmoif ((=1 over =2) / (=3 over =4)) ((=1 over =2) * (=4 over =3))) ;; divide-by-multiplication-of-inverse-fraction
     (:xfracts ((=1 over =2) * (=3 over =4)) ((=1 * =3) over (=2 * =4)))
     (:fad (=1 / =2) (=1 over =2)) ;; Fractionalize a division
@@ -58,7 +58,7 @@
 (defparameter *rule-descriptions*
   '(
     (:cross-cancel "Cross-cancel")
-    (:commmute* "Commute*")
+    (:commute* "Commute*")
     (:dbmoif . "Divide a fraction by multiplying by its inverse.")
     (:tfup . "Turn a fraction upside down.")
     (:xfracts . "Fraction multiplication.")
@@ -369,8 +369,8 @@
 ;(trace rebuild find-rules@locations bind apply-rule@loc matches? prove replace@ extract@ repetitious? find-rules@locations2)
 
 (reset-rules)
-(trace prove)
-(run :given '((2 / x) * (x / y)) :goal '(2 / y) :verbose? t :depth-limit 6) ;; This it can do even w/o DBMOIF
+(run :given '((y over z) over (x over z)) :goal '(y / x) :verbose? t :depth-limit 6) ;; This it can do even w/o DBMOIF
+(run :given '((z over x) over (z over y)) :goal '(y / x) :verbose? t :depth-limit 10) ;; This it can do even w/o DBMOIF
 
 ;(run-all-tests)
 ;(drop-rule :dbmoif)
